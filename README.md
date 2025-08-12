@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://www.uade.edu.ar/media/hrlpdgg0/uade_arg.png" alt="Logo Universidad" width="150">
+  <img src="https://www.uade.edu.ar/assets/images/logo.png" alt="Logo Universidad" width="150">
 </p>
 
 <h1 align="center">Trabajo practico Obligatorio</h1>
