@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon API - TP3</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Pokémon API - Práctica de Laboratorio</h1>
+        <p>Consumiendo datos de la PokeAPI y mostrándolos en una tabla</p>
+    </header>
+
+    <main>
+        <div class="controls">
+            <button id="loadPokemon">Cargar Pokémon</button>
+            <button id="clearTable">Limpiar Tabla</button>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <p>Cargando datos de Pokémon...</p>
+        </div>
+
+        <div class="table-container">
+            <table id="pokemonTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Imagen</th>
+                        <th>Altura (dm)</th>
+                        <th>Peso (hg)</th>
+                        <th>Tipos</th>
+                        <th>Habilidades</th>
+                    </tr>
+                </thead>
+                <tbody id="pokemonTableBody">
+                    <!-- Los datos se cargarán aquí -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>Datos obtenidos de <a href="https://pokeapi.co/" target="_blank">PokeAPI</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
