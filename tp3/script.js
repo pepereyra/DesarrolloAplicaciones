@@ -65,7 +65,7 @@ async function fetchPokemonDetails(url) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const pokemon = await response.json();
+    const pokemon = await response.json(); 
     
     // Extraer y formatear la información relevante
     return {
