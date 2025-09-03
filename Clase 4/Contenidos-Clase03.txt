@@ -1,0 +1,332 @@
+Clase 03: 
+=========
+
+JavaScript
+==========
+
+Repaso JS
+
+	
+
+3. Eventos y Formularios (1 hora)  
+  Los eventos son acciones o sucesos que ocurren en el navegador 
+    Ejemplos de eventos HTML:
+    Cuando un usuario hace clic con el mouse
+    Cuando se ha cargado una página web
+    Cuando se ha cargado una imagen
+    Cuando el mouse se mueve sobre un elemento
+    Cuando se cambia un campo de entrada
+    Cuando se envía un formulario HTML
+    Cuando un usuario pulsa una tecla
+	Cuando un API devuelve un json 
+
+  - Manejo de eventos  
+    - inline
+		Separación de intereses: Mezcla la estructura (HTML) con el comportamiento (JavaScript), lo que hace que el código sea difícil de leer y mantener.
+		Reusabilidad: Si tienes que hacer lo mismo en varios botones, tendrías que repetir el código.
+		
+    - propiedades del dom 
+		Sobrescribe: Si asignas más de una función al mismo evento (por ejemplo, onclick), la última función sobrescribirá a las anteriores. Esto puede causar problemas en proyectos grandes o cuando usas librerías.
+
+    - `addEventListener`: más utilizado y la mejor práctica
+      Permite adjuntar múltiples funciones a un mismo evento de un elemento, sin sobrescribir las anteriores.
+	  No sobrescribe: Permite tener múltiples manejadores de eventos para el mismo tipo de evento en un solo elemento.
+	  Separación de intereses: Mantiene el JavaScript en archivos separados, mejorando la organización, la legibilidad y la depuración del código.
+	  Eliminación de eventos: Puedes eliminar un manejador de eventos específico con removeEventListener() si lo necesitas, lo cual no es posible con las otras dos formas.
+
+    
+
+4. Asincronía en JavaScript (1 hora)  jsAsinicronico.js
+La asincronía en JavaScript es la capacidad de ejecutar tareas que tardan un tiempo en completarse (como obtener datos de un servidor o leer un archivo) sin bloquear el resto del código. Esto significa que tu programa no se detiene a esperar, sino que continúa ejecutándose y vuelve a la tarea cuando esta finaliza.
+    Llamadas a APIs
+    Lectura de archivos
+    Consultas a bases de datos
+
+Ej: sincrónica
+	Tarea 1: Iniciar
+	Tarea 2: Lenta y sincrónica. Bloqueando el código...
+	Tarea 3: Finalizada	
+
+Ej: asincrónica
+	Tarea 1: Iniciar	
+	Tarea 2: Lenta y asincrónica. No bloqueando el código...
+	Tarea 3: Finalizada
+
+  Callbacks :
+    Un callback en JavaScript es una función que se pasa como argumento a otra función
+    La función que recibe el callback lo ejecuta cuando la operación asíncrona se completa.
+    - Ejemplo con `setTimeout`.  
+    - Problema del "Callback Hell".  
+
+  Promises (Introducidas en ES6):
+  Una Promesa es un objeto que representa el resultado de una operación asíncrona, ya sea su éxito o su fracaso, que aún no ha sucedido. 
+    
+    Tiene tres estados posibles:
+    Pending (Pendiente): La operación aún no se ha completado.
+    Fulfilled (Resuelta): La operación se completó con éxito y tiene un valor.
+    Rejected (Rechazada): La operación falló y tiene una razón (generalmente un error).
+
+  Llamadas de APIs con `fetch`  llamadaAPI.js jsAsinicronico.js
+
+  Async/Await (Introducido en ES2017):
+   es una forma más sencilla y legible de manejar la promesa que devuelve fetch(). 
+   No es una alternativa a fetch, sino una sintaxis más moderna para trabajar con ella, haciendo que el código asíncrono parezca sincrónico.
+    
+   Una función declarada con async siempre devuelve una Promise (implícitamente).
+   La palabra clave await solo se puede usar dentro de una función async. Detiene la ejecución de la función async hasta que la Promise que se está esperando se resuelva (o se rechace).    
+
+Diferencia entre API y endpoint
+Una API (Interfaz de Programación de Aplicaciones) describe todas las opciones disponibles para que una aplicación externa pueda interactuar con los servicios de una plataforma , como obtener datos, crear pedidos o procesar pagos.
+Ej: mercadolibre conjunto de funcionalidades:
+- buscar productos
+- filtrar productos
+- vender producto 
+- cambiar datos personales 
+
+El endpoint es una dirección específica en ese menú que te lleva a un "plato" o servicio particular. Es la URL a la que haces una petición para realizar una acción concreta.
+https://mercadolibre.com/api/products
+https://mercadolibre.com/api/addUser 
+
+
+
+	
+
+
+Control de Versiones:
+====================
+
+¿Qué es el control de versiones y por qué es importante?
+Es un sistema que permite gestionar y rastrear los cambios realizados en los archivos de un proyecto a lo largo del tiempo
+
+Tipos de sistemas de control de versiones:
+	-Sistemas de Control de Versiones Locales: 
+		copias manuales de archivos
+	-Sistemas de Control de Versiones Centralizados (CVCS) (ejemplo: SVN + TortoiseSVN o Integración con IDEs: Eclipse, IntelliJ IDEA o NetBeans): 
+		servidor central que almacena todas las versiones de los archivos
+		control de acceso y permisos
+		historial de cambios centralizado
+		dependencia del servidor central
+	-Sistemas de Control de Versiones Distribuidos (DVCS) (ejemplo: Git). 
+		cada desarrollador tiene una copia completa del repositorio
+		No hay dependencia de un servidor central.
+
+¿Para que sirve Git?
+Sistema de control de versiones distribuido ampliamente utilizado para registrar cambios en archivos y coordinar el trabajo entre múltiples personas en proyectos de software
+creado por Linus Torvalds en 2005 
+	Rastrear cambios en el código.
+	Trabajar en equipo de manera eficiente.
+	Revertir errores y mantener un historial de cambios.
+	Desarrollar nuevas características en ramas separadas.
+
+¿Para qué Sirven GitHub, GitLab, Bitbucket?
+Alojar Repositorios Git, guardar el código fuente que están en la máquina de desarrollador
+Colaboración en Equipo, trabajar en equipo
+
+
+Instalación y config Git, Github:
+	Crear cuenta en github
+	Instalar git: git bash, powershell, terminal vsc
+	Reiniciar VSC 
+	Verificar instalación: en terminal ejecutar git --version 
+	Configuración inicial: 
+		git config --global user.name "ssanchezuade"
+		git config --global user.email "santosanchez@uade.edu.ar"
+
+
+Áreas de un Repositorio Git, Repo GitHub:
+PC del desarrollador:	
+	Working Directory (Directorio de Trabajo).
+		Es la carpeta local en tu máquina donde trabajas con los archivos del proyecto.
+		Aquí es donde editas, creas o eliminas archivos
+		Los cambios aquí no están registrados por Git hasta que los agregas al Staging Area.	
+
+	Staging Area (Área de Preparación).
+		Es un área intermedia donde preparas los cambios que quieres incluir en el próximo commit
+		Permite seleccionar qué cambios quieres incluir en el commit.
+		Puedes agregar solo algunos archivos
+		git add <archivo> 
+		git add .
+
+	Repository (Repositorio)
+		Es donde Git almacena todo el historial completo de cambios, ramas, tags y configuraciones
+		git commit -m "Mensaje descriptivo" Guarda los cambios del Staging Area en el repositorio.
+
+Repositorio en servidor remoto GitHub o GitLab:
+	Repositorio Remoto (Opcional): Donde se almacena tu repo local 
+
+
+
+
+Crear Repositorio Local con Git
+   - Inicializar un repositorio: `git init`. En VSC se ve un indicador
+   - Ver el estado del repositorio: `git status`.
+   - Agregar archivos al staging area: `git add <archivo>`.
+   - Confirmar cambios: `git commit -m "Mensaje descriptivo"`. s
+   - Ver el historial de commits: `git log`.
+git config --global user.name "ssanchezutnfra"
+
+Vincular un repo local a uno remoto y subir repo a Github:
+	- crear repo en github o gitlab, obtener url
+	- vincular repositorio
+	git remote add origin https://github.com/ssanchezutnfra/uadeLunesTN.git
+	- verificar si están vinculados 
+	git remote -v
+	- ver la rama donde estoy
+	git branch
+	- subir los cambios del repo local al remoto 
+	git push -u origin master
+
+Práctica de Laboratorio:
+=========================
+  - Hacer una llamada a una API y mostrar los datos en una tabla HTML (con fetcho o async/await).
+  https://jsonplaceholder.typicode.com/users
+  - crear un repo local con git y uno remoto github para todo el grupo utilizando git, push de los archivos del ejercicio.	
+
+Branches ramas en Git
+   - ¿Qué es una rama y por qué usarla?
+	Es una línea de desarrollo independiente que permite trabajar en nuevas funcionalidades, correcciones de errores o experimentos sin interferir con el código estable principal. 
+   
+   - Crear una rama: `git branch <nombre-rama>`.
+	Estamos en la en la rama master y queremos crear una nueva rama para desarrollar una funcionalidad de login:
+	git branch feature/login
+	Esto crea una rama llamada feature/login, pero no cambia automáticamente a ella.
+
+   - Cambiar de rama: `git checkout <nombre-rama>`.`git switch <nombre-rama>`.
+	Este comando te permite moverte a una rama específica para empezar a trabajar en ella.
+	git checkout feature/login -> comando tradicional, menos claro, tiene varias funcionalidades
+	git switch feature/login -> comando actual y más claro
+
+   - Fusionar ramas: `git merge <nombre-rama>`.
+	Supongamos que terminaste de desarrollar la funcionalidad de login en feature/login y quieres fusionarla con master:
+   	git switch master       # Cambias a la rama master
+	git merge feature/login  # Fusionas feature/login en master
+	Si no hay conflictos, Git fusionará automáticamente los cambios. 
+	Si hay conflictos significa que hay cambios en las mismas partes del mismo archivo en ambas ramas (main o master y feature/login), debes resolver los conflictos manualmente.
+
+   - Eliminar una rama: `git branch -d <nombre-rama>`.
+	Después de fusionar feature/login con master, ya no necesitas la rama feature/login. Para eliminarla:
+	git branch -d feature/login
+
+	Ejemplo completo de flujo de trabajo con ramas:
+	================================================
+	Crear una nueva rama para una funcionalidad:
+	git branch feature/login
+
+	Cambiar a esta rama:
+	git switch feature/login
+
+	Verifico en que rama estoy
+	git branch
+
+	Hacer cambios y subirlos al Staging Area y al Repo Local: 
+	ej: crear directorio login, un archivo login.html y luego:
+	git add .
+	git commit -m "Añadir funcionalidad de login"
+	
+
+	Fusionar la rama con master o hacer pull request:
+	git switch master
+	git merge feature/login
+
+	Pull request es una funcionalidad de github, donde cada integrante debe confirmar el merge
+
+	Subir rama master fusionada
+
+	Eliminar la rama después de fusionar:
+	git branch -d feature/login
+
+
+Trabajo con Repositorios Remotos
+   - Clonar un repositorio remoto: `git clone <url-repositorio>`.
+	Descargar una copia completa de un repositorio desde un servidor remoto
+	git clone https://github.com/sbsanchez21/clase02Uade.git
+
+   - Vincular un repositorio remoto: `git remote add origin <url-repositorio>`.
+   git remote add origin https://github.com/sbsanchez21/clase02Uade.git
+
+   - Enviar cambios al repositorio remoto: `git push -u origin <nombre-rama>`.
+   Sube los cambios de tu repositorio local al repositorio remoto
+   git push -u origin feature/login
+
+   - Traer cambios del repositorio remoto: `git pull origin <nombre-rama>`.
+	Es un comando que combina dos operaciones:
+	git fetch: Descarga los cambios más recientes del repositorio remoto al repo local
+	git merge: Fusiona automáticamente los cambios descargados en el repo local con tu rama local actual.
+
+	git pull origin master
+   
+   - Ver repositorios remotos: `git remote -v`.
+
+Resolución de Conflictos
+   - ¿Qué es un conflicto y cómo se produce?
+   - Identificar conflictos: `git status`.
+   - Resolver conflictos manualmente (editar archivos conflictivos).
+   - Marcar conflictos como resueltos: `git add <archivo>`.
+   - Finalizar la fusión: `git commit`.
+
+Integración de Git con Java
+   - Uso de `.gitignore` para excluir archivos (ejemplo: `target/`, `.classpath`, `.project`).
+
+Buenas Prácticas en el Control de Versiones
+   - Escribir mensajes de commit claros y descriptivos.
+   - Mantener commits atómicos (un cambio por commit).
+   - Evitar archivos binarios en el repositorio.
+   - Revisar el historial de cambios antes de fusionar ramas.
+
+
+
+
+Novedades:
+https://www.perplexity.ai/comet
+https://lmstudio.ai/
+https://jules.google/
+  
+
+Ejercicios varios:
+https://exercism.org/tracks/javascript
+https://www.w3schools.com/js/js_exercises.asp
+
+
+DAta:
+https://statics.teams.cdn.office.net/evergreen-assets/safelinks/2/atp-safelinks.html
+
+
+Web 
+Iriun Webcam
+
+
+
+Inicializar proyecto git:
+==========================
+	git init
+
+Subir a staging area	
+	git add . 
+
+Subir a repo local	
+	git commit -m 'comentario'
+
+subir a repo remoto
+	git push -u origin feature/login	
+
+ramas
+=====
+crear rama
+	git branch feature/login
+programar en Working Directory
+subir a staging area 
+	git add .
+
+commit en repo local 
+	git commit -m "Añadir funcionalidad de login"
+
+subir a repo remoto
+	git push -u origin feature/login	
+
+
+Bajar repo remoto
+=================
+git pull origin master
+resolver conflictos con editor
+git add .
+git push origin master

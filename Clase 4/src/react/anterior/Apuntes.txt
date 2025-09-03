@@ -1,0 +1,20 @@
+Control de Flujo:
+=================
+
+1. Ciclo de Vida de Componentes (Controlado por Angular)
+Angular decide cuándo se ejecutan los métodos de tu componente, siguiendo un orden estricto:
+Flujo impuesto por Angular:
+constructor → ngOnChanges → ngOnInit → ngAfterViewInit
+
+2. Inyección de Dependencias (Obligatoria)
+Angular fuerza el uso de su sistema de inyección de dependencias (DI). No puedes instanciar servicios manualmente:
+
+3. Módulos y Decoradores (Estructura Rígida)
+Angular exige que organices tu app en módulos (@NgModule) y uses decoradores para todo:
+
+4. Two-Way Data Binding (Usando [(ngModel)])
+sincroniza automáticamente los datos entre la vista (HTML) y el modelo (JavaScript/TypeScript).
+
+
+Inversión de Control:
+====================

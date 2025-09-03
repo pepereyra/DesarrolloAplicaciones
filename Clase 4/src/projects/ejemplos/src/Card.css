@@ -1,0 +1,97 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    gap: 1rem;
+    /* align-items: end; */
+    width: 150px;
+    /* height: 250px; */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    padding: 1rem;
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 16px;
+    text-align: center;
+}
+
+.card-body h2 {
+    margin: 8px 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.card-body p {
+    margin: 4px 0;
+    font-size: 1rem;
+    color: #777;
+}
+
+.card-body button {
+    margin-top: 12px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.card-body button:hover {
+    background-color: #0056b3;
+}
+
+.card-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-button-not-following {
+    margin-top: 12px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    color: #007bff;
+    background-color: transparent;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.card-button-not-following:hover {
+    color: #fff;
+    background-color: #007bff;
+}
+
+
+.card-button-following {
+    margin-top: 12px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    color: #28814c;
+    background-color: transparent;
+    border: 1px solid #3e9e87;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.card-button-following:hover {
+    color: #fff;
+    background-color: #297265;
+}
+
