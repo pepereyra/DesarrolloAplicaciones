@@ -1,4 +1,0 @@
-Este es un archivo de prueba en mi rama personal.
-Fecha: 19 de agosto de 2025
-
-Aquí puedo trabajar sin afectar la rama master.
