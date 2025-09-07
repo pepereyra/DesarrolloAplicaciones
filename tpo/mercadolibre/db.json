@@ -1,0 +1,159 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "iPhone 14 Pro 128GB",
+      "price": 899999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 74999
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_843049-MLA50502098639_062022-F.webp",
+      "category": "celulares",
+      "seller": {
+        "nickname": "APPLE_STORE_ARG",
+        "reputation": "gold"
+      },
+      "location": "Capital Federal",
+      "description": "iPhone 14 Pro con pantalla Super Retina XDR de 6.1 pulgadas, chip A16 Bionic y sistema de cámaras Pro avanzado.",
+      "stock": 15,
+      "tags": ["Más vendido", "Envío gratis"]
+    },
+    {
+      "id": 2,
+      "title": "Samsung Galaxy S23 128GB",
+      "price": 649999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 18,
+        "amount": 36111
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_901457-MLA69825923980_062023-F.webp",
+      "category": "celulares",
+      "seller": {
+        "nickname": "SAMSUNG_OFICIAL",
+        "reputation": "gold"
+      },
+      "location": "Buenos Aires",
+      "description": "Galaxy S23 con cámara de 50MP, pantalla Dynamic AMOLED de 6.1 pulgadas y procesador Snapdragon 8 Gen 2.",
+      "stock": 8,
+      "tags": ["Nuevo", "Envío gratis"]
+    },
+    {
+      "id": 3,
+      "title": "Notebook Lenovo IdeaPad 3 15.6 Intel Core i5",
+      "price": 589999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": false,
+      "installments": {
+        "quantity": 12,
+        "amount": 49166
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_875351-MLA45729434226_042021-F.webp",
+      "category": "computacion",
+      "seller": {
+        "nickname": "LENOVO_STORE",
+        "reputation": "silver"
+      },
+      "location": "Córdoba",
+      "description": "Notebook Lenovo IdeaPad 3 con procesador Intel Core i5, 8GB RAM, 256GB SSD, pantalla 15.6 pulgadas.",
+      "stock": 12,
+      "tags": ["Oferta especial"]
+    },
+    {
+      "id": 4,
+      "title": "Smart TV Samsung 55 4K UHD",
+      "price": 449999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 24,
+        "amount": 18750
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_814387-MLA46516512679_062021-F.webp",
+      "category": "electrodomesticos",
+      "seller": {
+        "nickname": "SAMSUNG_TV",
+        "reputation": "gold"
+      },
+      "location": "Rosario",
+      "description": "Smart TV Samsung 55 pulgadas 4K UHD con Tizen OS, HDR10+ y control por voz.",
+      "stock": 5,
+      "tags": ["Envío gratis", "Smart TV"]
+    },
+    {
+      "id": 5,
+      "title": "Zapatillas Nike Air Max 270",
+      "price": 89999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 6,
+        "amount": 15000
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_691811-MLA31352998465_072019-F.webp",
+      "category": "deportes",
+      "seller": {
+        "nickname": "NIKE_OFICIAL",
+        "reputation": "gold"
+      },
+      "location": "Capital Federal",
+      "description": "Zapatillas Nike Air Max 270 con unidad Air visible y diseño moderno para máximo confort.",
+      "stock": 20,
+      "tags": ["Envío gratis", "Más vendido"]
+    },
+    {
+      "id": 6,
+      "title": "Auriculares Sony WH-1000XM4",
+      "price": 299999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 25000
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_634619-MLA44216544882_122020-F.webp",
+      "category": "audio",
+      "seller": {
+        "nickname": "SONY_STORE",
+        "reputation": "gold"
+      },
+      "location": "Mendoza",
+      "description": "Auriculares inalámbricos Sony con cancelación de ruido líder en la industria y 30 horas de batería.",
+      "stock": 10,
+      "tags": ["Envío gratis", "Noise cancelling"]
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@mercadolibre.com",
+      "password": "admin123",
+      "firstName": "Admin",
+      "lastName": "User",
+      "role": "admin",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "email": "user@test.com",
+      "password": "user123",
+      "firstName": "Juan",
+      "lastName": "Pérez",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2024-01-15T00:00:00.000Z"
+    }
+  ],
+  "cart": []
+}
