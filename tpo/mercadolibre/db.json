@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": 1,
+      "id": "1",
       "title": "iPhone 14 Pro 128GB",
       "price": 899999,
       "currency": "ARS",
@@ -20,10 +20,13 @@
       "location": "Capital Federal",
       "description": "iPhone 14 Pro con pantalla Super Retina XDR de 6.1 pulgadas, chip A16 Bionic y sistema de cámaras Pro avanzado.",
       "stock": 15,
-      "tags": ["Más vendido", "Envío gratis"]
+      "tags": [
+        "Más vendido",
+        "Envío gratis"
+      ]
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Samsung Galaxy S23 128GB",
       "price": 649999,
       "currency": "ARS",
@@ -42,10 +45,13 @@
       "location": "Buenos Aires",
       "description": "Galaxy S23 con cámara de 50MP, pantalla Dynamic AMOLED de 6.1 pulgadas y procesador Snapdragon 8 Gen 2.",
       "stock": 8,
-      "tags": ["Nuevo", "Envío gratis"]
+      "tags": [
+        "Nuevo",
+        "Envío gratis"
+      ]
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Notebook Lenovo IdeaPad 3 15.6 Intel Core i5",
       "price": 589999,
       "currency": "ARS",
@@ -64,10 +70,12 @@
       "location": "Córdoba",
       "description": "Notebook Lenovo IdeaPad 3 con procesador Intel Core i5, 8GB RAM, 256GB SSD, pantalla 15.6 pulgadas.",
       "stock": 12,
-      "tags": ["Oferta especial"]
+      "tags": [
+        "Oferta especial"
+      ]
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Smart TV Samsung 55 4K UHD",
       "price": 449999,
       "currency": "ARS",
@@ -86,10 +94,13 @@
       "location": "Rosario",
       "description": "Smart TV Samsung 55 pulgadas 4K UHD con Tizen OS, HDR10+ y control por voz.",
       "stock": 5,
-      "tags": ["Envío gratis", "Smart TV"]
+      "tags": [
+        "Envío gratis",
+        "Smart TV"
+      ]
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Zapatillas Nike Air Max 270",
       "price": 89999,
       "currency": "ARS",
@@ -108,10 +119,13 @@
       "location": "Capital Federal",
       "description": "Zapatillas Nike Air Max 270 con unidad Air visible y diseño moderno para máximo confort.",
       "stock": 20,
-      "tags": ["Envío gratis", "Más vendido"]
+      "tags": [
+        "Envío gratis",
+        "Más vendido"
+      ]
     },
     {
-      "id": 6,
+      "id": "6",
       "title": "Auriculares Sony WH-1000XM4",
       "price": 299999,
       "currency": "ARS",
@@ -130,12 +144,15 @@
       "location": "Mendoza",
       "description": "Auriculares inalámbricos Sony con cancelación de ruido líder en la industria y 30 horas de batería.",
       "stock": 10,
-      "tags": ["Envío gratis", "Noise cancelling"]
+      "tags": [
+        "Envío gratis",
+        "Noise cancelling"
+      ]
     }
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "email": "admin@mercadolibre.com",
       "password": "admin123",
       "firstName": "Admin",
@@ -145,7 +162,7 @@
       "createdAt": "2024-01-01T00:00:00.000Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "email": "user@test.com",
       "password": "user123",
       "firstName": "Juan",
@@ -153,6 +170,36 @@
       "role": "user",
       "avatar": "https://via.placeholder.com/150",
       "createdAt": "2024-01-15T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "email": "prueba1@hotmail.com",
+      "password": "prueba1",
+      "firstName": "prueba1",
+      "lastName": "prueba1",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2025-09-08T17:02:04.684Z"
+    },
+    {
+      "id": 4,
+      "email": "prueba2@hotmail.com",
+      "password": "prueba2",
+      "firstName": "asdf",
+      "lastName": "adsf",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2025-09-08T17:34:34.142Z"
+    },
+    {
+      "id": 5,
+      "email": "prueba3@hotmail.com",
+      "password": "prueba2",
+      "firstName": "3",
+      "lastName": "3",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2025-09-08T18:00:22.404Z"
     }
   ],
   "cart": []

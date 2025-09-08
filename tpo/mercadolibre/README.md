@@ -63,6 +63,12 @@ Un prototipo de e-commerce inspirado en Mercado Libre, desarrollado con React, V
    ```
    La API estará disponible en: http://localhost:3002
 
+   **Importante**: El servidor JSON debe estar corriendo para que funcionen:
+   - El registro de usuarios
+   - El login
+   - La gestión de productos
+   - El carrito de compras
+
 ### Scripts Disponibles
 
 - `npm run dev` - Inicia el servidor de desarrollo de Vite
@@ -134,8 +140,24 @@ src/
 
 ## 🚧 Próximas Funcionalidades
 
-### En Desarrollo
+### Implementado
 - 🔐 **Sistema de Login/Registro**
+  - ✅ Registro de nuevos usuarios
+  - ✅ Login con validación
+  - ✅ Mensajes modales de confirmación/error
+  - ✅ Persistencia con JSON Server
+  - ✅ Context API para estado de autenticación
+
+### Usuarios de Prueba
+1. Usuario Administrador:
+   - Email: admin@mercadolibre.com
+   - Contraseña: admin123
+
+2. Usuario Regular:
+   - Email: user@test.com
+   - Contraseña: user123
+
+### En Desarrollo
 - 👑 **Panel de Administración**
 - 📊 **Dashboard de ventas**
 - 💳 **Simulador de checkout**
