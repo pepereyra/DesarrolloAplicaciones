@@ -1,0 +1,558 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "title": "iPhone 14 Pro 128GB",
+      "price": 899999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 74999
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_843049-MLA50502098639_062022-F.webp",
+      "category": "celulares",
+      "seller": {
+        "nickname": "APPLE_STORE_ARG",
+        "reputation": "gold"
+      },
+      "location": "Capital Federal",
+      "description": "iPhone 14 Pro con pantalla Super Retina XDR de 6.1 pulgadas, chip A16 Bionic y sistema de cámaras Pro avanzado.",
+      "stock": 15,
+      "tags": [
+        "Más vendido",
+        "Envío gratis"
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Samsung Galaxy S23 128GB",
+      "price": 649999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 18,
+        "amount": 36111
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_901457-MLA69825923980_062023-F.webp",
+      "category": "celulares",
+      "seller": {
+        "nickname": "SAMSUNG_OFICIAL",
+        "reputation": "gold"
+      },
+      "location": "Buenos Aires",
+      "description": "Galaxy S23 con cámara de 50MP, pantalla Dynamic AMOLED de 6.1 pulgadas y procesador Snapdragon 8 Gen 2.",
+      "stock": 8,
+      "tags": [
+        "Nuevo",
+        "Envío gratis"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Notebook Lenovo IdeaPad 3 15.6 Intel Core i5",
+      "price": 589999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": false,
+      "installments": {
+        "quantity": 12,
+        "amount": 49166
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_875351-MLA45729434226_042021-F.webp",
+      "category": "computacion",
+      "seller": {
+        "nickname": "LENOVO_STORE",
+        "reputation": "silver"
+      },
+      "location": "Córdoba",
+      "description": "Notebook Lenovo IdeaPad 3 con procesador Intel Core i5, 8GB RAM, 256GB SSD, pantalla 15.6 pulgadas.",
+      "stock": 12,
+      "tags": [
+        "Oferta especial"
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Smart TV Samsung 55 4K UHD",
+      "price": 449999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 24,
+        "amount": 18750
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_814387-MLA46516512679_062021-F.webp",
+      "category": "electrodomesticos",
+      "seller": {
+        "nickname": "SAMSUNG_TV",
+        "reputation": "gold"
+      },
+      "location": "Rosario",
+      "description": "Smart TV Samsung 55 pulgadas 4K UHD con Tizen OS, HDR10+ y control por voz.",
+      "stock": 5,
+      "tags": [
+        "Envío gratis",
+        "Smart TV"
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Zapatillas Nike Air Max 270",
+      "price": 89999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 6,
+        "amount": 15000
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_691811-MLA31352998465_072019-F.webp",
+      "category": "deportes",
+      "seller": {
+        "nickname": "NIKE_OFICIAL",
+        "reputation": "gold"
+      },
+      "location": "Capital Federal",
+      "description": "Zapatillas Nike Air Max 270 con unidad Air visible y diseño moderno para máximo confort.",
+      "stock": 20,
+      "tags": [
+        "Envío gratis",
+        "Más vendido"
+      ]
+    },
+    {
+      "id": "6",
+      "title": "Auriculares Sony WH-1000XM4",
+      "price": 299999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 25000
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_634619-MLA44216544882_122020-F.webp",
+      "category": "audio",
+      "seller": {
+        "nickname": "SONY_STORE",
+        "reputation": "gold"
+      },
+      "location": "Mendoza",
+      "description": "Auriculares inalámbricos Sony con cancelación de ruido líder en la industria y 30 horas de batería.",
+      "stock": 10,
+      "tags": [
+        "Envío gratis",
+        "Noise cancelling"
+      ]
+    },
+    {
+      "id": "7",
+      "title": "Ray-Ban Wayfarer Classic",
+      "price": 189999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 15833
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_856456-MLA46516789012_062021-F.webp",
+      "category": "anteojos",
+      "seller": {
+        "nickname": "RAYBAN_OFICIAL",
+        "reputation": "gold"
+      },
+      "location": "Capital Federal",
+      "description": "Anteojos de sol Ray-Ban Wayfarer clásicos con lentes polarizadas y protección UV.",
+      "stock": 12,
+      "tags": ["Clásico", "Envío gratis"]
+    },
+    {
+      "id": "8",
+      "title": "Oakley Holbrook Polarizados",
+      "price": 249999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 20833
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_745123-MLA45678901234_042021-F.webp",
+      "category": "anteojos",
+      "seller": {
+        "nickname": "OAKLEY_STORE",
+        "reputation": "gold"
+      },
+      "location": "Buenos Aires",
+      "description": "Anteojos Oakley Holbrook con lentes polarizadas Prizm, marco de acetato duradero.",
+      "stock": 8,
+      "tags": ["Deportivo", "Polarizado"]
+    },
+    {
+      "id": "9",
+      "title": "MacBook Air M2 256GB",
+      "price": 1299999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 18,
+        "amount": 72222
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_678934-MLA51234567890_082022-F.webp",
+      "category": "computacion",
+      "seller": {
+        "nickname": "APPLE_STORE_ARG",
+        "reputation": "gold"
+      },
+      "location": "Capital Federal",
+      "description": "MacBook Air con chip M2, pantalla Liquid Retina de 13.6 pulgadas y hasta 18 horas de batería.",
+      "stock": 1,
+      "tags": ["Nuevo", "Apple Silicon"]
+    },
+    {
+      "id": "10",
+      "title": "Dell XPS 13 Intel i7",
+      "price": 899999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 15,
+        "amount": 60000
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_567890-MLA40123456789_012021-F.webp",
+      "category": "computacion",
+      "seller": {
+        "nickname": "DELL_OFICIAL",
+        "reputation": "gold"
+      },
+      "location": "Córdoba",
+      "description": "Ultrabook Dell XPS 13 con procesador Intel Core i7, 16GB RAM, 512GB SSD.",
+      "stock": 6,
+      "tags": ["Ultrabook", "Premium"]
+    },
+    {
+      "id": "11",
+      "title": "Freidora de Aire Philips 4.1L",
+      "price": 89999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 7500
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_745123-MLA45678901234_042021-F.webp",
+      "category": "electrodomesticos",
+      "seller": {
+        "nickname": "PHILIPS_OFICIAL",
+        "reputation": "gold"
+      },
+      "location": "Buenos Aires",
+      "description": "Freidora de aire Philips con tecnología Rapid Air, capacidad 4.1L para hasta 5 porciones.",
+      "stock": 8,
+      "tags": ["Saludable", "Envío gratis"]
+    },
+    {
+      "id": "12",
+      "title": "Freidora Oster 2L Compacta",
+      "price": 45999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": false,
+      "installments": {
+        "quantity": 6,
+        "amount": 7667
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_567890-MLA40123456789_012021-F.webp",
+      "category": "electrodomesticos",
+      "seller": {
+        "nickname": "OSTER_STORE",
+        "reputation": "silver"
+      },
+      "location": "Córdoba",
+      "description": "Freidora de aire Oster compacta de 2L, ideal para porciones pequeñas.",
+      "stock": 0,
+      "tags": ["Compacta", "Sin stock"]
+    },
+    {
+      "id": "13",
+      "title": "LG OLED 65 4K Smart TV",
+      "price": 899999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 24,
+        "amount": 37500
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_814387-MLA46516512679_062021-F.webp",
+      "category": "electrodomesticos",
+      "seller": {
+        "nickname": "LG_OFICIAL",
+        "reputation": "gold"
+      },
+      "location": "Rosario",
+      "description": "Smart TV LG OLED 65 pulgadas 4K con webOS, Dolby Vision y AI ThinQ.",
+      "stock": 3,
+      "tags": ["OLED", "Premium"]
+    },
+    {
+      "id": "14",
+      "title": "TCL 43 4K Android TV",
+      "price": 299999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 18,
+        "amount": 16667
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_456789-MLA38901234567_012021-F.webp",
+      "category": "electrodomesticos",
+      "seller": {
+        "nickname": "TCL_STORE",
+        "reputation": "silver"
+      },
+      "location": "Mendoza",
+      "description": "Smart TV TCL 43 pulgadas 4K con Android TV, HDR10 y Google Assistant.",
+      "stock": 15,
+      "tags": ["Android TV", "Accesible"]
+    },
+    {
+      "id": "15",
+      "title": "Microondas Samsung 28L",
+      "price": 129999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 10833
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_345678-MLA29012345678_012020-F.webp",
+      "category": "electrodomesticos",
+      "seller": {
+        "nickname": "SAMSUNG_HOGAR",
+        "reputation": "gold"
+      },
+      "location": "Capital Federal",
+      "description": "Microondas Samsung 28L con grill, panel digital y 10 niveles de potencia.",
+      "stock": 7,
+      "tags": ["Grill", "Digital"]
+    },
+    {
+      "id": "16",
+      "title": "Heladera Whirlpool 364L",
+      "price": 459999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 24,
+        "amount": 19167
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_234567-MLA28123456789_092019-F.webp",
+      "category": "electrodomesticos",
+      "seller": {
+        "nickname": "WHIRLPOOL_ARG",
+        "reputation": "gold"
+      },
+      "location": "Buenos Aires",
+      "description": "Heladera Whirlpool no frost 364L, freezer superior, eficiencia energética A+.",
+      "stock": 4,
+      "tags": ["No Frost", "A+"]
+    },
+    {
+      "id": "17",
+      "title": "Adidas Ultraboost 22",
+      "price": 149999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 12500
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_123456-MLA47890123456_102021-F.webp",
+      "category": "deportes",
+      "seller": {
+        "nickname": "ADIDAS_OFICIAL",
+        "reputation": "gold"
+      },
+      "location": "Capital Federal",
+      "description": "Zapatillas Adidas Ultraboost 22 con tecnología BOOST y upper Primeknit.",
+      "stock": 18,
+      "tags": ["Running", "BOOST"]
+    },
+    {
+      "id": "18",
+      "title": "Pelota de Fútbol Nike Strike",
+      "price": 25999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": false,
+      "installments": {
+        "quantity": 3,
+        "amount": 8667
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_789012-MLA35678901234_042020-F.webp",
+      "category": "deportes",
+      "seller": {
+        "nickname": "NIKE_DEPORTES",
+        "reputation": "gold"
+      },
+      "location": "Rosario",
+      "description": "Pelota de fútbol Nike Strike talla 5, ideal para entrenamiento y partidos recreativos.",
+      "stock": 25,
+      "tags": ["Fútbol", "Entrenamiento"]
+    },
+    {
+      "id": "19",
+      "title": "Mancuernas Ajustables 20kg",
+      "price": 89999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 7500
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_456789-MLA36789012345_052020-F.webp",
+      "category": "deportes",
+      "seller": {
+        "nickname": "FITNESS_PRO",
+        "reputation": "silver"
+      },
+      "location": "Córdoba",
+      "description": "Set de mancuernas ajustables de 5 a 20kg cada una, ideales para gimnasio en casa.",
+      "stock": 12,
+      "tags": ["Fitness", "Hogar"]
+    },
+    {
+      "id": "20",
+      "title": "AirPods Pro 2da Gen",
+      "price": 399999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 18,
+        "amount": 22222
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_678901-MLA49123456789_122021-F.webp",
+      "category": "audio",
+      "seller": {
+        "nickname": "APPLE_STORE_ARG",
+        "reputation": "gold"
+      },
+      "location": "Capital Federal",
+      "description": "AirPods Pro 2da generación con cancelación activa de ruido y audio espacial.",
+      "stock": 9,
+      "tags": ["Apple", "Pro"]
+    },
+    {
+      "id": "21",
+      "title": "JBL Charge 5 Bluetooth",
+      "price": 129999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 12,
+        "amount": 10833
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_345678-MLA40234567890_012021-F.webp",
+      "category": "audio",
+      "seller": {
+        "nickname": "JBL_OFICIAL",
+        "reputation": "gold"
+      },
+      "location": "Buenos Aires",
+      "description": "Parlante JBL Charge 5 con Bluetooth, resistente al agua IP67 y 20h de batería.",
+      "stock": 14,
+      "tags": ["Bluetooth", "Resistente"]
+    },
+    {
+      "id": "22",
+      "title": "Marshall Acton III",
+      "price": 449999,
+      "currency": "ARS",
+      "condition": "new",
+      "free_shipping": true,
+      "installments": {
+        "quantity": 18,
+        "amount": 25000
+      },
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_789012-MLA41345678901_042021-F.webp",
+      "category": "audio",
+      "seller": {
+        "nickname": "MARSHALL_STORE",
+        "reputation": "gold"
+      },
+      "location": "Mendoza",
+      "description": "Parlante Marshall Acton III con conectividad inalámbrica y sonido Marshall clásico.",
+      "stock": 5,
+      "tags": ["Marshall", "Premium"]
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@mercadolibre.com",
+      "password": "admin123",
+      "firstName": "Admin",
+      "lastName": "User",
+      "role": "admin",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "email": "user@test.com",
+      "password": "user123",
+      "firstName": "Juan",
+      "lastName": "Pérez",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2024-01-15T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "email": "prueba1@hotmail.com",
+      "password": "prueba1",
+      "firstName": "prueba1",
+      "lastName": "prueba1",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2025-09-08T17:02:04.684Z"
+    },
+    {
+      "id": 4,
+      "email": "prueba2@hotmail.com",
+      "password": "prueba2",
+      "firstName": "asdf",
+      "lastName": "adsf",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2025-09-08T17:34:34.142Z"
+    },
+    {
+      "id": 5,
+      "email": "prueba3@hotmail.com",
+      "password": "prueba2",
+      "firstName": "3",
+      "lastName": "3",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2025-09-08T18:00:22.404Z"
+    }
+  ],
+  "cart": []
+}
