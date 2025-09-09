@@ -121,13 +121,15 @@ function ProductCard({ product }) {
             </div>
           )}
           
-          <div className="seller-info">
-            <span className={`seller-reputation ${product.seller.reputation}`}>
-              {product.seller.reputation === 'gold' && '⭐'}
-              {product.seller.reputation === 'silver' && '✨'}
-            </span>
-            <span className="seller-name">{product.seller.nickname}</span>
-          </div>
+          {product.seller && (
+            <div className="seller-info">
+              <span className={`seller-reputation ${product.seller.reputation}`}>
+                {product.seller.reputation === 'gold' && '⭐'}
+                {product.seller.reputation === 'silver' && '✨'}
+              </span>
+              <span className="seller-name">{product.seller.nickname}</span>
+            </div>
+          )}
         </div>
       </Link>
       

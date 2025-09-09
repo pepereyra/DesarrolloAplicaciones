@@ -1,25 +1,43 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 
 // Creamos el contexto de autenticación
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 // Hook personalizado para usar el contexto de autenticación
-export const useAuth = () => {
-    return useContext(AuthContext);
+const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth debe ser usado dentro de un AuthProvider');
+    }
+    return context;
 };
 
-// Proveedor del contexto de autenticación
-export function AuthProvider({ children }) {
+// Efecto para cargar el usuario desde localStorage al iniciar
+const loadUserFromStorage = () => {
+    const savedUser = localStorage.getItem('currentUser');
+    return savedUser ? JSON.parse(savedUser) : null;
+};
+
+const AuthProvider = ({ children }) => {
     // Estado para almacenar la información del usuario actual
-    const [currentUser, setCurrentUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState(loadUserFromStorage);
     // Estado para manejar errores
     const [error, setError] = useState('');
+    
+    // Efecto para guardar el usuario en localStorage cuando cambie
+    useEffect(() => {
+        if (currentUser) {
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        } else {
+            localStorage.removeItem('currentUser');
+        }
+    }, [currentUser]);
 
     // Función para registrar un nuevo usuario
     const register = async (userData) => {
         try {
             // Verificar si el usuario ya existe
-            const response = await fetch('http://localhost:3002/users');
+            const response = await fetch('http://localhost:3000/users');
             const users = await response.json();
             
             if (users.some(user => user.email === userData.email)) {
@@ -36,7 +54,7 @@ export function AuthProvider({ children }) {
             };
 
             // Guardar nuevo usuario
-            const saveUser = await fetch('http://localhost:3002/users', {
+            const saveUser = await fetch('http://localhost:3000/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +80,7 @@ export function AuthProvider({ children }) {
     const login = async (email, password) => {
         try {
             // Buscar usuario por email
-            const response = await fetch(`http://localhost:3002/users?email=${email}`);
+            const response = await fetch(`http://localhost:3000/users?email=${email}`);
             const users = await response.json();
 
             const user = users.find(u => u.password === password);
@@ -100,4 +118,6 @@ export function AuthProvider({ children }) {
             {children}
         </AuthContext.Provider>
     );
-}
+};
+
+export { AuthContext, useAuth, AuthProvider };

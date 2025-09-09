@@ -1,28 +1,59 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import CategoryDropdown from './CategoryDropdown';
 import './Header.css';
 
 function Header() {
-  const { state, dispatch } = useApp();
+  const { state } = useApp();
+  const { currentUser, logout } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const isAdmin = currentUser?.role === 'admin';
+  const isAdminPanel = location.pathname === '/admin';
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      dispatch({ type: 'SET_SEARCH_QUERY', payload: searchTerm });
       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
     }
   };
 
   const handleLogout = () => {
-    dispatch({ type: 'LOGOUT' });
+    logout();
     navigate('/');
   };
 
-  const cartItemsCount = state.cart.reduce((total, item) => total + item.quantity, 0);
+  const cartItemsCount = state.cart.length > 0 
+    ? state.cart.reduce((total, item) => total + item.quantity, 0) 
+    : 0;
+
+  if (isAdmin && isAdminPanel) {
+    return (
+      <header className="header admin-header">
+        <div className="container">
+          <div className="header-content admin">
+            <Link to="/" className="logo">
+              <img src="/mercado-libre-logo.svg" alt="Mercado Libre" />
+              <span>Panel de Administración</span>
+            </Link>
+            <div className="user-actions">
+              <div className="user-menu">
+                <span className="user-greeting">Hola, {currentUser.firstName}</span>
+                <div className="user-dropdown">
+                  <Link to="/">Volver al sitio</Link>
+                  <button onClick={handleLogout}>Salir</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="header">
@@ -98,14 +129,14 @@ function Header() {
 
             {/* Usuario y Carrito */}
             <div className="user-actions">
-              {state.user ? (
+              {currentUser ? (
                 <div className="user-menu">
-                  <span className="user-greeting">Hola, {state.user.firstName}</span>
+                  <span className="user-greeting">Hola, {currentUser.firstName}</span>
                   <div className="user-dropdown">
                     <Link to="/profile">Mi cuenta</Link>
                     <Link to="/purchases">Mis compras</Link>
                     <Link to="/favorites">Favoritos</Link>
-                    {state.user.role === 'admin' && (
+                    {isAdmin && (
                       <Link to="/admin">Panel Admin</Link>
                     )}
                     <button onClick={handleLogout}>Salir</button>

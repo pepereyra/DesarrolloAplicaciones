@@ -3,7 +3,6 @@ import { createContext, useContext, useReducer, useEffect, useState } from 'reac
 const AppContext = createContext();
 
 const initialState = {
-  user: null,
   cart: [],
   products: [],
   loading: false,
@@ -13,10 +12,6 @@ const initialState = {
 
 function appReducer(state, action) {
   switch (action.type) {
-    case 'SET_USER':
-      return { ...state, user: action.payload };
-    case 'LOGOUT':
-      return { ...state, user: null };
     case 'SET_LOADING':
       return { ...state, loading: action.payload };
     case 'SET_PRODUCTS':
@@ -110,8 +105,48 @@ export function AppProvider({ children }) {
     }
   }, [state.cart, isInitialized]);
 
+  // Métodos de ayuda para el carrito
+  const addToCart = (product) => {
+    dispatch({ type: 'ADD_TO_CART', payload: product });
+  };
+
+  const removeFromCart = (productId) => {
+    dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
+  };
+
+  const updateCartQuantity = (productId, quantity) => {
+    dispatch({ 
+      type: 'UPDATE_CART_QUANTITY', 
+      payload: { id: productId, quantity } 
+    });
+  };
+
+  const clearCart = () => {
+    dispatch({ type: 'CLEAR_CART' });
+  };
+
+  // Métodos de búsqueda
+  const setSearchQuery = (query) => {
+    dispatch({ type: 'SET_SEARCH_QUERY', payload: query });
+  };
+
+  const setSearchResults = (results) => {
+    dispatch({ type: 'SET_SEARCH_RESULTS', payload: results });
+  };
+
+  const value = {
+    state,
+    dispatch,
+    addToCart,
+    removeFromCart,
+    updateCartQuantity,
+    clearCart,
+    setSearchQuery,
+    setSearchResults
+  };
+
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider value={value}>
       {children}
     </AppContext.Provider>
   );

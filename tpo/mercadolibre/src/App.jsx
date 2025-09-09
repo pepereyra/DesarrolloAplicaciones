@@ -8,6 +8,8 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Login from './components/Login';
 import Register from './components/Register';
+import AdminPanel from './pages/AdminPanel';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function App() {
@@ -27,7 +29,14 @@ function App() {
                 <Route path="/carrito" element={<Cart />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/admin" element={<div>Admin Panel (Coming Soon)</div>} />
+                <Route 
+                  path="/admin" 
+                  element={
+                    <ProtectedRoute isAdmin>
+                      <AdminPanel />
+                    </ProtectedRoute>
+                  } 
+                />
                 <Route path="/category/:category" element={<div>Category Page (Coming Soon)</div>} />
               </Routes>
             </main>

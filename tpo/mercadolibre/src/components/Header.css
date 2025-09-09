@@ -6,6 +6,24 @@
   z-index: 1000;
 }
 
+.header.admin-header {
+  background-color: #fff159;
+  padding: 12px 0;
+}
+
+.header.admin-header .header-content {
+  justify-content: space-between;
+}
+
+.header.admin-header .logo {
+  color: black;
+}
+
+.header.admin-header .user-greeting {
+  color: black;
+  font-weight: bold;
+}
+
 .header-top {
   background-color: #fff159;
   padding: 12px 0;

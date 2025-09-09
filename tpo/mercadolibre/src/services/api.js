@@ -1,6 +1,6 @@
 import { localProductsService } from './localProductsService.js';
 
-const API_URL = 'http://localhost:3002';
+const API_URL = 'http://localhost:3000';
 
 // Servicio principal - usa json-server como fuente principal
 export const productsApi = {
@@ -165,6 +165,53 @@ export const api = {
       fetch(`${API_URL}/cart/${item.id}`, { method: 'DELETE' })
     );
     await Promise.all(deletePromises);
+  },
+
+  // Administración de productos
+  createProduct: async (productData) => {
+    const response = await fetch(`${API_URL}/products`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...productData,
+        price: Number(productData.price),
+        stock: Number(productData.stock)
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Error al crear el producto');
+    }
+    return response.json();
+  },
+
+  updateProduct: async (id, productData) => {
+    const response = await fetch(`${API_URL}/products/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...productData,
+        price: Number(productData.price),
+        stock: Number(productData.stock)
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Error al actualizar el producto');
+    }
+    return response.json();
+  },
+
+  deleteProduct: async (id) => {
+    const response = await fetch(`${API_URL}/products/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error('Error al eliminar el producto');
+    }
+    return response.json();
   }
 };
 

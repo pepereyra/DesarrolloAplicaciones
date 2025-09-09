@@ -169,7 +169,10 @@
       "location": "Capital Federal",
       "description": "Anteojos de sol Ray-Ban Wayfarer clásicos con lentes polarizadas y protección UV.",
       "stock": 12,
-      "tags": ["Clásico", "Envío gratis"]
+      "tags": [
+        "Clásico",
+        "Envío gratis"
+      ]
     },
     {
       "id": "8",
@@ -191,7 +194,10 @@
       "location": "Buenos Aires",
       "description": "Anteojos Oakley Holbrook con lentes polarizadas Prizm, marco de acetato duradero.",
       "stock": 8,
-      "tags": ["Deportivo", "Polarizado"]
+      "tags": [
+        "Deportivo",
+        "Polarizado"
+      ]
     },
     {
       "id": "9",
@@ -213,7 +219,10 @@
       "location": "Capital Federal",
       "description": "MacBook Air con chip M2, pantalla Liquid Retina de 13.6 pulgadas y hasta 18 horas de batería.",
       "stock": 1,
-      "tags": ["Nuevo", "Apple Silicon"]
+      "tags": [
+        "Nuevo",
+        "Apple Silicon"
+      ]
     },
     {
       "id": "10",
@@ -235,7 +244,10 @@
       "location": "Córdoba",
       "description": "Ultrabook Dell XPS 13 con procesador Intel Core i7, 16GB RAM, 512GB SSD.",
       "stock": 6,
-      "tags": ["Ultrabook", "Premium"]
+      "tags": [
+        "Ultrabook",
+        "Premium"
+      ]
     },
     {
       "id": "11",
@@ -257,7 +269,10 @@
       "location": "Buenos Aires",
       "description": "Freidora de aire Philips con tecnología Rapid Air, capacidad 4.1L para hasta 5 porciones.",
       "stock": 8,
-      "tags": ["Saludable", "Envío gratis"]
+      "tags": [
+        "Saludable",
+        "Envío gratis"
+      ]
     },
     {
       "id": "12",
@@ -279,7 +294,10 @@
       "location": "Córdoba",
       "description": "Freidora de aire Oster compacta de 2L, ideal para porciones pequeñas.",
       "stock": 0,
-      "tags": ["Compacta", "Sin stock"]
+      "tags": [
+        "Compacta",
+        "Sin stock"
+      ]
     },
     {
       "id": "13",
@@ -301,7 +319,10 @@
       "location": "Rosario",
       "description": "Smart TV LG OLED 65 pulgadas 4K con webOS, Dolby Vision y AI ThinQ.",
       "stock": 3,
-      "tags": ["OLED", "Premium"]
+      "tags": [
+        "OLED",
+        "Premium"
+      ]
     },
     {
       "id": "14",
@@ -323,7 +344,10 @@
       "location": "Mendoza",
       "description": "Smart TV TCL 43 pulgadas 4K con Android TV, HDR10 y Google Assistant.",
       "stock": 15,
-      "tags": ["Android TV", "Accesible"]
+      "tags": [
+        "Android TV",
+        "Accesible"
+      ]
     },
     {
       "id": "15",
@@ -345,7 +369,10 @@
       "location": "Capital Federal",
       "description": "Microondas Samsung 28L con grill, panel digital y 10 niveles de potencia.",
       "stock": 7,
-      "tags": ["Grill", "Digital"]
+      "tags": [
+        "Grill",
+        "Digital"
+      ]
     },
     {
       "id": "16",
@@ -367,7 +394,10 @@
       "location": "Buenos Aires",
       "description": "Heladera Whirlpool no frost 364L, freezer superior, eficiencia energética A+.",
       "stock": 4,
-      "tags": ["No Frost", "A+"]
+      "tags": [
+        "No Frost",
+        "A+"
+      ]
     },
     {
       "id": "17",
@@ -389,7 +419,10 @@
       "location": "Capital Federal",
       "description": "Zapatillas Adidas Ultraboost 22 con tecnología BOOST y upper Primeknit.",
       "stock": 18,
-      "tags": ["Running", "BOOST"]
+      "tags": [
+        "Running",
+        "BOOST"
+      ]
     },
     {
       "id": "18",
@@ -411,7 +444,10 @@
       "location": "Rosario",
       "description": "Pelota de fútbol Nike Strike talla 5, ideal para entrenamiento y partidos recreativos.",
       "stock": 25,
-      "tags": ["Fútbol", "Entrenamiento"]
+      "tags": [
+        "Fútbol",
+        "Entrenamiento"
+      ]
     },
     {
       "id": "19",
@@ -433,7 +469,10 @@
       "location": "Córdoba",
       "description": "Set de mancuernas ajustables de 5 a 20kg cada una, ideales para gimnasio en casa.",
       "stock": 12,
-      "tags": ["Fitness", "Hogar"]
+      "tags": [
+        "Fitness",
+        "Hogar"
+      ]
     },
     {
       "id": "20",
@@ -455,7 +494,10 @@
       "location": "Capital Federal",
       "description": "AirPods Pro 2da generación con cancelación activa de ruido y audio espacial.",
       "stock": 9,
-      "tags": ["Apple", "Pro"]
+      "tags": [
+        "Apple",
+        "Pro"
+      ]
     },
     {
       "id": "21",
@@ -477,7 +519,10 @@
       "location": "Buenos Aires",
       "description": "Parlante JBL Charge 5 con Bluetooth, resistente al agua IP67 y 20h de batería.",
       "stock": 14,
-      "tags": ["Bluetooth", "Resistente"]
+      "tags": [
+        "Bluetooth",
+        "Resistente"
+      ]
     },
     {
       "id": "22",
@@ -499,7 +544,19 @@
       "location": "Mendoza",
       "description": "Parlante Marshall Acton III con conectividad inalámbrica y sonido Marshall clásico.",
       "stock": 5,
-      "tags": ["Marshall", "Premium"]
+      "tags": [
+        "Marshall",
+        "Premium"
+      ]
+    },
+    {
+      "id": "9eff",
+      "title": "producto panel admin",
+      "price": 300000,
+      "description": "hola",
+      "category": "Otros",
+      "image": "aa",
+      "stock": 20
     }
   ],
   "users": [
@@ -524,7 +581,7 @@
       "createdAt": "2024-01-15T00:00:00.000Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "email": "prueba1@hotmail.com",
       "password": "prueba1",
       "firstName": "prueba1",
@@ -534,7 +591,7 @@
       "createdAt": "2025-09-08T17:02:04.684Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "email": "prueba2@hotmail.com",
       "password": "prueba2",
       "firstName": "asdf",
@@ -544,7 +601,7 @@
       "createdAt": "2025-09-08T17:34:34.142Z"
     },
     {
-      "id": 5,
+      "id": "5",
       "email": "prueba3@hotmail.com",
       "password": "prueba2",
       "firstName": "3",

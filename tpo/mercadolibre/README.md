@@ -11,17 +11,21 @@ Un prototipo de e-commerce inspirado en Mercado Libre, desarrollado con React, V
 - ✅ **Búsqueda de productos** con filtros y ordenamiento
 - ✅ **Detalle de producto** con galería, descripción e información del vendedor
 - ✅ **Carrito de compras** con detalle de productos y resumen de compra
-- ✅ **Context API** para manejo de estado global
+- ✅ **Sistema de autenticación** con registro y login de usuarios
+- ✅ **Panel de administración** para gestión de productos (CRUD)
+- ✅ **Rutas protegidas** basadas en roles de usuario
+- ✅ **Context API** para manejo de estado global (AppContext y AuthContext)
 - ✅ **JSON Server** para simular API de productos y usuarios
 - ✅ **Diseño responsive** inspirado en Mercado Libre
+- ✅ **Notificaciones** para feedback de acciones del usuario
 
 ### Pantallas Incluidas
 - 🏠 **Home**: Página principal con productos destacados
 - 🔍 **Search**: Búsqueda con filtros avanzados
 - 📱 **ProductDetail**: Detalle completo del producto
 - 🛒 **Cart**: Carrito con resumen de compra
-- 🔐 **Login/Register**: (Próximamente)
-- 👑 **Admin**: Panel de administración (Próximamente)
+- 🔐 **Login/Register**: Sistema de autenticación implementado
+- 👑 **Admin**: Panel de administración con ABM de productos
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -78,6 +82,25 @@ Un prototipo de e-commerce inspirado en Mercado Libre, desarrollado con React, V
 - `npm run lint` - Ejecuta ESLint para revisar el código
 
 ## 📱 Uso de la Aplicación
+
+### Panel de Administración
+- ✅ Acceso exclusivo para usuarios con rol de administrador
+- ✅ Vista simplificada del header para mejor experiencia de administración
+- ✅ Listado de todos los productos con acciones rápidas
+- ✅ Formulario para crear nuevos productos
+- ✅ Edición y actualización de productos existentes
+- ✅ Eliminación segura de productos con confirmación
+- ✅ Notificaciones de éxito/error en cada operación
+- ✅ Redirección automática para usuarios no autorizados
+
+### Autenticación y Seguridad
+- ✅ Registro de nuevos usuarios
+- ✅ Login con validación de credenciales
+- ✅ Persistencia de sesión
+- ✅ Roles de usuario (admin/cliente)
+- ✅ Rutas protegidas por rol
+- ✅ Cerrar sesión seguro
+- ✅ Redirecciones inteligentes post-login
 
 ### Navegación Principal
 1. **Página de Inicio**: Explora productos destacados y categorías
