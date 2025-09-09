@@ -557,6 +557,15 @@
       "category": "Otros",
       "image": "aa",
       "stock": 20
+    },
+    {
+      "id": "a295",
+      "title": "iPhone 17 Pro",
+      "price": 15000000,
+      "description": "iPhone 17 Pro",
+      "category": "Electrónica",
+      "image": "image..",
+      "stock": 9
     }
   ],
   "users": [
@@ -609,6 +618,16 @@
       "role": "user",
       "avatar": "https://via.placeholder.com/150",
       "createdAt": "2025-09-08T18:00:22.404Z"
+    },
+    {
+      "id": "6",
+      "email": "eliel@mercadolibre.com",
+      "password": "12345678",
+      "firstName": "Eliel",
+      "lastName": "Lanzillotta",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2025-09-09T14:47:13.167Z"
     }
   ],
   "cart": []

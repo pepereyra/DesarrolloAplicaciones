@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useForm from '../hooks/useForm';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
@@ -7,91 +8,76 @@ function Register() {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState({ type: '', message: '' });
-    
-    // Estados para los campos del formulario
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        firstName: '',
-        lastName: '',
-        role: 'user',
-        avatar: 'https://via.placeholder.com/150',
-        createdAt: new Date().toISOString()
-    });
-
-    // Obtener la función de registro del contexto
     const { register } = useAuth();
-    const [error, setError] = useState('');
 
-    // Manejar cambios en los campos del formulario
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+    const {
+        formData,
+        setFormData,
+        error,
+        setError,
+        loading,
+        handleChange,
+        handleSubmit
+    } = useForm(
+        {
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            role: 'user',
+            avatar: 'https://via.placeholder.com/150',
+            createdAt: new Date().toISOString()
+        },
+        async (data) => {
+            // Validaciones básicas
+            if (!data.email.includes('@')) {
+                setError('Por favor ingrese un email válido');
+                throw new Error('Por favor ingrese un email válido');
+            }
+            if (data.password.length < 6) {
+                setError('La contraseña debe tener al menos 6 caracteres');
+                throw new Error('La contraseña debe tener al menos 6 caracteres');
+            }
 
-    // Manejar el envío del formulario
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        // Validaciones básicas
-        if (!formData.email.includes('@')) {
-            setError('Por favor ingrese un email válido');
-            return;
+            try {
+                const userData = {
+                    ...data,
+                    role: 'user',
+                    avatar: 'https://via.placeholder.com/150',
+                    createdAt: new Date().toISOString()
+                };
+                await register(userData);
+                setModalMessage({ type: 'success', message: '¡Usuario registrado exitosamente!' });
+                setShowModal(true);
+                setTimeout(() => {
+                    setShowModal(false);
+                    navigate('/');
+                }, 2000);
+            } catch (err) {
+                setModalMessage({ type: 'error', message: err.message || 'Error al registrar usuario' });
+                setShowModal(true);
+                throw err;
+            }
         }
-
-        if (formData.password.length < 6) {
-            setError('La contraseña debe tener al menos 6 caracteres');
-            return;
-        }
-
-        try {
-            const userData = {
-                ...formData,
-                role: 'user',
-                avatar: 'https://via.placeholder.com/150',
-                createdAt: new Date().toISOString()
-            };
-            await register(userData);
-            setModalMessage({
-                type: 'success',
-                message: ''
-            });
-            setShowModal(true);
-            setTimeout(() => {
-                setShowModal(false);
-                navigate('/login');
-            }, 2000);
-        } catch (error) {
-            setModalMessage({
-                type: 'error',
-                message: error.message
-            });
-            setShowModal(true);
-        }
-    };
+    );
 
     return (
         <div className="register-container">
             <h2>Registro de Usuario</h2>
-            
+
             {/* Modal de mensajes */}
             {showModal && (
-                <>
+                <div>
                     <div className="modal-overlay" onClick={() => setShowModal(false)} />
                     <div className={`modal-message ${modalMessage.type}`}>
-                        <h3>{modalMessage.type === 'success' ? '¡Usuario registrado exitosamente!' : ' '}</h3>
+                        <h3>{modalMessage.type === 'success' ? '¡Usuario registrado exitosamente!' : 'Error'}</h3>
                         <p>{modalMessage.message}</p>
                         <button onClick={() => setShowModal(false)}>Cerrar</button>
                     </div>
-                </>
+                </div>
             )}
-            
+
             <form onSubmit={handleSubmit} className="register-form">
-
-
                 <div className="form-group">
                     <label htmlFor="email">Email:</label>
                     <input
@@ -140,9 +126,10 @@ function Register() {
                     />
                 </div>
 
-                <button type="submit" className="register-button">
-                    Registrarse
+                <button type="submit" className="register-button" disabled={loading}>
+                    {loading ? 'Registrando...' : 'Registrarse'}
                 </button>
+                {error && <p className="error-message">{error}</p>}
             </form>
         </div>
     );

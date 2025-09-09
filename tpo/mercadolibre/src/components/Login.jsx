@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useForm from '../hooks/useForm';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
@@ -7,54 +8,36 @@ function Login() {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState({ type: '', message: '' });
-    
-    // Estados para los campos del formulario
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    });
-
-    // Obtener la función de login del contexto
     const { login } = useAuth();
-    const [error, setError] = useState('');
 
-    // Manejar cambios en los campos del formulario
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
-    // Manejar el envío del formulario
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
+    // Usar el custom hook useForm
+    const {
+        formData,
+        setFormData,
+        error,
+        setError,
+        loading,
+        handleChange,
+        handleSubmit
+    } = useForm({ email: '', password: '' }, async (data) => {
         try {
-            await login(formData.email, formData.password);
-            setModalMessage({
-                type: 'success',
-                message: ' '
-            });
+            await login(data.email, data.password);
+            setModalMessage({ type: 'success', message: ' ' });
             setShowModal(true);
             setTimeout(() => {
                 setShowModal(false);
-                navigate('/');  // Redirige al home después del login
+                navigate('/');
             }, 2000);
         } catch (error) {
-            setModalMessage({
-                type: 'error',
-                message:  ' '
-            });
+            setModalMessage({ type: 'error', message: ' ' });
             setShowModal(true);
+            throw error;
         }
-    };
+    });
 
     return (
         <div className="login-container">
             <h2>Iniciar Sesión</h2>
-            
             {/* Modal de mensajes */}
             {showModal && (
                 <>
