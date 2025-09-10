@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
@@ -11,10 +11,28 @@ function Header() {
   const { state } = useApp();
   const { currentUser, logout } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const searchRef = useRef(null);
+  const menuRef = useRef(null);
   
   const isAdmin = currentUser?.role === 'admin';
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchOpen(false);
+      }
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   const isAdminPanel = location.pathname === '/admin';
 
   const handleSearch = (e) => {
@@ -68,16 +86,13 @@ function Header() {
             </Link>
 
             {/* Buscador */}
-            <form className="search-form" onSubmit={handleSearch}>
-              <input
-                type="text"
-                placeholder="Buscar productos, marcas y más..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
-              />
-              <button type="submit" className="search-button">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <div className="search-container" ref={searchRef}>
+              <button 
+                className="mobile-search-button" 
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                aria-label="Buscar"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                   <path
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     stroke="currentColor"
@@ -87,7 +102,27 @@ function Header() {
                   />
                 </svg>
               </button>
-            </form>
+              <form className={`search-form ${isSearchOpen ? 'search-open' : ''}`} onSubmit={handleSearch}>
+                <input
+                  type="text"
+                  placeholder="Buscar productos, marcas y más..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                />
+                <button type="submit" className="search-button">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </form>
+            </div>
 
             {/* Anuncio */}
             <div className="promo-disney">
@@ -118,8 +153,19 @@ function Header() {
               </div>
             </div>
 
+            {/* Botón menú hamburguesa */}
+            <button 
+              className="hamburger-menu" 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Menú"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
+            </button>
+
             {/* Navegación */}
-            <nav className="nav-menu">
+            <nav className={`nav-menu ${isMenuOpen ? 'menu-open' : ''}`} ref={menuRef}>
               <CategoryDropdown />
               <Link to="/offers">Ofertas</Link>
               <Link to="/history">Historial</Link>
