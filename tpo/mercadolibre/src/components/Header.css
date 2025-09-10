@@ -1,5 +1,5 @@
 .header {
-  background-color: #fff159;
+  background-color: #ffe600;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
@@ -7,7 +7,7 @@
 }
 
 .header.admin-header {
-  background-color: #fff159;
+  background-color: #ffe600;
   padding: 12px 0;
 }
 
@@ -25,8 +25,8 @@
 }
 
 .header-top {
-  background-color: #fff159;
-  padding: 12px 0;
+  background-color: #ffe600;
+
 }
 
 .header-bottom {
@@ -59,8 +59,8 @@
 }
 
 .logo img {
-  width: 32px;
-  height: 32px;
+  width: 134px;
+  height: auto;
   margin-right: 8px;
 }
 
@@ -112,8 +112,9 @@
 }
 
 .promo-disney img {
-  width: 24px;
-  height: 24px;
+  width: 80%;
+  height: auto;
+  object-fit: contain;
 }
 
 /* Header Bottom */
@@ -260,6 +261,12 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .promo-disney {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   .header-content {
     flex-wrap: wrap;
@@ -270,10 +277,6 @@
     order: 3;
     width: 100%;
     margin-top: 12px;
-  }
-  
-  .promo-disney {
-    display: none;
   }
   
   .nav-menu {

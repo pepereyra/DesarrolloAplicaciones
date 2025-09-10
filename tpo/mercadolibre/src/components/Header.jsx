@@ -3,6 +3,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import CategoryDropdown from './CategoryDropdown';
+import logoML from '../assets/mercado libre.png';
+import promoImage from '../assets/images.png';
 import './Header.css';
 
 function Header() {
@@ -62,8 +64,7 @@ function Header() {
           <div className="header-content">
             {/* Logo */}
             <Link to="/" className="logo">
-              <img src="/mercado-libre-logo.svg" alt="Mercado Libre" />
-              <span>Mercado Libre</span>
+              <img src={logoML} alt="Mercado Libre" />
             </Link>
 
             {/* Buscador */}
@@ -88,10 +89,9 @@ function Header() {
               </button>
             </form>
 
-            {/* Promoción Disney */}
+            {/* Anuncio */}
             <div className="promo-disney">
-              <img src="/disney-logo.png" alt="Disney" />
-              <span>Comprá sin moverte de casa</span>
+              <img src={promoImage} alt="Mercado Libre" />
             </div>
           </div>
         </div>
