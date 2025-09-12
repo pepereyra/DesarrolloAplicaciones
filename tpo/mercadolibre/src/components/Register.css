@@ -1,0 +1,76 @@
+/* Estilos para el contenedor principal del registro */
+.register-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el formulario */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Estilos para cada grupo de form-control */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Estilos para las etiquetas */
+.form-group label {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Estilos para los inputs */
+.form-group input {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+/* Estilos para el botón de registro */
+.register-button {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.register-button:hover {
+    background-color: #0052a3;
+}
+
+/* Estilos para mensajes de error */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+/* Estilos para el título */
+.register-container h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+}

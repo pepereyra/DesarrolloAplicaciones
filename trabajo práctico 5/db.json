@@ -1,0 +1,68 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Smartphone Samsung Galaxy",
+      "price": 299.99,
+      "category": "Electronics",
+      "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300",
+      "description": "Smartphone con pantalla AMOLED y cámara de alta resolución"
+    },
+    {
+      "id": 2,
+      "name": "Laptop Dell XPS",
+      "price": 999.99,
+      "category": "Electronics",
+      "image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300",
+      "description": "Laptop ultradelgada con procesador Intel Core i7"
+    },
+    {
+      "id": 3,
+      "name": "Auriculares Sony WH-1000XM4",
+      "price": 199.99,
+      "category": "Electronics",
+      "image": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300",
+      "description": "Auriculares inalámbricos con cancelación de ruido"
+    },
+    {
+      "id": 4,
+      "name": "Camiseta Nike",
+      "price": 29.99,
+      "category": "Clothing",
+      "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300",
+      "description": "Camiseta deportiva de algodón 100%"
+    },
+    {
+      "id": 5,
+      "name": "Zapatillas Adidas",
+      "price": 89.99,
+      "category": "Clothing",
+      "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300",
+      "description": "Zapatillas deportivas para running"
+    },
+    {
+      "id": 6,
+      "name": "Libro JavaScript Moderno",
+      "price": 24.99,
+      "category": "Books",
+      "image": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300",
+      "description": "Guía completa de JavaScript ES6+"
+    },
+    {
+      "id": 7,
+      "name": "Café Premium",
+      "price": 15.99,
+      "category": "Food",
+      "image": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300",
+      "description": "Café tostado artesanalmente"
+    },
+    {
+      "id": 8,
+      "name": "Reloj Apple Watch",
+      "price": 399.99,
+      "category": "Electronics",
+      "image": "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=300",
+      "description": "Smartwatch con monitoreo de salud"
+    }
+  ]
+}

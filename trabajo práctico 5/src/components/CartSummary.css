@@ -1,0 +1,247 @@
+.cart-summary {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+.cart-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.4em;
+}
+
+.cart-count {
+  background-color: #007bff;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+/* Carrito vacío */
+.empty-cart {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.empty-cart p:first-child {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+}
+
+.empty-cart p:last-child {
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+/* Items del carrito */
+.cart-items {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 60px 1fr auto auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.item-image img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.item-details {
+  min-width: 0; /* Permite que el texto se trunque */
+}
+
+.item-name {
+  margin: 0 0 4px 0;
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-price {
+  margin: 0;
+  color: #666;
+  font-size: 0.8em;
+}
+
+/* Controles de cantidad */
+.item-quantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantity-btn {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.quantity-btn:hover:not(:disabled) {
+  background-color: #f8f9fa;
+  border-color: #007bff;
+}
+
+.quantity-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantity {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Total del item */
+.item-total {
+  font-weight: bold;
+  color: #2c5aa0;
+  font-size: 0.9em;
+}
+
+/* Botón remover */
+.remove-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.remove-btn:hover {
+  background-color: #c82333;
+}
+
+/* Footer del carrito */
+.cart-footer {
+  border-top: 2px solid #f0f0f0;
+  padding-top: 15px;
+}
+
+.cart-total {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.cart-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.clear-cart-btn {
+  padding: 10px 16px;
+  border: 2px solid #dc3545;
+  background: white;
+  color: #dc3545;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+}
+
+.clear-cart-btn:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.checkout-btn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.checkout-btn:hover {
+  background-color: #218838;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .cart-summary {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .cart-item {
+    grid-template-columns: 50px 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 8px;
+  }
+  
+  .item-quantity {
+    grid-column: 2;
+    justify-self: start;
+  }
+  
+  .item-total {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  
+  .remove-btn {
+    grid-column: 3;
+    grid-row: 2;
+    justify-self: end;
+  }
+  
+  .cart-actions {
+    flex-direction: column;
+  }
+}
