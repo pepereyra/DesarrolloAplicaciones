@@ -4,7 +4,7 @@ import './BannerCarousel.css';
 
 const BannerCarousel = ({
   autoplay = true,
-  interval = 5000,
+  interval = 4000,
   pauseOnHover = true,
   infinite = true
 }) => {
