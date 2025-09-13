@@ -11,7 +11,7 @@
         "quantity": 12,
         "amount": 74999
       },
-  "thumbnail": "https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=600",
       "images": [
         "https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=600",
         "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600",
@@ -19,6 +19,7 @@
         "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600"
       ],
       "category": "celulares",
+      "sellerId": "2",
       "seller": {
         "nickname": "APPLE_STORE_ARG",
         "reputation": "gold"
@@ -42,7 +43,7 @@
         "quantity": 18,
         "amount": 36111
       },
-  "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_647832-MLA69825946628_062023-F.webp",
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_647832-MLA69825946628_062023-F.webp",
       "images": [
         "https://http2.mlstatic.com/D_NQ_NP_2X_901457-MLA69825923980_062023-F.webp",
         "https://http2.mlstatic.com/D_NQ_NP_2X_647832-MLA69825946628_062023-F.webp",
@@ -50,6 +51,7 @@
         "https://http2.mlstatic.com/D_NQ_NP_2X_749215-MLA69825946644_062023-F.webp"
       ],
       "category": "celulares",
+      "sellerId": "3",
       "seller": {
         "nickname": "SAMSUNG_OFICIAL",
         "reputation": "gold"
@@ -73,13 +75,14 @@
         "quantity": 12,
         "amount": 49166
       },
-  "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_612304-MLA45729434228_042021-F.webp",
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_612304-MLA45729434228_042021-F.webp",
       "images": [
         "https://http2.mlstatic.com/D_NQ_NP_2X_875351-MLA45729434226_042021-F.webp",
         "https://http2.mlstatic.com/D_NQ_NP_2X_612304-MLA45729434228_042021-F.webp",
         "https://http2.mlstatic.com/D_NQ_NP_2X_947123-MLA45729434224_042021-F.webp"
       ],
       "category": "computacion",
+      "sellerId": "4",
       "seller": {
         "nickname": "LENOVO_STORE",
         "reputation": "silver"
@@ -102,7 +105,7 @@
         "quantity": 24,
         "amount": 18750
       },
-  "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_923746-MLA46516512683_062021-F.webp",
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_923746-MLA46516512683_062021-F.webp",
       "images": [
         "https://http2.mlstatic.com/D_NQ_NP_2X_814387-MLA46516512679_062021-F.webp",
         "https://http2.mlstatic.com/D_NQ_NP_2X_923746-MLA46516512683_062021-F.webp",
@@ -120,7 +123,8 @@
       "tags": [
         "Envío gratis",
         "Smart TV"
-      ]
+      ],
+      "sellerId": "5"
     },
     {
       "id": "5",
@@ -133,7 +137,7 @@
         "quantity": 6,
         "amount": 15000
       },
-            "thumbnail": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
       "images": [
         "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
         "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600",
@@ -151,7 +155,8 @@
       "tags": [
         "Envío gratis",
         "Más vendido"
-      ]
+      ],
+      "sellerId": "6"
     },
     {
       "id": "6",
@@ -164,7 +169,7 @@
         "quantity": 12,
         "amount": 25000
       },
-  "thumbnail": "https://www.sony.com.ar/image/5d02da5df552836db894cead8a68f5f3?fmt=pjpeg",
+      "thumbnail": "https://www.sony.com.ar/image/5d02da5df552836db894cead8a68f5f3?fmt=pjpeg",
       "images": [
         "https://nissei.com/media/wysiwyg/ba1f3cad13d0ebefb8ba68d0d08b8141_copia.jpg",
         "https://m.media-amazon.com/images/I/81rVZu5JHUL._AC_SL1500_.jpg"
@@ -180,7 +185,8 @@
       "tags": [
         "Envío gratis",
         "Noise cancelling"
-      ]
+      ],
+      "sellerId": "2"
     },
     {
       "id": "7",
@@ -193,7 +199,7 @@
         "quantity": 12,
         "amount": 15833
       },
-            "thumbnail": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600",
       "images": [
         "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600",
         "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600",
@@ -211,7 +217,8 @@
       "tags": [
         "Clásico",
         "Envío gratis"
-      ]
+      ],
+      "sellerId": "3"
     },
     {
       "id": "8",
@@ -224,7 +231,7 @@
         "quantity": 12,
         "amount": 20833
       },
-  "thumbnail": "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=600",
       "images": [
         "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=600",
         "https://images.unsplash.com/photo-1577803645773-f96470509666?w=600",
@@ -242,7 +249,8 @@
       "tags": [
         "Deportivo",
         "Polarizado"
-      ]
+      ],
+      "sellerId": "4"
     },
     {
       "id": "9",
@@ -255,7 +263,7 @@
         "quantity": 18,
         "amount": 72222
       },
-  "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_678934-MLA51234567890_082022-F.webp",
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_678934-MLA51234567890_082022-F.webp",
       "images": [
         "https://http2.mlstatic.com/D_NQ_NP_2X_678934-MLA51234567890_082022-F.webp",
         "https://http2.mlstatic.com/D_NQ_NP_2X_743291-MLA51234567892_082022-F.webp",
@@ -273,7 +281,8 @@
       "tags": [
         "Nuevo",
         "Apple Silicon"
-      ]
+      ],
+      "sellerId": "5"
     },
     {
       "id": "10",
@@ -286,7 +295,7 @@
         "quantity": 15,
         "amount": 60000
       },
-  "thumbnail": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600",
       "images": [
         "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600",
         "https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=600",
@@ -304,7 +313,8 @@
       "tags": [
         "Ultrabook",
         "Premium"
-      ]
+      ],
+      "sellerId": "6"
     },
     {
       "id": "11",
@@ -317,7 +327,7 @@
         "quantity": 12,
         "amount": 7500
       },
-  "thumbnail": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600",
       "images": [
         "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600",
         "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=600",
@@ -335,7 +345,8 @@
       "tags": [
         "Saludable",
         "Envío gratis"
-      ]
+      ],
+      "sellerId": "2"
     },
     {
       "id": "12",
@@ -348,7 +359,7 @@
         "quantity": 6,
         "amount": 7667
       },
-  "thumbnail": "https://images.unsplash.com/photo-1574781330855-d0db2706b4d1?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1574781330855-d0db2706b4d1?w=600",
       "images": [
         "https://images.unsplash.com/photo-1574781330855-d0db2706b4d1?w=600",
         "https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=600",
@@ -365,7 +376,8 @@
       "tags": [
         "Compacta",
         "Sin stock"
-      ]
+      ],
+      "sellerId": "3"
     },
     {
       "id": "13",
@@ -378,7 +390,7 @@
         "quantity": 24,
         "amount": 37500
       },
-  "thumbnail": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600",
       "images": [
         "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600",
         "https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=600",
@@ -396,7 +408,8 @@
       "tags": [
         "OLED",
         "Premium"
-      ]
+      ],
+      "sellerId": "4"
     },
     {
       "id": "14",
@@ -409,7 +422,7 @@
         "quantity": 18,
         "amount": 16667
       },
-  "thumbnail": "https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600",
       "images": [
         "https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600",
         "https://images.unsplash.com/photo-1591093346436-ad5e67b9f53c?w=600",
@@ -427,7 +440,8 @@
       "tags": [
         "Android TV",
         "Accesible"
-      ]
+      ],
+      "sellerId": "5"
     },
     {
       "id": "15",
@@ -440,7 +454,7 @@
         "quantity": 12,
         "amount": 10833
       },
-  "thumbnail": "https://images.unsplash.com/photo-1585515656999-27765d373bf4?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1585515656999-27765d373bf4?w=600",
       "images": [
         "https://images.unsplash.com/photo-1585515656999-27765d373bf4?w=600",
         "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600",
@@ -457,7 +471,8 @@
       "tags": [
         "Grill",
         "Digital"
-      ]
+      ],
+      "sellerId": "6"
     },
     {
       "id": "16",
@@ -470,7 +485,7 @@
         "quantity": 24,
         "amount": 19167
       },
-  "thumbnail": "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=600",
       "images": [
         "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=600",
         "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600",
@@ -488,7 +503,8 @@
       "tags": [
         "No Frost",
         "A+"
-      ]
+      ],
+      "sellerId": "2"
     },
     {
       "id": "17",
@@ -501,7 +517,7 @@
         "quantity": 12,
         "amount": 12500
       },
-  "thumbnail": "https://www.dexter.com.ar/on/demandware.static/-/Sites-365-dabra-catalog/default/dw4920bc6d/products/ADHP9189/ADHP9189-1.JPG",
+      "thumbnail": "https://www.dexter.com.ar/on/demandware.static/-/Sites-365-dabra-catalog/default/dw4920bc6d/products/ADHP9189/ADHP9189-1.JPG",
       "images": [
         "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600",
         "https://images.unsplash.com/photo-1561909848-977d0617f275?w=600",
@@ -519,7 +535,8 @@
       "tags": [
         "Running",
         "BOOST"
-      ]
+      ],
+      "sellerId": "3"
     },
     {
       "id": "18",
@@ -532,7 +549,7 @@
         "quantity": 3,
         "amount": 8667
       },
-  "thumbnail": "https://images.unsplash.com/photo-1614632537190-23e4b43ef3eb?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1614632537190-23e4b43ef3eb?w=600",
       "images": [
         "https://images.unsplash.com/photo-1614632537190-23e4b43ef3eb?w=600",
         "https://images.unsplash.com/photo-1579952363873-27d3bfad9c0d?w=600",
@@ -549,7 +566,8 @@
       "tags": [
         "Fútbol",
         "Entrenamiento"
-      ]
+      ],
+      "sellerId": "4"
     },
     {
       "id": "19",
@@ -562,7 +580,7 @@
         "quantity": 12,
         "amount": 7500
       },
-  "thumbnail": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600",
       "images": [
         "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600",
         "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600",
@@ -580,7 +598,8 @@
       "tags": [
         "Fitness",
         "Hogar"
-      ]
+      ],
+      "sellerId": "5"
     },
     {
       "id": "20",
@@ -593,7 +612,7 @@
         "quantity": 18,
         "amount": 22222
       },
-  "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_779146-MLA53778959612_022023-O.webp",
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_779146-MLA53778959612_022023-O.webp",
       "images": [
         "https://s.hdnux.com/photos/01/32/65/57/23813067/5/1920x0.jpg",
         "https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?w=600",
@@ -611,7 +630,8 @@
       "tags": [
         "Apple",
         "Pro"
-      ]
+      ],
+      "sellerId": "6"
     },
     {
       "id": "21",
@@ -624,7 +644,7 @@
         "quantity": 12,
         "amount": 10833
       },
-  "thumbnail": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600",
       "images": [
         "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600",
         "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600",
@@ -642,7 +662,8 @@
       "tags": [
         "Bluetooth",
         "Resistente"
-      ]
+      ],
+      "sellerId": "2"
     },
     {
       "id": "22",
@@ -655,7 +676,7 @@
         "quantity": 18,
         "amount": 25000
       },
-  "thumbnail": "https://images.unsplash.com/photo-11169-0a1dd7228f2d?w=600",
+      "thumbnail": "https://images.unsplash.com/photo-11169-0a1dd7228f2d?w=600",
       "images": [
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600",
         "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600",
@@ -673,7 +694,32 @@
       "tags": [
         "Marshall",
         "Premium"
-      ]
+      ],
+      "sellerId": "3"
+    },
+    {
+      "id": "b344",
+      "title": "prueba vendedor",
+      "price": 300000,
+      "description": "prueba vendedor",
+      "category": "celulares",
+      "thumbnail": "",
+      "stock": 300,
+      "condition": "new",
+      "free_shipping": true,
+      "location": "Capital Federal",
+      "tags": [],
+      "sellerId": "1",
+      "seller": {
+        "nickname": "ADMIN_STORE",
+        "reputation": "gold"
+      },
+      "images": [],
+      "currency": "ARS",
+      "installments": {
+        "quantity": 12,
+        "amount": 25000
+      }
     }
   ],
   "users": [
@@ -685,6 +731,13 @@
       "lastName": "User",
       "role": "admin",
       "avatar": "https://via.placeholder.com/150",
+      "sellerProfile": {
+        "nickname": "ADMIN_STORE",
+        "reputation": "gold",
+        "description": "Tienda oficial de administración",
+        "location": "Capital Federal",
+        "phone": "+54 11 1234-5678"
+      },
       "createdAt": "2024-01-01T00:00:00.000Z"
     },
     {
@@ -695,6 +748,13 @@
       "lastName": "Pérez",
       "role": "user",
       "avatar": "https://via.placeholder.com/150",
+      "sellerProfile": {
+        "nickname": "APPLE_STORE_ARG",
+        "reputation": "gold",
+        "description": "Distribuidor oficial de productos Apple en Argentina",
+        "location": "Capital Federal",
+        "phone": "+54 11 2345-6789"
+      },
       "createdAt": "2024-01-15T00:00:00.000Z"
     },
     {
@@ -705,6 +765,13 @@
       "lastName": "prueba1",
       "role": "user",
       "avatar": "https://via.placeholder.com/150",
+      "sellerProfile": {
+        "nickname": "SAMSUNG_OFICIAL",
+        "reputation": "gold",
+        "description": "Tienda oficial Samsung Argentina",
+        "location": "Buenos Aires",
+        "phone": "+54 11 3456-7890"
+      },
       "createdAt": "2025-09-08T17:02:04.684Z"
     },
     {
@@ -715,6 +782,13 @@
       "lastName": "adsf",
       "role": "user",
       "avatar": "https://via.placeholder.com/150",
+      "sellerProfile": {
+        "nickname": "TECH_SHOP",
+        "reputation": "silver",
+        "description": "Productos tecnológicos de calidad",
+        "location": "Córdoba",
+        "phone": "+54 351 456-7890"
+      },
       "createdAt": "2025-09-08T17:34:34.142Z"
     },
     {
@@ -725,6 +799,13 @@
       "lastName": "3",
       "role": "user",
       "avatar": "https://via.placeholder.com/150",
+      "sellerProfile": {
+        "nickname": "ELECTRONICS_PLUS",
+        "reputation": "bronze",
+        "description": "Electrónicos al mejor precio",
+        "location": "Rosario",
+        "phone": "+54 341 567-8901"
+      },
       "createdAt": "2025-09-08T18:00:22.404Z"
     },
     {
@@ -735,6 +816,13 @@
       "lastName": "Lanzillotta",
       "role": "user",
       "avatar": "https://via.placeholder.com/150",
+      "sellerProfile": {
+        "nickname": "ELIEL_STORE",
+        "reputation": "silver",
+        "description": "Vendedor confiable con años de experiencia",
+        "location": "Capital Federal",
+        "phone": "+54 11 678-9012"
+      },
       "createdAt": "2025-09-09T14:47:13.167Z"
     }
   ],

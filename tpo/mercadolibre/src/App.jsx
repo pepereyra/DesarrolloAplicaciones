@@ -8,7 +8,8 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Login from './components/Login';
 import Register from './components/Register';
-import AdminPanel from './pages/AdminPanel';
+import SellerPanel from './pages/SellerPanel';
+import SellerProfile from './pages/SellerProfile';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -30,13 +31,14 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route 
-                  path="/admin" 
+                  path="/vender" 
                   element={
-                    <ProtectedRoute isAdmin>
-                      <AdminPanel />
+                    <ProtectedRoute>
+                      <SellerPanel />
                     </ProtectedRoute>
                   } 
                 />
+                <Route path="/vendedor/:sellerId" element={<SellerProfile />} />
                 <Route path="/category/:category" element={<div>Category Page (Coming Soon)</div>} />
               </Routes>
             </main>

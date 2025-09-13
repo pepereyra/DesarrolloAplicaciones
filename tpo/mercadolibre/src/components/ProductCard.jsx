@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
+import { useAuth } from '../context/AuthContext';
 import './ProductCard.css';
 
 function ProductCard({ product }) {
@@ -10,6 +11,7 @@ function ProductCard({ product }) {
     canAddToCart, 
     formatPrice 
   } = useCart();
+  const { currentUser, isProductOwner, canPurchaseProduct } = useAuth();
 
   const formatCompactPrice = (price) => {
     return new Intl.NumberFormat('es-AR', {
@@ -24,6 +26,15 @@ function ProductCard({ product }) {
     e.preventDefault();
     e.stopPropagation();
     
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+    
+    if (!canPurchaseProduct(product.sellerId)) {
+      return; // No puede comprar sus propios productos
+    }
+    
     if (canAddToCart(product)) {
       addToCart(product);
     }
@@ -33,15 +44,38 @@ function ProductCard({ product }) {
     e.preventDefault();
     e.stopPropagation();
     
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+    
+    if (!canPurchaseProduct(product.sellerId)) {
+      return; // No puede comprar sus propios productos
+    }
+    
     if (canAddToCart(product)) {
       addToCart(product);
       navigate('/carrito');
     }
   };
 
+  const handleViewSellerProfile = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/vendedor/${product.sellerId}`);
+  };
+
+  const handleEditProduct = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate('/vender');
+  };
+
   const isOutOfStock = product.stock === 0;
   const currentQuantity = getItemQuantity(product.id);
   const canAddMore = canAddToCart(product);
+  const isOwner = currentUser && isProductOwner(product.sellerId);
+  const canPurchase = currentUser && canPurchaseProduct(product.sellerId);
 
   return (
     <div className={`product-card ${isOutOfStock ? 'out-of-stock' : ''}`}>
@@ -126,46 +160,88 @@ function ProductCard({ product }) {
               <span className={`seller-reputation ${product.seller.reputation}`}>
                 {product.seller.reputation === 'gold' && '⭐'}
                 {product.seller.reputation === 'silver' && '✨'}
+                {product.seller.reputation === 'bronze' && '🥉'}
               </span>
-              <span className="seller-name">{product.seller.nickname}</span>
+              <button 
+                className="seller-name-btn"
+                onClick={handleViewSellerProfile}
+                title="Ver perfil del vendedor"
+              >
+                {product.seller.nickname}
+              </button>
+              {isOwner && (
+                <span className="owner-badge">Tu producto</span>
+              )}
             </div>
           )}
         </div>
       </Link>
       
       <div className="product-actions">
-        <button 
-          className={`add-to-cart-btn ${isOutOfStock ? 'disabled' : ''} ${!canAddMore ? 'max-reached' : ''}`}
-          onClick={handleAddToCart}
-          disabled={isOutOfStock || !canAddMore}
-          title={isOutOfStock ? "Sin stock" : !canAddMore ? "Stock máximo en carrito" : "Agregar al carrito"}
-          aria-label={isOutOfStock ? "Sin stock" : !canAddMore ? "Stock máximo alcanzado" : "Agregar al carrito"}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="9" cy="21" r="1"/>
-            <circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
-          </svg>
-          <span>
-            {isOutOfStock ? 'Sin stock' : !canAddMore ? 'Máximo' : 'Agregar al carrito'}
-          </span>
-        </button>
+        {isOwner ? (
+          // Botones para el propietario del producto
+          <button 
+            className="edit-product-btn"
+            onClick={handleEditProduct}
+            title="Editar producto"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            <span>Editar</span>
+          </button>
+        ) : (
+          // Botones para compradores
+          <>
+            <button 
+              className={`add-to-cart-btn ${isOutOfStock || !canPurchase ? 'disabled' : ''} ${!canAddMore ? 'max-reached' : ''}`}
+              onClick={handleAddToCart}
+              disabled={isOutOfStock || !canPurchase || !canAddMore}
+              title={
+                !currentUser ? "Inicia sesión para comprar" :
+                !canPurchase ? "No puedes comprar tus propios productos" :
+                isOutOfStock ? "Sin stock" : 
+                !canAddMore ? "Stock máximo en carrito" : "Agregar al carrito"
+              }
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="9" cy="21" r="1"/>
+                <circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+              </svg>
+              <span>
+                {!currentUser ? 'Iniciar sesión' :
+                 !canPurchase ? 'Tu producto' :
+                 isOutOfStock ? 'Sin stock' : 
+                 !canAddMore ? 'Máximo' : 'Agregar al carrito'}
+              </span>
+            </button>
 
-        <button 
-          className={`buy-now-btn ${isOutOfStock ? 'disabled' : ''} ${!canAddMore ? 'max-reached' : ''}`}
-          onClick={handleBuyNow}
-          disabled={isOutOfStock || !canAddMore}
-          title={isOutOfStock ? "Sin stock" : !canAddMore ? "Stock máximo en carrito" : "Comprar ahora"}
-          aria-label={isOutOfStock ? "Sin stock" : !canAddMore ? "Stock máximo alcanzado" : "Comprar ahora"}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M9 12l2 2 4-4"/>
-            <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.03 0 3.89.67 5.39 1.81"/>
-          </svg>
-          <span>
-            {isOutOfStock ? 'Sin stock' : !canAddMore ? 'Máximo' : 'Comprar ahora'}
-          </span>
-        </button>
+            <button 
+              className={`buy-now-btn ${isOutOfStock || !canPurchase ? 'disabled' : ''} ${!canAddMore ? 'max-reached' : ''}`}
+              onClick={handleBuyNow}
+              disabled={isOutOfStock || !canPurchase || !canAddMore}
+              title={
+                !currentUser ? "Inicia sesión para comprar" :
+                !canPurchase ? "No puedes comprar tus propios productos" :
+                isOutOfStock ? "Sin stock" : 
+                !canAddMore ? "Stock máximo en carrito" : "Comprar ahora"
+              }
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 12l2 2 4-4"/>
+                <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.03 0 3.89.67 5.39 1.81"/>
+              </svg>
+              <span>
+                {!currentUser ? 'Iniciar sesión' :
+                 !canPurchase ? 'Tu producto' :
+                 isOutOfStock ? 'Sin stock' : 
+                 !canAddMore ? 'Máximo' : 'Comprar ahora'}
+              </span>
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

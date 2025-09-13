@@ -24,6 +24,28 @@ const AuthProvider = ({ children }) => {
     // Estado para manejar errores
     const [error, setError] = useState('');
     
+    // Efecto para cargar usuario completo desde la API si existe en localStorage
+    useEffect(() => {
+        const loadCompleteUser = async () => {
+            const savedUser = loadUserFromStorage();
+            if (savedUser && savedUser.id) {
+                try {
+                    // Cargar datos completos del usuario desde la API
+                    const response = await fetch(`http://localhost:3000/users/${savedUser.id}`);
+                    if (response.ok) {
+                        const completeUser = await response.json();
+                        setCurrentUser(completeUser);
+                        localStorage.setItem('currentUser', JSON.stringify(completeUser));
+                    }
+                } catch (error) {
+                    console.error('Error loading complete user data:', error);
+                }
+            }
+        };
+        
+        loadCompleteUser();
+    }, []);
+    
     // Efecto para guardar el usuario en localStorage cuando cambie
     useEffect(() => {
         if (currentUser) {
@@ -47,9 +69,16 @@ const AuthProvider = ({ children }) => {
             // Preparar los datos del nuevo usuario
             const newUserData = {
                 ...userData,
-                id: users.length + 1,
+                id: (users.length + 1).toString(),
                 role: 'user',
                 avatar: 'https://via.placeholder.com/150',
+                sellerProfile: {
+                    nickname: `${userData.firstName}_STORE`.toUpperCase(),
+                    reputation: 'bronze',
+                    description: `Tienda de ${userData.firstName} ${userData.lastName}`,
+                    location: 'Argentina',
+                    phone: '+54 11 0000-0000'
+                },
                 createdAt: new Date().toISOString()
             };
 
@@ -104,13 +133,33 @@ const AuthProvider = ({ children }) => {
         setError('');
     };
 
+    // Función para verificar si el usuario actual es propietario de un producto
+    const isProductOwner = (productSellerId) => {
+        return currentUser && currentUser.id === productSellerId;
+    };
+
+    // Función para verificar si el usuario puede comprar un producto
+    const canPurchaseProduct = (productSellerId) => {
+        return currentUser && currentUser.id !== productSellerId;
+    };
+
+    // Función para obtener información del vendedor
+    const getSellerInfo = () => {
+        console.log('getSellerInfo - currentUser:', currentUser);
+        console.log('getSellerInfo - sellerProfile:', currentUser?.sellerProfile);
+        return currentUser?.sellerProfile || null;
+    };
+
     // Valor del contexto que será accesible para los componentes hijos
     const value = {
         currentUser,
         error,
         register,
         login,
-        logout
+        logout,
+        isProductOwner,
+        canPurchaseProduct,
+        getSellerInfo
     };
 
     return (
