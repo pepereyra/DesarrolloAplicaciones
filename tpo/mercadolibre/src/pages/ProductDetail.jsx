@@ -17,6 +17,29 @@ function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Función para obtener las imágenes del producto
+  const getProductImages = useCallback((product) => {
+    if (!product) return [];
+    
+    const images = [];
+    
+    // Siempre usar el thumbnail como primera imagen si existe
+    if (product.thumbnail) {
+      images.push(product.thumbnail);
+    }
+    
+    // Agregar las imágenes adicionales del array, evitando duplicar el thumbnail
+    if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+      const additionalImages = product.images.filter(img => img !== product.thumbnail);
+      images.push(...additionalImages);
+    }
+    
+    // Retornar máximo 4 imágenes
+    return images.slice(0, 4);
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -24,6 +47,7 @@ function ProductDetail() {
         setLoading(true);
         const productData = await productsApi.getProduct(id);
         setProduct(productData);
+        setSelectedImage(0); // Reset imagen seleccionada al cambiar producto
       } catch (error) {
         console.error('Error fetching product:', error);
       } finally {
@@ -56,6 +80,56 @@ function ProductDetail() {
     setQuantity(Math.max(1, Math.min(newQuantity, maxAvailable)));
   };
 
+  // Manejo de zoom en la imagen
+  const handleMouseEnter = useCallback(() => {
+    setIsZoomed(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsZoomed(false);
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
+    if (!isZoomed) return;
+    
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    
+    setMousePosition({ x, y });
+  }, [isZoomed]);
+
+  // Navegación de imágenes con teclado
+  const handleKeyDown = useCallback((e) => {
+    if (!product) return;
+    
+    const images = getProductImages(product);
+    
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setSelectedImage(prev => prev === 0 ? images.length - 1 : prev - 1);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setSelectedImage(prev => prev === images.length - 1 ? 0 : prev + 1);
+    }
+  }, [product, getProductImages]);
+
+  // Agregar y limpiar event listeners para navegación con teclado
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
+
+  // Validar que selectedImage esté dentro del rango cuando cambien las imágenes
+  useEffect(() => {
+    if (product) {
+      const images = getProductImages(product);
+      if (selectedImage >= images.length) {
+        setSelectedImage(0);
+      }
+    }
+  }, [product, selectedImage, getProductImages]);
+
   const handleBuyNow = () => {
     handleAddToCart();
     // Redireccionar al carrito después de agregar
@@ -83,7 +157,7 @@ function ProductDetail() {
   const isOutOfStock = product.stock === 0;
   const currentQuantity = getItemQuantity(product.id);
   const availableStock = getAvailableStock(product);
-  const images = [product.thumbnail]; // In a real app, this would be an array of images
+  const images = getProductImages(product);
 
   return (
     <div className="product-detail">
@@ -99,7 +173,7 @@ function ProductDetail() {
         </div>
 
         <div className="product-content">
-          {/* Galería de imágenes */}
+          {/* Galería de imágenes mejorada */}
           <div className="product-gallery">
             <div className="image-thumbnails">
               {images.map((img, index) => (
@@ -107,13 +181,95 @@ function ProductDetail() {
                   key={index}
                   className={`thumbnail ${index === selectedImage ? 'active' : ''}`}
                   onClick={() => setSelectedImage(index)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedImage(index);
+                    }
+                  }}
+                  aria-label={`Ver imagen ${index + 1} de ${images.length}`}
+                  tabIndex={0}
                 >
-                  <img src={img} alt={`${product.title} ${index + 1}`} />
+                  <img 
+                    src={img} 
+                    alt={`${product.title} vista ${index + 1}`}
+                    loading="lazy"
+                  />
+                  <div className="thumbnail-overlay"></div>
                 </button>
               ))}
             </div>
-            <div className="main-image">
-              <img src={images[selectedImage]} alt={product.title} />
+            
+            <div className="main-image-container">
+              <div 
+                className={`main-image ${isZoomed ? 'zoomed' : ''}`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onMouseMove={handleMouseMove}
+                role="img"
+                aria-label={`Imagen principal de ${product.title}`}
+              >
+                <img 
+                  src={images[selectedImage]} 
+                  alt={product.title}
+                  loading="eager"
+                  style={{
+                    transformOrigin: isZoomed ? `${mousePosition.x}% ${mousePosition.y}%` : 'center',
+                    transform: isZoomed ? 'scale(2.5)' : 'scale(1)'
+                  }}
+                />
+                
+                {/* Indicadores de navegación */}
+                {images.length > 1 && (
+                  <>
+                    <button 
+                      className="nav-arrow nav-arrow-left"
+                      onClick={() => setSelectedImage(prev => prev === 0 ? images.length - 1 : prev - 1)}
+                      aria-label="Imagen anterior"
+                      disabled={images.length <= 1}
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                    <button 
+                      className="nav-arrow nav-arrow-right"
+                      onClick={() => setSelectedImage(prev => prev === images.length - 1 ? 0 : prev + 1)}
+                      aria-label="Imagen siguiente"
+                      disabled={images.length <= 1}
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                  </>
+                )}
+                
+                {/* Indicador de zoom */}
+                <div className="zoom-indicator">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M11 8V14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M8 11H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span>Pasa el mouse para hacer zoom</span>
+                </div>
+              </div>
+              
+              {/* Indicadores de imagen actual */}
+              {images.length > 1 && (
+                <div className="image-indicators">
+                  {images.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`indicator ${index === selectedImage ? 'active' : ''}`}
+                      onClick={() => setSelectedImage(index)}
+                      aria-label={`Ir a imagen ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
