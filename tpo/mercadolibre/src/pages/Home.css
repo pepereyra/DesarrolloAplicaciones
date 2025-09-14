@@ -8,6 +8,11 @@
   padding: 0 16px;
 }
 
+/* Banner Carousel Spacing */
+.home .banner-carousel {
+  margin: 20px 0 32px;
+}
+
 /* Loading */
 .loading {
   display: flex;
