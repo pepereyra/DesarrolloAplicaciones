@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import { useAuth } from '../context/AuthContext';
+import FavoriteButton from './FavoriteButton';
 import './ProductCard.css';
 
 function ProductCard({ product }) {
@@ -62,6 +63,7 @@ function ProductCard({ product }) {
   const handleViewSellerProfile = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log('Navigating to seller profile, sellerId:', product.sellerId);
     navigate(`/vendedor/${product.sellerId}`);
   };
 
@@ -82,6 +84,11 @@ function ProductCard({ product }) {
       <Link to={`/producto/${product.id}`} className="product-link">
         <div className="product-image">
           <img src={product.thumbnail} alt={product.title} />
+          <FavoriteButton 
+            product={product} 
+            size="small" 
+            className="overlay"
+          />
           {product.condition === 'new' && (
             <span className="condition-badge">Nuevo</span>
           )}

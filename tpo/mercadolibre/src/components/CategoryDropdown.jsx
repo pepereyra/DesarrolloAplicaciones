@@ -53,7 +53,7 @@ function CategoryDropdown() {
             {categories.slice(0, 12).map((category) => (
               <Link
                 key={category}
-                to={`/?category=${encodeURIComponent(category)}`}
+                to={`/category/${encodeURIComponent(category.toLowerCase())}`}
                 className="category-item"
                 onClick={() => setIsOpen(false)}
               >
@@ -91,9 +91,13 @@ function CategoryDropdown() {
 function getCategoryIcon(category) {
   const icons = {
     'celulares y telefonos': '📱',
+    'celulares': '📱',
     'computacion': '💻',
     'electrodomesticos': '🏠',
     'deportes y fitness': '⚽',
+    'deportes': '⚽',
+    'audio': '🎵',
+    'anteojos': '🕶️',
     'hogar muebles y jardin': '🪑',
     'belleza y cuidado personal': '💄',
     'ropa y accesorios': '👕',

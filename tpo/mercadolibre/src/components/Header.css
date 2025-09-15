@@ -224,9 +224,32 @@
 }
 
 .user-greeting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   color: #333;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.user-greeting:hover {
+  background-color: #f5f5f5;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+  transition: border-color 0.2s ease;
+}
+
+.user-greeting:hover .user-avatar {
+  border-color: #3483fa;
 }
 
 .user-dropdown {
@@ -281,6 +304,40 @@
 }
 
 .cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff4757;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Favoritos en user actions */
+.favorites-action-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #000000;
+  font-size: 14px;
+  transition: color 0.3s;
+  margin-left: 8px;
+  margin-right: 8px;
+  gap: 4px;
+}
+
+.favorites-action-link:hover {
+  color: #3483fa;
+}
+
+.favorites-action-count {
   position: absolute;
   top: -8px;
   right: -8px;
@@ -381,6 +438,16 @@
   .location {
     font-size: 12px;
   }
+  
+  .user-greeting {
+    padding: 2px 4px;
+    gap: 6px;
+  }
+  
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -398,18 +465,49 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #333 !important;
+  color: #000000;
   text-decoration: none;
   font-size: 14px;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  transition: color 0.3s;
 }
 
 .sell-link:hover {
-  color: #3483fa !important;
+  color: #3483fa;
 }
 
 .sell-link svg {
   width: 14px;
   height: 14px;
+}
+
+/* Enlace de Favoritos en navegación */
+.favorites-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #000000;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.favorites-nav-link:hover {
+  color: #3483fa;
+}
+
+.favorites-nav-link .favorites-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff4757;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -82,10 +82,10 @@
         "https://http2.mlstatic.com/D_NQ_NP_2X_947123-MLA45729434224_042021-F.webp"
       ],
       "category": "computacion",
-      "sellerId": "4",
+      "sellerId": "2",
       "seller": {
-        "nickname": "LENOVO_STORE",
-        "reputation": "silver"
+        "nickname": "APPLE_STORE_ARG",
+        "reputation": "gold"
       },
       "location": "Córdoba",
       "description": "Notebook Lenovo IdeaPad 3 con procesador Intel Core i5, 8GB RAM, 256GB SSD, pantalla 15.6 pulgadas.",
@@ -114,7 +114,7 @@
       ],
       "category": "electrodomesticos",
       "seller": {
-        "nickname": "SAMSUNG_TV",
+        "nickname": "SAMSUNG_OFICIAL",
         "reputation": "gold"
       },
       "location": "Rosario",
@@ -124,7 +124,7 @@
         "Envío gratis",
         "Smart TV"
       ],
-      "sellerId": "5"
+      "sellerId": "3"
     },
     {
       "id": "5",
@@ -146,8 +146,8 @@
       ],
       "category": "deportes",
       "seller": {
-        "nickname": "NIKE_OFICIAL",
-        "reputation": "gold"
+        "nickname": "TECH_SHOP",
+        "reputation": "silver"
       },
       "location": "Capital Federal",
       "description": "Zapatillas Nike Air Max 270 con unidad Air visible y diseño moderno para máximo confort.",
@@ -156,7 +156,7 @@
         "Envío gratis",
         "Más vendido"
       ],
-      "sellerId": "6"
+      "sellerId": "4"
     },
     {
       "id": "6",
@@ -176,8 +176,8 @@
       ],
       "category": "audio",
       "seller": {
-        "nickname": "SONY_STORE",
-        "reputation": "gold"
+        "nickname": "ELIEL_STORE",
+        "reputation": "silver"
       },
       "location": "Mendoza",
       "description": "Auriculares inalámbricos Sony con cancelación de ruido líder en la industria y 30 horas de batería.",
@@ -186,7 +186,7 @@
         "Envío gratis",
         "Noise cancelling"
       ],
-      "sellerId": "2"
+      "sellerId": "6"
     },
     {
       "id": "7",
@@ -208,8 +208,8 @@
       ],
       "category": "anteojos",
       "seller": {
-        "nickname": "RAYBAN_OFICIAL",
-        "reputation": "gold"
+        "nickname": "TECH_SHOP",
+        "reputation": "silver"
       },
       "location": "Capital Federal",
       "description": "Anteojos de sol Ray-Ban Wayfarer clásicos con lentes polarizadas y protección UV.",
@@ -218,7 +218,7 @@
         "Clásico",
         "Envío gratis"
       ],
-      "sellerId": "3"
+      "sellerId": "4"
     },
     {
       "id": "8",
@@ -240,8 +240,8 @@
       ],
       "category": "anteojos",
       "seller": {
-        "nickname": "OAKLEY_STORE",
-        "reputation": "gold"
+        "nickname": "TECH_SHOP",
+        "reputation": "silver"
       },
       "location": "Buenos Aires",
       "description": "Anteojos Oakley Holbrook con lentes polarizadas Prizm, marco de acetato duradero.",
@@ -282,7 +282,7 @@
         "Nuevo",
         "Apple Silicon"
       ],
-      "sellerId": "5"
+      "sellerId": "2"
     },
     {
       "id": "10",
@@ -304,7 +304,7 @@
       ],
       "category": "computacion",
       "seller": {
-        "nickname": "DELL_OFICIAL",
+        "nickname": "APPLE_STORE_ARG",
         "reputation": "gold"
       },
       "location": "Córdoba",
@@ -314,7 +314,7 @@
         "Ultrabook",
         "Premium"
       ],
-      "sellerId": "6"
+      "sellerId": "2"
     },
     {
       "id": "11",
@@ -336,8 +336,8 @@
       ],
       "category": "electrodomesticos",
       "seller": {
-        "nickname": "PHILIPS_OFICIAL",
-        "reputation": "gold"
+        "nickname": "ELECTRONICS_PLUS",
+        "reputation": "bronze"
       },
       "location": "Buenos Aires",
       "description": "Freidora de aire Philips con tecnología Rapid Air, capacidad 4.1L para hasta 5 porciones.",
@@ -346,7 +346,7 @@
         "Saludable",
         "Envío gratis"
       ],
-      "sellerId": "2"
+      "sellerId": "5"
     },
     {
       "id": "12",
@@ -367,8 +367,8 @@
       ],
       "category": "electrodomesticos",
       "seller": {
-        "nickname": "OSTER_STORE",
-        "reputation": "silver"
+        "nickname": "ELECTRONICS_PLUS",
+        "reputation": "bronze"
       },
       "location": "Córdoba",
       "description": "Freidora de aire Oster compacta de 2L, ideal para porciones pequeñas.",
@@ -377,7 +377,7 @@
         "Compacta",
         "Sin stock"
       ],
-      "sellerId": "3"
+      "sellerId": "5"
     },
     {
       "id": "13",
@@ -399,8 +399,8 @@
       ],
       "category": "electrodomesticos",
       "seller": {
-        "nickname": "LG_OFICIAL",
-        "reputation": "gold"
+        "nickname": "ELECTRONICS_PLUS",
+        "reputation": "bronze"
       },
       "location": "Rosario",
       "description": "Smart TV LG OLED 65 pulgadas 4K con webOS, Dolby Vision y AI ThinQ.",
@@ -409,7 +409,7 @@
         "OLED",
         "Premium"
       ],
-      "sellerId": "4"
+      "sellerId": "5"
     },
     {
       "id": "14",
@@ -431,8 +431,8 @@
       ],
       "category": "electrodomesticos",
       "seller": {
-        "nickname": "TCL_STORE",
-        "reputation": "silver"
+        "nickname": "ELECTRONICS_PLUS",
+        "reputation": "bronze"
       },
       "location": "Mendoza",
       "description": "Smart TV TCL 43 pulgadas 4K con Android TV, HDR10 y Google Assistant.",
@@ -462,7 +462,7 @@
       ],
       "category": "electrodomesticos",
       "seller": {
-        "nickname": "SAMSUNG_HOGAR",
+        "nickname": "SAMSUNG_OFICIAL",
         "reputation": "gold"
       },
       "location": "Capital Federal",
@@ -472,7 +472,7 @@
         "Grill",
         "Digital"
       ],
-      "sellerId": "6"
+      "sellerId": "3"
     },
     {
       "id": "16",
@@ -494,8 +494,8 @@
       ],
       "category": "electrodomesticos",
       "seller": {
-        "nickname": "WHIRLPOOL_ARG",
-        "reputation": "gold"
+        "nickname": "ELECTRONICS_PLUS",
+        "reputation": "bronze"
       },
       "location": "Buenos Aires",
       "description": "Heladera Whirlpool no frost 364L, freezer superior, eficiencia energética A+.",
@@ -504,7 +504,7 @@
         "No Frost",
         "A+"
       ],
-      "sellerId": "2"
+      "sellerId": "5"
     },
     {
       "id": "17",
@@ -526,8 +526,8 @@
       ],
       "category": "deportes",
       "seller": {
-        "nickname": "ADIDAS_OFICIAL",
-        "reputation": "gold"
+        "nickname": "TECH_SHOP",
+        "reputation": "silver"
       },
       "location": "Capital Federal",
       "description": "Zapatillas Adidas Ultraboost 22 con tecnología BOOST y upper Primeknit.",
@@ -536,7 +536,7 @@
         "Running",
         "BOOST"
       ],
-      "sellerId": "3"
+      "sellerId": "4"
     },
     {
       "id": "18",
@@ -557,8 +557,8 @@
       ],
       "category": "deportes",
       "seller": {
-        "nickname": "NIKE_DEPORTES",
-        "reputation": "gold"
+        "nickname": "TECH_SHOP",
+        "reputation": "silver"
       },
       "location": "Rosario",
       "description": "Pelota de fútbol Nike Strike talla 5, ideal para entrenamiento y partidos recreativos.",
@@ -589,7 +589,7 @@
       ],
       "category": "deportes",
       "seller": {
-        "nickname": "FITNESS_PRO",
+        "nickname": "TECH_SHOP",
         "reputation": "silver"
       },
       "location": "Córdoba",
@@ -599,7 +599,7 @@
         "Fitness",
         "Hogar"
       ],
-      "sellerId": "5"
+      "sellerId": "4"
     },
     {
       "id": "20",
@@ -631,7 +631,7 @@
         "Apple",
         "Pro"
       ],
-      "sellerId": "6"
+      "sellerId": "2"
     },
     {
       "id": "21",
@@ -653,8 +653,8 @@
       ],
       "category": "audio",
       "seller": {
-        "nickname": "JBL_OFICIAL",
-        "reputation": "gold"
+        "nickname": "ELIEL_STORE",
+        "reputation": "silver"
       },
       "location": "Buenos Aires",
       "description": "Parlante JBL Charge 5 con Bluetooth, resistente al agua IP67 y 20h de batería.",
@@ -663,7 +663,7 @@
         "Bluetooth",
         "Resistente"
       ],
-      "sellerId": "2"
+      "sellerId": "6"
     },
     {
       "id": "22",
@@ -685,8 +685,8 @@
       ],
       "category": "audio",
       "seller": {
-        "nickname": "MARSHALL_STORE",
-        "reputation": "gold"
+        "nickname": "ELIEL_STORE",
+        "reputation": "silver"
       },
       "location": "Mendoza",
       "description": "Parlante Marshall Acton III con conectividad inalámbrica y sonido Marshall clásico.",
@@ -695,14 +695,14 @@
         "Marshall",
         "Premium"
       ],
-      "sellerId": "3"
+      "sellerId": "6"
     },
     {
       "id": "b344",
-      "title": "prueba vendedor",
+      "title": "prueba vendedor editado",
       "price": 300000,
-      "description": "prueba vendedor",
-      "category": "celulares",
+      "description": "prueba vendedor editado",
+      "category": "anteojos",
       "thumbnail": "",
       "stock": 300,
       "condition": "new",
@@ -730,7 +730,7 @@
       "firstName": "Admin",
       "lastName": "User",
       "role": "admin",
-      "avatar": "https://via.placeholder.com/150",
+      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       "sellerProfile": {
         "nickname": "ADMIN_STORE",
         "reputation": "gold",
@@ -747,7 +747,7 @@
       "firstName": "Juan",
       "lastName": "Pérez",
       "role": "user",
-      "avatar": "https://via.placeholder.com/150",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
       "sellerProfile": {
         "nickname": "APPLE_STORE_ARG",
         "reputation": "gold",
@@ -764,7 +764,7 @@
       "firstName": "prueba1",
       "lastName": "prueba1",
       "role": "user",
-      "avatar": "https://via.placeholder.com/150",
+      "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face",
       "sellerProfile": {
         "nickname": "SAMSUNG_OFICIAL",
         "reputation": "gold",
@@ -781,7 +781,7 @@
       "firstName": "asdf",
       "lastName": "adsf",
       "role": "user",
-      "avatar": "https://via.placeholder.com/150",
+      "avatar": "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face",
       "sellerProfile": {
         "nickname": "TECH_SHOP",
         "reputation": "silver",
@@ -798,7 +798,7 @@
       "firstName": "3",
       "lastName": "3",
       "role": "user",
-      "avatar": "https://via.placeholder.com/150",
+      "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
       "sellerProfile": {
         "nickname": "ELECTRONICS_PLUS",
         "reputation": "bronze",
@@ -815,7 +815,7 @@
       "firstName": "Eliel",
       "lastName": "Lanzillotta",
       "role": "user",
-      "avatar": "https://via.placeholder.com/150",
+      "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
       "sellerProfile": {
         "nickname": "ELIEL_STORE",
         "reputation": "silver",

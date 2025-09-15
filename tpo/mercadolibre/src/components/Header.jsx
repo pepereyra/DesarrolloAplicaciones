@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
+import { useFavorites } from '../context/FavoritesContext';
 import CategoryDropdown from './CategoryDropdown';
 import logoML from '../assets/mercado libre.png';
 import promoImage from '../assets/images.png';
@@ -10,6 +11,7 @@ import './Header.css';
 function Header() {
   const { state } = useApp();
   const { currentUser, logout } = useAuth();
+  const { getFavoritesCount } = useFavorites();
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,6 +49,8 @@ function Header() {
   const cartItemsCount = state.cart.length > 0 
     ? state.cart.reduce((total, item) => total + item.quantity, 0) 
     : 0;
+
+  const favoritesCount = getFavoritesCount();
 
   return (
     <header className="header">
@@ -146,19 +150,27 @@ function Header() {
               <Link to="/fashion">Moda</Link>
               {currentUser && (
                 <Link to="/vender" className="sell-link">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                  </svg>
                   Vender
                 </Link>
               )}
+              
             </nav>
 
             {/* Usuario y Carrito */}
             <div className="user-actions">
               {currentUser ? (
                 <div className="user-menu">
-                  <span className="user-greeting">Hola, {currentUser.firstName}</span>
+                  <div className="user-greeting">
+                    <img 
+                      src={currentUser.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.firstName + '+' + currentUser.lastName)}&background=3483fa&color=fff&size=32`} 
+                      alt={`${currentUser.firstName} ${currentUser.lastName}`}
+                      className="user-avatar"
+                      onError={(e) => {
+                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.firstName + '+' + currentUser.lastName)}&background=3483fa&color=fff&size=32`;
+                      }}
+                    />
+                    <span>Hola, {currentUser.firstName}</span>
+                  </div>
                   <div className="user-dropdown">
                     <Link to="/profile">Mi cuenta</Link>
                     <Link to="/purchases">Mis compras</Link>
@@ -171,6 +183,15 @@ function Header() {
                   <Link to="/register">Creá tu cuenta</Link>
                   <Link to="/login">Ingresá</Link>
                 </div>
+              )}
+
+              {currentUser && (
+                <Link to="/favorites" className="favorites-action-link">
+                  Favoritos
+                  {favoritesCount > 0 && (
+                    <span className="favorites-action-count">{favoritesCount}</span>
+                  )}
+                </Link>
               )}
 
               <Link to="/carrito" className="cart-link">

@@ -11,11 +11,15 @@ function SellerProfile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log('SellerProfile component loaded with sellerId:', sellerId);
+
   useEffect(() => {
     const loadSellerData = async () => {
       try {
         setLoading(true);
         setError(null);
+
+        console.log('Loading seller data for sellerId:', sellerId);
 
         // Cargar datos del vendedor
         const usersResponse = await fetch(`http://localhost:3000/users/${sellerId}`);
@@ -23,11 +27,13 @@ function SellerProfile() {
           throw new Error('Vendedor no encontrado');
         }
         const sellerData = await usersResponse.json();
+        console.log('Seller data loaded:', sellerData);
         setSeller(sellerData);
 
         // Cargar productos del vendedor
         const allProducts = await api.getProducts();
         const vendorProducts = allProducts.filter(product => product.sellerId === sellerId);
+        console.log('Vendor products found:', vendorProducts.length);
         setSellerProducts(vendorProducts);
 
       } catch (error) {
