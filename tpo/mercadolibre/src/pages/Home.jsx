@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import CategoryFilter from '../components/CategoryFilter';
+import BannerCarousel from '../components/BannerCarousel';
 import { productsApi } from '../services/api';
 import { useApp } from '../context/AppContext';
 import './Home.css';
@@ -86,34 +87,8 @@ function Home() {
 
   return (
     <div className="home">
-      {/* Banner principal */}
-      <section className="hero-banner">
-        <div className="container">
-          <div className="banner-content">
-            <div className="banner-main">
-              <img 
-                src="https://via.placeholder.com/800x300/3483fa/ffffff?text=Ofertas+Especiales" 
-                alt="Banner principal" 
-                className="banner-image"
-              />
-            </div>
-            <div className="banner-sidebar">
-              <div className="promo-card">
-                <img 
-                  src="https://via.placeholder.com/200x100/fff159/333333?text=Descuentos" 
-                  alt="Descuentos" 
-                />
-              </div>
-              <div className="promo-card">
-                <img 
-                  src="https://via.placeholder.com/200x100/00a650/ffffff?text=Envío+Gratis" 
-                  alt="Envío gratis" 
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Banner Carrusel */}
+      <BannerCarousel />
 
       {/* Catálogo principal con filtros */}
       <section className="catalog-section">

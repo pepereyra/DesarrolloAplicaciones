@@ -1,13 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { productsApi } from '../services/api';
 import { useCart } from '../hooks/useCart';
-import { useAuth } from '../context/AuthContext';
 import './ProductDetail.css';
 
 function ProductDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { 
     addToCart, 
     getItemQuantity, 
@@ -15,7 +13,6 @@ function ProductDetail() {
     getAvailableStock, 
     formatPrice 
   } = useCart();
-  const { currentUser, isProductOwner, canPurchaseProduct } = useAuth();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -62,16 +59,6 @@ function ProductDetail() {
   }, [id]);
 
   const handleAddToCart = () => {
-    if (!currentUser) {
-      navigate('/login');
-      return;
-    }
-
-    if (!canPurchaseProduct(product.sellerId)) {
-      alert('No puedes comprar tus propios productos');
-      return;
-    }
-
     if (product.stock === 0) return;
     
     const availableStock = getAvailableStock(product);
@@ -84,38 +71,6 @@ function ProductDetail() {
     } else {
       alert('No hay suficiente stock disponible');
     }
-  };
-
-  const handleBuyNow = () => {
-    if (!currentUser) {
-      navigate('/login');
-      return;
-    }
-
-    if (!canPurchaseProduct(product.sellerId)) {
-      alert('No puedes comprar tus propios productos');
-      return;
-    }
-
-    if (product.stock === 0) return;
-    
-    const availableStock = getAvailableStock(product);
-    const maxQuantity = Math.min(quantity, availableStock);
-    
-    if (maxQuantity > 0) {
-      addToCart(product, maxQuantity);
-      navigate('/carrito');
-    } else {
-      alert('No hay suficiente stock disponible');
-    }
-  };
-
-  const handleEditProduct = () => {
-    navigate('/vender');
-  };
-
-  const handleViewSellerProfile = () => {
-    navigate(`/vendedor/${product.sellerId}`);
   };
 
   const handleQuantityChange = (newQuantity) => {
@@ -174,6 +129,12 @@ function ProductDetail() {
       }
     }
   }, [product, selectedImage, getProductImages]);
+
+  const handleBuyNow = () => {
+    handleAddToCart();
+    // Redireccionar al carrito después de agregar
+    window.location.href = '/cart';
+  };
 
   if (loading) {
     return (
@@ -403,38 +364,20 @@ function ProductDetail() {
             </div>
 
             <div className="action-buttons">
-              {currentUser && isProductOwner(product.sellerId) ? (
-                // Botones para el propietario del producto
-                <button 
-                  className="edit-product-btn"
-                  onClick={handleEditProduct}
-                >
-                  Editar producto
-                </button>
-              ) : (
-                // Botones para compradores
-                <>
-                  <button 
-                    className={`buy-now-btn ${isOutOfStock || availableStock === 0 || !canPurchaseProduct(product.sellerId) ? 'disabled' : ''}`}
-                    onClick={handleBuyNow}
-                    disabled={isOutOfStock || availableStock === 0 || !canPurchaseProduct(product.sellerId)}
-                  >
-                    {!currentUser ? 'Iniciar sesión para comprar' :
-                     !canPurchaseProduct(product.sellerId) ? 'Tu producto' :
-                     isOutOfStock ? 'Sin stock' : 'Comprar ahora'}
-                  </button>
-                  <button 
-                    className={`add-to-cart-btn ${isOutOfStock || availableStock === 0 || !canPurchaseProduct(product.sellerId) ? 'disabled' : ''}`}
-                    onClick={handleAddToCart}
-                    disabled={isOutOfStock || availableStock === 0 || !canPurchaseProduct(product.sellerId)}
-                  >
-                    {!currentUser ? 'Iniciar sesión' :
-                     !canPurchaseProduct(product.sellerId) ? 'Tu producto' :
-                     isOutOfStock ? 'Sin stock' : 
-                     availableStock === 0 ? 'Máximo en carrito' : 'Agregar al carrito'}
-                  </button>
-                </>
-              )}
+              <button 
+                className={`buy-now-btn ${isOutOfStock || availableStock === 0 ? 'disabled' : ''}`}
+                onClick={handleBuyNow}
+                disabled={isOutOfStock || availableStock === 0}
+              >
+                {isOutOfStock ? 'Sin stock' : 'Comprar ahora'}
+              </button>
+              <button 
+                className={`add-to-cart-btn ${isOutOfStock || availableStock === 0 ? 'disabled' : ''}`}
+                onClick={handleAddToCart}
+                disabled={isOutOfStock || availableStock === 0}
+              >
+                {isOutOfStock ? 'Sin stock' : availableStock === 0 ? 'Máximo en carrito' : 'Agregar al carrito'}
+              </button>
             </div>
 
             <div className="product-features">
@@ -454,21 +397,11 @@ function ProductDetail() {
             <div className="seller-info">
               <h4>Vendido por</h4>
               <div className="seller-details">
-                <button 
-                  className="seller-name-btn"
-                  onClick={handleViewSellerProfile}
-                  title="Ver perfil del vendedor"
-                >
-                  {product.seller.nickname}
-                </button>
+                <span className="seller-name">{product.seller.nickname}</span>
                 <span className={`reputation ${product.seller.reputation}`}>
                   {product.seller.reputation === 'gold' && '⭐ MercadoLíder Gold'}
                   {product.seller.reputation === 'silver' && '✨ MercadoLíder'}
-                  {product.seller.reputation === 'bronze' && '🥉 MercadoLíder'}
                 </span>
-                {currentUser && isProductOwner(product.sellerId) && (
-                  <span className="owner-badge">Tu producto</span>
-                )}
               </div>
               <div className="seller-stats">
                 <span>+10000 ventas</span>
