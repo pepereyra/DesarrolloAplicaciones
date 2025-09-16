@@ -26,16 +26,10 @@ function ProductCard({ product }) {
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    if (!currentUser) {
-      navigate('/login');
-      return;
-    }
-    
-    if (!canPurchaseProduct(product.sellerId)) {
+    // Permitir agregar al carrito aunque no haya usuario logueado
+    if (currentUser && !canPurchaseProduct(product.sellerId)) {
       return; // No puede comprar sus propios productos
     }
-    
     if (canAddToCart(product)) {
       addToCart(product);
     }
@@ -44,16 +38,10 @@ function ProductCard({ product }) {
   const handleBuyNow = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    if (!currentUser) {
-      navigate('/login');
-      return;
-    }
-    
-    if (!canPurchaseProduct(product.sellerId)) {
+    // Permitir comprar aunque no haya usuario logueado
+    if (currentUser && !canPurchaseProduct(product.sellerId)) {
       return; // No puede comprar sus propios productos
     }
-    
     if (canAddToCart(product)) {
       addToCart(product);
       navigate('/carrito');
@@ -77,7 +65,7 @@ function ProductCard({ product }) {
   const currentQuantity = getItemQuantity(product.id);
   const canAddMore = canAddToCart(product);
   const isOwner = currentUser && isProductOwner(product.sellerId);
-  const canPurchase = currentUser && canPurchaseProduct(product.sellerId);
+  const canPurchase = !currentUser || (currentUser && canPurchaseProduct(product.sellerId));
 
   return (
     <div className={`product-card ${isOutOfStock ? 'out-of-stock' : ''}`}>
@@ -204,11 +192,10 @@ function ProductCard({ product }) {
             <button 
               className={`add-to-cart-btn ${isOutOfStock || !canPurchase ? 'disabled' : ''} ${!canAddMore ? 'max-reached' : ''}`}
               onClick={handleAddToCart}
-              disabled={isOutOfStock || !canPurchase || !canAddMore}
+              disabled={isOutOfStock || (currentUser && !canPurchase) || !canAddMore}
               title={
-                !currentUser ? "Inicia sesión para comprar" :
-                !canPurchase ? "No puedes comprar tus propios productos" :
-                isOutOfStock ? "Sin stock" : 
+                isOutOfStock ? "Sin stock" :
+                (currentUser && !canPurchase) ? "No puedes comprar tus propios productos" :
                 !canAddMore ? "Stock máximo en carrito" : "Agregar al carrito"
               }
             >
@@ -218,9 +205,8 @@ function ProductCard({ product }) {
                 <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
               </svg>
               <span>
-                {!currentUser ? 'Iniciar sesión' :
-                 !canPurchase ? 'Tu producto' :
-                 isOutOfStock ? 'Sin stock' : 
+                {isOutOfStock ? 'Sin stock' :
+                 (currentUser && !canPurchase) ? 'Tu producto' :
                  !canAddMore ? 'Máximo' : 'Agregar al carrito'}
               </span>
             </button>
@@ -228,11 +214,10 @@ function ProductCard({ product }) {
             <button 
               className={`buy-now-btn ${isOutOfStock || !canPurchase ? 'disabled' : ''} ${!canAddMore ? 'max-reached' : ''}`}
               onClick={handleBuyNow}
-              disabled={isOutOfStock || !canPurchase || !canAddMore}
+              disabled={isOutOfStock || (currentUser && !canPurchase) || !canAddMore}
               title={
-                !currentUser ? "Inicia sesión para comprar" :
-                !canPurchase ? "No puedes comprar tus propios productos" :
-                isOutOfStock ? "Sin stock" : 
+                isOutOfStock ? "Sin stock" :
+                (currentUser && !canPurchase) ? "No puedes comprar tus propios productos" :
                 !canAddMore ? "Stock máximo en carrito" : "Comprar ahora"
               }
             >
@@ -241,9 +226,8 @@ function ProductCard({ product }) {
                 <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.03 0 3.89.67 5.39 1.81"/>
               </svg>
               <span>
-                {!currentUser ? 'Iniciar sesión' :
-                 !canPurchase ? 'Tu producto' :
-                 isOutOfStock ? 'Sin stock' : 
+                {isOutOfStock ? 'Sin stock' :
+                 (currentUser && !canPurchase) ? 'Tu producto' :
                  !canAddMore ? 'Máximo' : 'Comprar ahora'}
               </span>
             </button>

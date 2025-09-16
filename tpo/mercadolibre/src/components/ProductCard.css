@@ -213,9 +213,6 @@
 }
 
 .add-to-cart-btn {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
   background: #3483fa;
   color: white;
   border: none;
@@ -231,15 +228,14 @@
   font-size: 13px;
   font-weight: 600;
   transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(10px);
   box-shadow: 0 1px 3px rgba(52, 131, 250, 0.3);
+  opacity: 1;
+  transform: none;
+  position: relative;
+  margin: 0;
 }
 
-.product-card:hover .add-to-cart-btn {
-  opacity: 1;
-  transform: translateY(0);
-}
+
 
 .add-to-cart-btn:hover {
   background: #2968c8;

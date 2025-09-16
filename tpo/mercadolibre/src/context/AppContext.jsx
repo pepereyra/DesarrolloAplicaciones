@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer, useEffect, useState } from 'react';
+import { useAuth } from './AuthContext';
 
 const AppContext = createContext();
 
@@ -74,36 +75,43 @@ function appReducer(state, action) {
   }
 }
 
+
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
   const [isInitialized, setIsInitialized] = useState(false);
+  const { currentUser } = useAuth ? useAuth() : { currentUser: null };
 
-  // Cargar carrito desde localStorage
+  // Helper para obtener la clave de carrito según usuario
+  const getCartKey = () => currentUser ? `mercadolibre-cart-${currentUser.id}` : 'mercadolibre-cart';
+
+  // Cargar carrito desde localStorage según usuario
   useEffect(() => {
-    const savedCart = localStorage.getItem('mercadolibre-cart');
+    const cartKey = getCartKey();
+    const savedCart = localStorage.getItem(cartKey);
     if (savedCart) {
       try {
         const cartItems = JSON.parse(savedCart);
-        // Validar y filtrar items válidos, pero sin verificar stock aquí
-        // ya que los productos pueden haber cambiado desde que se guardó
-        const validItems = cartItems.filter(item => 
-          item && item.id && item.quantity > 0
-        );
+        const validItems = cartItems.filter(item => item && item.id && item.quantity > 0);
         dispatch({ type: 'LOAD_CART', payload: validItems });
       } catch (error) {
         console.error('Error loading cart from localStorage:', error);
-        localStorage.removeItem('mercadolibre-cart');
+        localStorage.removeItem(cartKey);
       }
+    } else {
+      dispatch({ type: 'LOAD_CART', payload: [] });
     }
     setIsInitialized(true);
-  }, []);
+    // eslint-disable-next-line
+  }, [currentUser && currentUser.id]);
 
-  // Guardar carrito en localStorage (solo después de inicializar)
+  // Guardar carrito en localStorage según usuario
   useEffect(() => {
     if (isInitialized) {
-      localStorage.setItem('mercadolibre-cart', JSON.stringify(state.cart));
+      const cartKey = getCartKey();
+      localStorage.setItem(cartKey, JSON.stringify(state.cart));
     }
-  }, [state.cart, isInitialized]);
+    // eslint-disable-next-line
+  }, [state.cart, isInitialized, currentUser && currentUser.id]);
 
   // Métodos de ayuda para el carrito
   const addToCart = (product) => {
