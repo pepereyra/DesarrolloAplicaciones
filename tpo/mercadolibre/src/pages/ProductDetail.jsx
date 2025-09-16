@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { productsApi } from '../services/api';
 import { useCart } from '../hooks/useCart';
 import FavoriteButton from '../components/FavoriteButton';
@@ -14,6 +15,8 @@ function ProductDetail() {
     getAvailableStock, 
     formatPrice 
   } = useCart();
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -61,10 +64,14 @@ function ProductDetail() {
 
   const handleAddToCart = () => {
     if (product.stock === 0) return;
-    
+    if (!currentUser) {
+      // Guardar intento en sessionStorage y redirigir a login
+      sessionStorage.setItem('pendingAddToCart', JSON.stringify({ productId: product.id }));
+      navigate('/login');
+      return;
+    }
     const availableStock = getAvailableStock(product);
     const maxQuantity = Math.min(quantity, availableStock);
-    
     if (maxQuantity > 0) {
       addToCart(product, maxQuantity);
       alert(`${maxQuantity} ${product.title} agregado(s) al carrito`);
@@ -132,6 +139,11 @@ function ProductDetail() {
   }, [product, selectedImage, getProductImages]);
 
   const handleBuyNow = () => {
+    if (!currentUser) {
+      sessionStorage.setItem('pendingAddToCart', JSON.stringify({ productId: product.id }));
+      navigate('/login');
+      return;
+    }
     handleAddToCart();
     // Redireccionar al carrito después de agregar
     window.location.href = '/cart';

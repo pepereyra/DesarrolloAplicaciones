@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import { useAuth } from '../context/AuthContext';
 import FavoriteButton from './FavoriteButton';
@@ -6,6 +6,7 @@ import './ProductCard.css';
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { 
     addToCart, 
     getItemQuantity, 
@@ -26,7 +27,12 @@ function ProductCard({ product }) {
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // Permitir agregar al carrito aunque no haya usuario logueado
+    if (!currentUser) {
+      // Guardar intención en sessionStorage y redirigir a login
+      sessionStorage.setItem('pendingAddToCart', JSON.stringify({ productId: product.id }));
+      navigate('/login', { state: { from: location } });
+      return;
+    }
     if (currentUser && !canPurchaseProduct(product.sellerId)) {
       return; // No puede comprar sus propios productos
     }

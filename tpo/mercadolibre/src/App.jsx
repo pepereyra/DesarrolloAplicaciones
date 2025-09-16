@@ -31,8 +31,16 @@ function App() {
                   <Route path="/search" element={<Search />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
                   <Route path="/producto/:id" element={<ProductDetail />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/carrito" element={<Cart />} />
+                  <Route path="/cart" element={
+                    <ProtectedRoute>
+                      <Cart />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/carrito" element={
+                    <ProtectedRoute>
+                      <Cart />
+                    </ProtectedRoute>
+                  } />
                   <Route path="/favorites" element={<Favorites />} />
                   <Route path="/favoritos" element={<Favorites />} />
                   <Route path="/profile" element={<Profile />} />

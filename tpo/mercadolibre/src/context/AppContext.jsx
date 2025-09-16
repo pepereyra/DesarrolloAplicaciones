@@ -130,35 +130,59 @@ export function AppProvider({ children }) {
     const guestItems = loadGuestCart();
     const userItems = loadUserCart();
 
-    if (guestItems.length === 0) {
-      dispatch({ type: 'LOAD_CART', payload: userItems });
-      setIsInitialized(true);
-      return;
+    let merged = userItems;
+    if (guestItems.length > 0) {
+      // Merge guestItems into userItems by id (sum quantities)
+      const mergedMap = new Map();
+      userItems.forEach(item => mergedMap.set(item.id, { ...item }));
+      guestItems.forEach(item => {
+        if (mergedMap.has(item.id)) {
+          mergedMap.get(item.id).quantity += item.quantity;
+        } else {
+          mergedMap.set(item.id, { ...item });
+        }
+      });
+      merged = Array.from(mergedMap.values());
+      // Persist merged under user key and clear guest cart
+      try {
+        localStorage.setItem(userKey, JSON.stringify(merged));
+        localStorage.removeItem(guestKey);
+      } catch (err) {
+        console.error('Error saving merged cart:', err);
+      }
     }
 
-    // Merge guestItems into userItems by id (sum quantities)
-    const mergedMap = new Map();
-    userItems.forEach(item => mergedMap.set(item.id, { ...item }));
-    guestItems.forEach(item => {
-      if (mergedMap.has(item.id)) {
-        mergedMap.get(item.id).quantity += item.quantity;
-      } else {
-        mergedMap.set(item.id, { ...item });
-      }
-    });
-
-    const merged = Array.from(mergedMap.values());
-    // Persist merged under user key and clear guest cart
+    // Si hay un pendingAddToCart en sessionStorage, agregarlo
     try {
-      localStorage.setItem(userKey, JSON.stringify(merged));
-      localStorage.removeItem(guestKey);
+      const pending = sessionStorage.getItem('pendingAddToCart');
+      if (pending) {
+        const { productId } = JSON.parse(pending);
+        // Buscar el producto en la lista de productos cargados
+        const product = state.products.find(p => String(p.id) === String(productId));
+        if (product) {
+          merged = [...merged];
+          const existing = merged.find(item => String(item.id) === String(productId));
+          if (existing) {
+            if (existing.quantity < product.stock) {
+              existing.quantity += 1;
+            }
+          } else {
+            merged.push({ ...product, quantity: 1 });
+          }
+          // Persistir el carrito actualizado
+          try {
+            localStorage.setItem(userKey, JSON.stringify(merged));
+          } catch (err) {}
+        }
+        sessionStorage.removeItem('pendingAddToCart');
+      }
     } catch (err) {
-      console.error('Error saving merged cart:', err);
+      sessionStorage.removeItem('pendingAddToCart');
     }
 
     dispatch({ type: 'LOAD_CART', payload: merged });
     setIsInitialized(true);
-  }, [currentUser]);
+  }, [currentUser, state.products]);
 
   // Guardar carrito en localStorage según usuario
   useEffect(() => {
