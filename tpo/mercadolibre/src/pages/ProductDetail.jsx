@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { productsApi } from '../services/api';
 import { useCart } from '../hooks/useCart';
+import FavoriteButton from '../components/FavoriteButton';
 import './ProductDetail.css';
 
 function ProductDetail() {
@@ -283,7 +284,14 @@ function ProductDetail() {
               <span className="stock">{product.stock} disponibles</span>
             </div>
 
-            <h1 className="product-title">{product.title}</h1>
+            <div className="product-title-section">
+              <h1 className="product-title">{product.title}</h1>
+              <FavoriteButton 
+                product={product} 
+                size="normal"
+                className="product-detail-favorite"
+              />
+            </div>
 
             <div className="product-rating">
               <div className="stars">
@@ -395,24 +403,36 @@ function ProductDetail() {
           {/* Panel de compra */}
           <div className="purchase-panel">
             <div className="seller-info">
-              <h4>Vendido por</h4>
-              <div className="seller-details">
-                <span className="seller-name">{product.seller.nickname}</span>
-                <span className={`reputation ${product.seller.reputation}`}>
-                  {product.seller.reputation === 'gold' && '⭐ MercadoLíder Gold'}
-                  {product.seller.reputation === 'silver' && '✨ MercadoLíder'}
-                </span>
-              </div>
-              <div className="seller-stats">
-                <span>+10000 ventas</span>
-                <span>Excelente reputación</span>
+              <div className="seller-header">
+                <span className="sold-by-label">Vendido por</span>
+                <div className="seller-main">
+                  <Link to={`/vendedor/${product.sellerId}`} className="seller-name">
+                    {product.seller.nickname}
+                  </Link>
+                  {product.seller.reputation === 'gold' && (
+                    <div className="reputation-badge gold">
+                      <span className="badge-icon">⭐</span>
+                      <span className="badge-text">MercadoLíder Gold</span>
+                    </div>
+                  )}
+                  {product.seller.reputation === 'silver' && (
+                    <div className="reputation-badge silver">
+                      <span className="badge-icon">✨</span>
+                      <span className="badge-text">MercadoLíder</span>
+                    </div>
+                  )}
+                </div>
+                <div className="seller-stats">
+                  <span className="sales-count">+10000 ventas</span>
+                  <span className="reputation-text">Excelente reputación</span>
+                </div>
               </div>
             </div>
 
             <div className="guarantee">
               <h4>Garantía</h4>
               <p>Compra Protegida con Mercado Pago</p>
-              <p>Recibe el producto que esperabas o te devolvemos tu dinero</p>
+              <p>Recibí el producto que esperabas o te devolvemos tu dinero</p>
             </div>
 
             <div className="return-policy">

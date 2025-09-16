@@ -1,13 +1,3 @@
-.header {
-  background-color: #ffe600;
-.header-content {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 20px;
-  position: relative;
-}
-
 /* Hamburger Menu */
 .hamburger-menu {
   display: none;
@@ -19,7 +9,10 @@
   margin-left: auto;
 }
 
-/* Logo */hadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Header */
+.header {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -45,7 +38,7 @@
 
 .header-top {
   background-color: #ffe600;
-
+  padding: 16px 0;
 }
 
 .header-bottom {
@@ -62,6 +55,7 @@
   display: flex;
   align-items: center;
   gap: 30px;
+  position: relative;
 }
 
 /* Logo */
@@ -81,20 +75,29 @@
   margin-right: 8px;
 }
 
+/* Contenedor de búsqueda */
+.search-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Botón móvil de búsqueda - oculto por defecto */
+.mobile-search-button {
+  display: none;
+}
+
 /* Buscador */
 .search-form {
-  margin-left: 5%;
   flex: 1;
   display: flex;
   max-width: 600px;
   position: relative;
+  margin: 0 20px;
 }
 
 .search-input {
-  margin-left: 150px;
-  margin-right: -150px;
-  margin-top: 5px;
-  margin-bottom:5px ;
   width: 100%;
   padding: 12px 16px;
   border: 1px solid #e6e6e6;
@@ -110,20 +113,24 @@
 }
 
 .search-button {
-  margin-left: 110px;
-  margin-right: -110px;
-  margin-top: 5px;
-  margin-bottom:5px ;
   background-color: #ffffff;
-  border: 1px solid #ffe600;
-  padding: 10px 16px;
+  border: 1px solid #e6e6e6;
+  border-left: none;
+  border-radius: 0 2px 2px 0;
+  padding: 12px 16px;
   cursor: pointer;
   transition: background-color 0.3s;
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .search-button:hover {
-  background-color: #d4d4d4;
+  background-color: #f5f5f5;
+}
+
+.search-button svg {
+  color: #666;
 }
 
 /* Promoción Disney */
@@ -217,9 +224,32 @@
 }
 
 .user-greeting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   color: #333;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.user-greeting:hover {
+  background-color: #f5f5f5;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+  transition: border-color 0.2s ease;
+}
+
+.user-greeting:hover .user-avatar {
+  border-color: #3483fa;
 }
 
 .user-dropdown {
@@ -289,20 +319,44 @@
   justify-content: center;
 }
 
-/* Responsive */
-
-@media (max-width: 1800px) {
-  .mobile-search-button {
-    display: none;
-  }
+/* Favoritos en user actions */
+.favorites-action-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #000000;
+  font-size: 14px;
+  transition: color 0.3s;
+  margin-left: 8px;
+  margin-right: 8px;
+  gap: 4px;
 }
 
+.favorites-action-link:hover {
+  color: #3483fa;
+}
+
+.favorites-action-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff4757;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive */
 
 @media (max-width: 1024px) {
   .promo-disney {
-    display: none;
-  }
-  .mobile-search-button {
     display: none;
   }
 }
@@ -310,11 +364,18 @@
 @media (max-width: 768px) {
   .mobile-search-button {
     display: flex;
-    justify-content:flex-end;
+    justify-content: center;
     align-items: center;
     margin-left: auto;
     background-color: #ffe600;
-    border-color: #ffe600;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .mobile-search-button:hover {
+    background-color: #f0d000;
   }
 
   .hamburger-menu {
@@ -377,6 +438,16 @@
   .location {
     font-size: 12px;
   }
+  
+  .user-greeting {
+    padding: 2px 4px;
+    gap: 6px;
+  }
+  
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -387,4 +458,56 @@
   .logo span {
     display: none;
   }
+}
+
+/* Enlace de Vender */
+.sell-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #000000;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.sell-link:hover {
+  color: #3483fa;
+}
+
+.sell-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Enlace de Favoritos en navegación */
+.favorites-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #000000;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.favorites-nav-link:hover {
+  color: #3483fa;
+}
+
+.favorites-nav-link .favorites-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff4757;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

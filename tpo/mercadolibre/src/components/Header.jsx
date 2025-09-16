@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
+import { useFavorites } from '../context/FavoritesContext';
 import CategoryDropdown from './CategoryDropdown';
 import logoML from '../assets/mercado libre.png';
 import promoImage from '../assets/images.png';
@@ -10,6 +11,7 @@ import './Header.css';
 function Header() {
   const { state } = useApp();
   const { currentUser, logout } = useAuth();
+  const { getFavoritesCount } = useFavorites();
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,8 +19,6 @@ function Header() {
   const location = useLocation();
   const searchRef = useRef(null);
   const menuRef = useRef(null);
-  
-  const isAdmin = currentUser?.role === 'admin';
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -33,7 +33,6 @@ function Header() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-  const isAdminPanel = location.pathname === '/admin';
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -51,29 +50,7 @@ function Header() {
     ? state.cart.reduce((total, item) => total + item.quantity, 0) 
     : 0;
 
-  if (isAdmin && isAdminPanel) {
-    return (
-      <header className="header admin-header">
-        <div className="container">
-          <div className="header-content admin">
-            <Link to="/" className="logo">
-              <img src="/mercado-libre-logo.svg" alt="Mercado Libre" />
-              <span>Panel de Administración</span>
-            </Link>
-            <div className="user-actions">
-              <div className="user-menu">
-                <span className="user-greeting">Hola, {currentUser.firstName}</span>
-                <div className="user-dropdown">
-                  <Link to="/">Volver al sitio</Link>
-                  <button onClick={handleLogout}>Salir</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-    );
-  }
+  const favoritesCount = getFavoritesCount();
 
   return (
     <header className="header">
@@ -171,20 +148,33 @@ function Header() {
               <Link to="/history">Historial</Link>
               <Link to="/supermarket">Supermercado</Link>
               <Link to="/fashion">Moda</Link>
+              {currentUser && (
+                <Link to="/vender" className="sell-link">
+                  Vender
+                </Link>
+              )}
+              
             </nav>
 
             {/* Usuario y Carrito */}
             <div className="user-actions">
               {currentUser ? (
                 <div className="user-menu">
-                  <span className="user-greeting">Hola, {currentUser.firstName}</span>
+                  <div className="user-greeting">
+                    <img 
+                      src={currentUser.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.firstName + '+' + currentUser.lastName)}&background=3483fa&color=fff&size=32`} 
+                      alt={`${currentUser.firstName} ${currentUser.lastName}`}
+                      className="user-avatar"
+                      onError={(e) => {
+                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.firstName + '+' + currentUser.lastName)}&background=3483fa&color=fff&size=32`;
+                      }}
+                    />
+                    <span>Hola, {currentUser.firstName}</span>
+                  </div>
                   <div className="user-dropdown">
                     <Link to="/profile">Mi cuenta</Link>
                     <Link to="/purchases">Mis compras</Link>
                     <Link to="/favorites">Favoritos</Link>
-                    {isAdmin && (
-                      <Link to="/admin">Panel Admin</Link>
-                    )}
                     <button onClick={handleLogout}>Salir</button>
                   </div>
                 </div>
@@ -193,6 +183,15 @@ function Header() {
                   <Link to="/register">Creá tu cuenta</Link>
                   <Link to="/login">Ingresá</Link>
                 </div>
+              )}
+
+              {currentUser && (
+                <Link to="/favorites" className="favorites-action-link">
+                  Favoritos
+                  {favoritesCount > 0 && (
+                    <span className="favorites-action-count">{favoritesCount}</span>
+                  )}
+                </Link>
               )}
 
               <Link to="/carrito" className="cart-link">

@@ -139,9 +139,9 @@ function Home() {
           <h2>Categorías</h2>
           <div className="categories-grid">
             {categories.map(category => (
-              <button 
+              <Link 
                 key={category} 
-                onClick={() => handleCategoryChange(category)}
+                to={`/category/${category.toLowerCase()}`}
                 className="category-card"
               >
                 <div className="category-icon">
@@ -150,7 +150,7 @@ function Home() {
                 <span className="category-name">
                   {category}
                 </span>
-              </button>
+              </Link>
             ))}
           </div>
         </div>
@@ -249,14 +249,20 @@ function Home() {
 
 function getCategoryIcon(category) {
   const icons = {
-    'Anteojos de sol': '�️',
-    'Laptops': '💻',
-    'Freidoras de aire': '�',
-    'Televisores': '📺',
-    'Electrodomésticos': '🔌',
+    'anteojos': '🕶️',
+    'celulares': '📱',
+    'computacion': '💻',
+    'electrodomesticos': '🏠',
+    'deportes': '⚽',
+    'audio': '🎵',
+    'anteojos de sol': '🕶️',
+    'laptops': '💻',
+    'freidoras de aire': '🍳',
+    'televisores': '📺',
+    'electrodomésticos': '🔌',
     default: '🏷️'
   };
-  return icons[category] || icons.default;
+  return icons[category.toLowerCase()] || icons.default;
 }
 
 export default Home;
