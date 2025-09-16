@@ -1,169 +1,228 @@
 import { createContext, useContext, useReducer, useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
 
-const AppContext = createContext();
+  const [state, dispatch] = useReducer(appReducer, initialState);
+  import { createContext, useContext, useReducer, useEffect, useState } from 'react';
+  import { useAuth } from './AuthContext';
 
-const initialState = {
-  cart: [],
-  products: [],
-  loading: false,
-  searchQuery: '',
-  searchResults: []
-};
+  const AppContext = createContext();
 
-function appReducer(state, action) {
-  switch (action.type) {
-    case 'SET_LOADING':
-      return { ...state, loading: action.payload };
-    case 'SET_PRODUCTS':
-      return { ...state, products: action.payload };
-    case 'ADD_TO_CART':
-      const existingItem = state.cart.find(item => item.id === action.payload.id);
-      if (existingItem) {
-        // Verificar stock antes de incrementar
-        const newQuantity = existingItem.quantity + 1;
-        if (newQuantity <= action.payload.stock) {
+  const initialState = {
+    cart: [],
+    products: [],
+    loading: false,
+    searchQuery: '',
+    searchResults: []
+  };
+
+  function appReducer(state, action) {
+    switch (action.type) {
+      case 'SET_LOADING':
+        return { ...state, loading: action.payload };
+      case 'SET_PRODUCTS':
+        return { ...state, products: action.payload };
+      case 'ADD_TO_CART': {
+        const existingItem = state.cart.find(item => item.id === action.payload.id);
+        if (existingItem) {
+          // Verificar stock antes de incrementar
+          const newQuantity = existingItem.quantity + 1;
+          if (newQuantity <= action.payload.stock) {
+            return {
+              ...state,
+              cart: state.cart.map(item =>
+                item.id === action.payload.id
+                  ? { ...item, quantity: newQuantity }
+                  : item
+              )
+            };
+          }
+          return state; // No incrementar si se alcanzó el stock máximo
+        }
+        // Verificar stock antes de agregar nuevo item
+        if (action.payload.stock > 0) {
           return {
             ...state,
-            cart: state.cart.map(item =>
-              item.id === action.payload.id
-                ? { ...item, quantity: newQuantity }
-                : item
-            )
+            cart: [...state.cart, { ...action.payload, quantity: 1 }]
           };
         }
-        return state; // No incrementar si se alcanzó el stock máximo
+        return state; // No agregar si no hay stock
       }
-      // Verificar stock antes de agregar nuevo item
-      if (action.payload.stock > 0) {
+      case 'REMOVE_FROM_CART':
         return {
           ...state,
-          cart: [...state.cart, { ...action.payload, quantity: 1 }]
+          cart: state.cart.filter(item => item.id !== action.payload)
         };
-      }
-      return state; // No agregar si no hay stock
-    case 'REMOVE_FROM_CART':
-      return {
-        ...state,
-        cart: state.cart.filter(item => item.id !== action.payload)
-      };
-    case 'UPDATE_CART_QUANTITY':
-      return {
-        ...state,
-        cart: state.cart.map(item =>
-          item.id === action.payload.id
-            ? { 
-                ...item, 
-                quantity: Math.min(
-                  Math.max(1, action.payload.quantity), 
-                  item.stock || 999
-                ) 
-              }
-            : item
-        ).filter(item => item.quantity > 0)
-      };
-    case 'CLEAR_CART':
-      return { ...state, cart: [] };
-    case 'SET_SEARCH_QUERY':
-      return { ...state, searchQuery: action.payload };
-    case 'SET_SEARCH_RESULTS':
-      return { ...state, searchResults: action.payload };
-    case 'LOAD_CART':
-      return { ...state, cart: action.payload };
-    default:
-      return state;
+      case 'UPDATE_CART_QUANTITY':
+        return {
+          ...state,
+          cart: state.cart.map(item =>
+            item.id === action.payload.id
+              ? { 
+                  ...item, 
+                  quantity: Math.min(
+                    Math.max(1, action.payload.quantity), 
+                    item.stock || 999
+                  ) 
+                }
+              : item
+          ).filter(item => item.quantity > 0)
+        };
+      case 'CLEAR_CART':
+        return { ...state, cart: [] };
+      case 'SET_SEARCH_QUERY':
+        return { ...state, searchQuery: action.payload };
+      case 'SET_SEARCH_RESULTS':
+        return { ...state, searchResults: action.payload };
+      case 'LOAD_CART':
+        return { ...state, cart: action.payload };
+      default:
+        return state;
+    }
   }
-}
 
 
-export function AppProvider({ children }) {
-  const [state, dispatch] = useReducer(appReducer, initialState);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const { currentUser } = useAuth ? useAuth() : { currentUser: null };
+  export function AppProvider({ children }) {
+    const [state, dispatch] = useReducer(appReducer, initialState);
+    const [isInitialized, setIsInitialized] = useState(false);
+    const { currentUser } = useAuth();
 
-  // Helper para obtener la clave de carrito según usuario
-  const getCartKey = () => currentUser ? `mercadolibre-cart-${currentUser.id}` : 'mercadolibre-cart';
+    // Build storage key based on user (guest vs user id/email)
+    const getCartKey = (user) => {
+      if (!user) return 'mercadolibre-cart-guest';
+      const id = user.id || user.email || 'unknown';
+      return `mercadolibre-cart-${id}`;
+    };
 
-  // Cargar carrito desde localStorage según usuario
-  useEffect(() => {
-    const cartKey = getCartKey();
-    const savedCart = localStorage.getItem(cartKey);
-    if (savedCart) {
+    useEffect(() => {
+      const userKey = getCartKey(currentUser);
+      const guestKey = getCartKey(null);
+
+      const loadGuestCart = () => {
+        const guestRaw = localStorage.getItem(guestKey);
+        if (!guestRaw) return [];
+        try {
+          const guestItems = JSON.parse(guestRaw).filter(item => item && item.id && item.quantity > 0);
+          return guestItems;
+        } catch (err) {
+          console.error('Error parsing guest cart:', err);
+          localStorage.removeItem(guestKey);
+          return [];
+        }
+      };
+
+      const loadUserCart = () => {
+        const raw = localStorage.getItem(userKey);
+        if (!raw) return [];
+        try {
+          const items = JSON.parse(raw).filter(item => item && item.id && item.quantity > 0);
+          return items;
+        } catch (err) {
+          console.error('Error parsing user cart:', err);
+          localStorage.removeItem(userKey);
+          return [];
+        }
+      };
+
+      if (!currentUser) {
+        const guestItems = loadGuestCart();
+        dispatch({ type: 'LOAD_CART', payload: guestItems });
+        setIsInitialized(true);
+        return;
+      }
+
+      // currentUser exists: load user cart and merge guest cart if any
+      const guestItems = loadGuestCart();
+      const userItems = loadUserCart();
+
+      if (guestItems.length === 0) {
+        dispatch({ type: 'LOAD_CART', payload: userItems });
+        setIsInitialized(true);
+        return;
+      }
+
+      // Merge guestItems into userItems by id (sum quantities)
+      const mergedMap = new Map();
+      userItems.forEach(item => mergedMap.set(item.id, { ...item }));
+      guestItems.forEach(item => {
+        if (mergedMap.has(item.id)) {
+          mergedMap.get(item.id).quantity += item.quantity;
+        } else {
+          mergedMap.set(item.id, { ...item });
+        }
+      });
+
+      const merged = Array.from(mergedMap.values());
+      // Persist merged under user key and clear guest cart
       try {
-        const cartItems = JSON.parse(savedCart);
-        const validItems = cartItems.filter(item => item && item.id && item.quantity > 0);
-        dispatch({ type: 'LOAD_CART', payload: validItems });
-      } catch (error) {
-        console.error('Error loading cart from localStorage:', error);
-        localStorage.removeItem(cartKey);
+        localStorage.setItem(userKey, JSON.stringify(merged));
+        localStorage.removeItem(guestKey);
+      } catch (err) {
+        console.error('Error saving merged cart:', err);
       }
-    } else {
-      dispatch({ type: 'LOAD_CART', payload: [] });
-    }
-    setIsInitialized(true);
-    // eslint-disable-next-line
-  }, [currentUser && currentUser.id]);
 
-  // Guardar carrito en localStorage según usuario
-  useEffect(() => {
-    if (isInitialized) {
-      const cartKey = getCartKey();
-      localStorage.setItem(cartKey, JSON.stringify(state.cart));
-    }
-    // eslint-disable-next-line
-  }, [state.cart, isInitialized, currentUser && currentUser.id]);
+      dispatch({ type: 'LOAD_CART', payload: merged });
+      setIsInitialized(true);
+    }, [currentUser]);
 
-  // Métodos de ayuda para el carrito
-  const addToCart = (product) => {
-    dispatch({ type: 'ADD_TO_CART', payload: product });
-  };
+    // Guardar carrito en localStorage según usuario
+    useEffect(() => {
+      if (isInitialized) {
+        const storageKey = getCartKey(currentUser);
+        localStorage.setItem(storageKey, JSON.stringify(state.cart));
+      }
+    }, [state.cart, isInitialized, currentUser]);
 
-  const removeFromCart = (productId) => {
-    dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
-  };
+    // Métodos de ayuda para el carrito
+    const addToCart = (product) => {
+      dispatch({ type: 'ADD_TO_CART', payload: product });
+    };
 
-  const updateCartQuantity = (productId, quantity) => {
-    dispatch({ 
-      type: 'UPDATE_CART_QUANTITY', 
-      payload: { id: productId, quantity } 
-    });
-  };
+    const removeFromCart = (productId) => {
+      dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
+    };
 
-  const clearCart = () => {
-    dispatch({ type: 'CLEAR_CART' });
-  };
+    const updateCartQuantity = (productId, quantity) => {
+      dispatch({ 
+        type: 'UPDATE_CART_QUANTITY', 
+        payload: { id: productId, quantity } 
+      });
+    };
 
-  // Métodos de búsqueda
-  const setSearchQuery = (query) => {
-    dispatch({ type: 'SET_SEARCH_QUERY', payload: query });
-  };
+    const clearCart = () => {
+      dispatch({ type: 'CLEAR_CART' });
+    };
 
-  const setSearchResults = (results) => {
-    dispatch({ type: 'SET_SEARCH_RESULTS', payload: results });
-  };
+    // Métodos de búsqueda
+    const setSearchQuery = (query) => {
+      dispatch({ type: 'SET_SEARCH_QUERY', payload: query });
+    };
 
-  const value = {
-    state,
-    dispatch,
-    addToCart,
-    removeFromCart,
-    updateCartQuantity,
-    clearCart,
-    setSearchQuery,
-    setSearchResults
-  };
+    const setSearchResults = (results) => {
+      dispatch({ type: 'SET_SEARCH_RESULTS', payload: results });
+    };
 
-  return (
-    <AppContext.Provider value={value}>
-      {children}
-    </AppContext.Provider>
-  );
-}
+    const value = {
+      state,
+      dispatch,
+      addToCart,
+      removeFromCart,
+      updateCartQuantity,
+      clearCart,
+      setSearchQuery,
+      setSearchResults
+    };
 
-export function useApp() {
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error('useApp must be used within an AppProvider');
+    return (
+      <AppContext.Provider value={value}>
+        {children}
+      </AppContext.Provider>
+    );
   }
-  return context;
-}
+
+  export function useApp() {
+    const context = useContext(AppContext);
+    if (!context) {
+      throw new Error('useApp must be used within an AppProvider');
+    }
+    return context;
+  }

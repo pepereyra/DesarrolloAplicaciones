@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import CategoryFilter from '../components/CategoryFilter';
 import BannerCarousel from '../components/BannerCarousel';
@@ -40,6 +40,15 @@ function Home() {
 
     fetchData();
   }, [dispatch]);
+
+  // Sync selectedCategory with query param `category` if present
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    const paramCat = searchParams.get('category') || '';
+    if (paramCat && paramCat !== selectedCategory) {
+      setSelectedCategory(paramCat);
+    }
+  }, [searchParams]);
 
   // Filtrar y ordenar productos
   useEffect(() => {
@@ -133,28 +142,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Categorías */}
-      <section className="categories-section">
-        <div className="container">
-          <h2>Categorías</h2>
-          <div className="categories-grid">
-            {categories.map(category => (
-              <Link 
-                key={category} 
-                to={`/category/${category.toLowerCase()}`}
-                className="category-card"
-              >
-                <div className="category-icon">
-                  {getCategoryIcon(category)}
-                </div>
-                <span className="category-name">
-                  {category}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+  {/* Categorías removed — header dropdown provides navigation */}
 
       {/* Productos destacados */}
       <section className="featured-section">
@@ -247,22 +235,6 @@ function Home() {
   );
 }
 
-function getCategoryIcon(category) {
-  const icons = {
-    'anteojos': '🕶️',
-    'celulares': '📱',
-    'computacion': '💻',
-    'electrodomesticos': '🏠',
-    'deportes': '⚽',
-    'audio': '🎵',
-    'anteojos de sol': '🕶️',
-    'laptops': '💻',
-    'freidoras de aire': '🍳',
-    'televisores': '📺',
-    'electrodomésticos': '🔌',
-    default: '🏷️'
-  };
-  return icons[category.toLowerCase()] || icons.default;
-}
+// Categories are handled by the header dropdown now
 
 export default Home;

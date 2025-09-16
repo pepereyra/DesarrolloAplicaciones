@@ -34,7 +34,7 @@
     },
     {
       "id": "2",
-      "title": "Samsung Galaxy S23 128GB",
+      "title": "Samsung Galaxy S23 256GB",
       "price": 649999,
       "currency": "ARS",
       "condition": "new",
@@ -824,6 +824,26 @@
         "phone": "+54 11 678-9012"
       },
       "createdAt": "2025-09-09T14:47:13.167Z"
+    },
+    {
+      "id": 7,
+      "email": "e.h.lanzillotta@gmail.com",
+      "password": "123456789",
+      "firstName": "Eliel",
+      "lastName": "Lanzillotta",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2025-09-16T17:40:59.060Z"
+    },
+    {
+      "id": 8,
+      "email": "admin2@gmail.com",
+      "password": "admin1234",
+      "firstName": "Admin2",
+      "lastName": "A2",
+      "role": "user",
+      "avatar": "https://via.placeholder.com/150",
+      "createdAt": "2025-09-16T17:42:41.949Z"
     }
   ],
   "cart": []

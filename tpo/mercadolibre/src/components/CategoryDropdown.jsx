@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { getCategories } from '../services/api';
 import './CategoryDropdown.css';
@@ -20,16 +20,29 @@ function CategoryDropdown() {
     fetchCategories();
   }, []);
 
+  const closeTimeout = useRef(null);
+
   const handleMouseEnter = () => {
+    if (closeTimeout.current) {
+      clearTimeout(closeTimeout.current);
+      closeTimeout.current = null;
+    }
     setIsOpen(true);
   };
 
   const handleMouseLeave = () => {
-    setIsOpen(false);
+    // small delay to allow pointer to reach dropdown without closing
+    closeTimeout.current = setTimeout(() => setIsOpen(false), 150);
   };
 
+  useEffect(() => {
+    return () => {
+      if (closeTimeout.current) clearTimeout(closeTimeout.current);
+    };
+  }, []);
+
   return (
-    <div 
+    <div
       className="category-dropdown"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -46,25 +59,23 @@ function CategoryDropdown() {
           />
         </svg>
       </Link>
-      
+
       {isOpen && (
         <div className="category-dropdown-menu">
-          <div className="category-grid">
-            {categories.slice(0, 12).map((category) => (
-              <Link
-                key={category}
-                to={`/category/${encodeURIComponent(category.toLowerCase())}`}
-                className="category-item"
-                onClick={() => setIsOpen(false)}
-              >
-                <span className="category-icon">
-                  {getCategoryIcon(category)}
-                </span>
-                <span className="category-name">{category}</span>
-              </Link>
+          <ul className="category-list">
+            {categories.map((category) => (
+              <li key={category} className="category-list-item">
+                <Link
+                  to={`/?category=${encodeURIComponent(category)}`}
+                  className="category-text-item"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {category}
+                </Link>
+              </li>
             ))}
-          </div>
-          
+          </ul>
+
           {categories.length > 12 && (
             <div className="category-footer">
               <Link to="/categories" className="see-all-categories">
@@ -85,38 +96,6 @@ function CategoryDropdown() {
       )}
     </div>
   );
-}
-
-// Función para obtener iconos según categoría
-function getCategoryIcon(category) {
-  const icons = {
-    'celulares y telefonos': '📱',
-    'celulares': '📱',
-    'computacion': '💻',
-    'electrodomesticos': '🏠',
-    'deportes y fitness': '⚽',
-    'deportes': '⚽',
-    'audio': '🎵',
-    'anteojos': '🕶️',
-    'hogar muebles y jardin': '🪑',
-    'belleza y cuidado personal': '💄',
-    'ropa y accesorios': '👕',
-    'juegos y juguetes': '🎮',
-    'bebes': '👶',
-    'salud y equipamiento medico': '🏥',
-    'industrias y oficinas': '🏢',
-    'construccion': '🔨',
-    'accesorios para vehiculos': '🚗',
-    'herramientas': '🔧',
-    'agro': '🌾',
-    'alimentos y bebidas': '🍎',
-    'arte y manualidades': '🎨',
-    'antiguedades': '🏺',
-    'musica peliculas y series': '🎬',
-    'libros revistas y comics': '📚'
-  };
-  
-  return icons[category.toLowerCase()] || '📦';
 }
 
 export default CategoryDropdown;
