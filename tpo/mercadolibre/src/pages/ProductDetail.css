@@ -591,6 +591,8 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   border: 1px solid #e6e6e6;
   overflow: hidden;
+  width: 100%;
+  max-width: 250px;
 }
 
 .purchase-panel > div {
@@ -606,12 +608,11 @@
 .seller-info {
   background: white;
   padding: 16px 20px !important;
-}
-
-.seller-header {
+  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
 }
 
 .sold-by-label {
@@ -621,10 +622,15 @@
   margin: 0;
 }
 
-.seller-main {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.seller-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  grid-template-columns: none !important;
+  grid-template-rows: none !important;
 }
 
 .seller-name {
@@ -633,6 +639,9 @@
   font-weight: 400;
   text-decoration: none;
   line-height: 1.2;
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 
 .seller-name:hover {
@@ -649,7 +658,9 @@
   font-size: 11px;
   font-weight: 600;
   width: fit-content;
-  margin-top: 2px;
+  margin: 2px auto 0 auto;
+  justify-self: center;
+  align-self: center;
 }
 
 .reputation-badge.gold {
@@ -676,12 +687,14 @@
 
 /* Seller Stats */
 .seller-stats {
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
   gap: 2px;
-  margin-top: 8px;
   font-size: 12px;
   color: #666;
+  text-align: center;
+  width: 100%;
+  grid-template-columns: none !important;
 }
 
 .sales-count,
@@ -795,6 +808,8 @@
   
   .purchase-panel {
     position: static;
+    margin: 0 auto;
+    max-width: 300px;
   }
   
   .main-image {
@@ -806,6 +821,13 @@
   .product-content {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+  
+  .purchase-panel {
+    position: static;
+    margin: 0 auto;
+    max-width: 400px;
+    width: 100%;
   }
   
   .product-gallery {
@@ -884,6 +906,12 @@
 @media (max-width: 480px) {
   .container {
     padding: 12px;
+  }
+  
+  .purchase-panel {
+    margin: 0 auto;
+    max-width: 350px;
+    width: 100%;
   }
   
   .product-gallery {
