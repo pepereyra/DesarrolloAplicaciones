@@ -19,6 +19,7 @@ function SellerPanel() {
     description: '',
     category: '',
     thumbnail: '',
+    images: [''], // Array de URLs de imágenes
     stock: '',
     condition: 'new',
     free_shipping: false,
@@ -64,6 +65,38 @@ function SellerPanel() {
     }));
   };
 
+  // Funciones para manejar múltiples imágenes
+  const handleImageUrlChange = (index, value) => {
+    const newImages = [...formData.images];
+    newImages[index] = value;
+    setFormData(prev => ({
+      ...prev,
+      images: newImages,
+      // Actualizar thumbnail con la primera imagen válida
+      thumbnail: newImages.find(url => url.trim() !== '') || ''
+    }));
+  };
+
+  const addImageUrl = () => {
+    if (formData.images.length < 8) { // Máximo 8 imágenes
+      setFormData(prev => ({
+        ...prev,
+        images: [...prev.images, '']
+      }));
+    }
+  };
+
+  const removeImageUrl = (index) => {
+    if (formData.images.length > 1) {
+      const newImages = formData.images.filter((_, i) => i !== index);
+      setFormData(prev => ({
+        ...prev,
+        images: newImages,
+        thumbnail: newImages.find(url => url.trim() !== '') || ''
+      }));
+    }
+  };
+
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
   };
@@ -84,6 +117,8 @@ function SellerPanel() {
       console.log('Form Data:', formData);
       
       // Preparar datos del producto
+      const validImages = formData.images.filter(url => url.trim() !== '');
+      
       const productData = {
         ...formData,
         price: parseInt(formData.price),
@@ -95,7 +130,8 @@ function SellerPanel() {
         },
         location: formData.location || sellerInfo.location || 'Argentina',
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-        images: formData.thumbnail ? [formData.thumbnail] : [],
+        images: validImages,
+        thumbnail: validImages[0] || '', // Primera imagen válida como thumbnail
         currency: 'ARS',
         installments: {
           quantity: 12,
@@ -136,6 +172,7 @@ function SellerPanel() {
       description: product.description || '',
       category: product.category || '',
       thumbnail: product.thumbnail || '',
+      images: product.images?.length > 0 ? product.images : [''],
       stock: product.stock?.toString() || '',
       condition: product.condition || 'new',
       free_shipping: product.free_shipping || false,
@@ -171,6 +208,7 @@ function SellerPanel() {
       description: '',
       category: '',
       thumbnail: '',
+      images: [''],
       stock: '',
       condition: 'new',
       free_shipping: false,
@@ -266,14 +304,60 @@ function SellerPanel() {
               required
             />
 
+            {/* Sección de imágenes múltiples */}
+            <div className="images-section">
+              <h4>Imágenes del producto</h4>
+              <p className="images-help">Agrega hasta 8 imágenes. La primera imagen será la principal.</p>
+              
+              {formData.images.map((imageUrl, index) => (
+                <div key={index} className="image-url-row">
+                  <input
+                    type="url"
+                    value={imageUrl}
+                    onChange={(e) => handleImageUrlChange(index, e.target.value)}
+                    placeholder={index === 0 ? "URL de la imagen principal *" : `URL de imagen ${index + 1}`}
+                    required={index === 0}
+                  />
+                  {formData.images.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeImageUrl(index)}
+                      className="remove-image-btn"
+                      title="Eliminar imagen"
+                    >
+                      ❌
+                    </button>
+                  )}
+                  {imageUrl && (
+                    <div className="image-preview">
+                      <img 
+                        src={imageUrl} 
+                        alt={`Preview ${index + 1}`}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                        onLoad={(e) => {
+                          e.target.style.display = 'block';
+                        }}
+                      />
+                      {index === 0 && <span className="main-badge">Principal</span>}
+                    </div>
+                  )}
+                </div>
+              ))}
+              
+              {formData.images.length < 8 && (
+                <button
+                  type="button"
+                  onClick={addImageUrl}
+                  className="add-image-btn"
+                >
+                  ➕ Agregar otra imagen
+                </button>
+              )}
+            </div>
+
             <div className="form-row">
-              <input
-                type="url"
-                name="thumbnail"
-                value={formData.thumbnail}
-                onChange={handleInputChange}
-                placeholder="URL de la imagen principal"
-              />
               <input
                 type="number"
                 name="stock"
