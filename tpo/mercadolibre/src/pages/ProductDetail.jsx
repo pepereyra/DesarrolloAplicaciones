@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { productsApi } from '../services/api';
 import { useCart } from '../hooks/useCart';
+import { useAuth } from '../context/AuthContext';
 import FavoriteButton from '../components/FavoriteButton';
 import './ProductDetail.css';
 
 function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { 
     addToCart, 
     getItemQuantity, 
@@ -14,6 +16,7 @@ function ProductDetail() {
     getAvailableStock, 
     formatPrice 
   } = useCart();
+  const { currentUser, isProductOwner } = useAuth();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -23,7 +26,7 @@ function ProductDetail() {
 
   // Función para obtener las imágenes del producto
   const getProductImages = useCallback((product) => {
-    if (!product) return [];
+    if (!product) return ['/placeholder-image.svg'];
     
     const images = [];
     
@@ -36,6 +39,11 @@ function ProductDetail() {
     if (product.images && Array.isArray(product.images) && product.images.length > 0) {
       const additionalImages = product.images.filter(img => img !== product.thumbnail);
       images.push(...additionalImages);
+    }
+    
+    // Si no hay imágenes, retornar placeholder
+    if (images.length === 0) {
+      return ['/placeholder-image.svg'];
     }
     
     // Retornar máximo 4 imágenes
@@ -72,6 +80,12 @@ function ProductDetail() {
     } else {
       alert('No hay suficiente stock disponible');
     }
+  };
+
+  const handleEditProduct = () => {
+    // Redirigir al panel de vendedor para editar este producto
+    console.log('Navegando a panel de vendedor con producto:', product);
+    navigate('/vender', { state: { editProduct: product } });
   };
 
   const handleQuantityChange = (newQuantity) => {
@@ -195,6 +209,9 @@ function ProductDetail() {
                     src={img} 
                     alt={`${product.title} vista ${index + 1}`}
                     loading="lazy"
+                    onError={(e) => {
+                      e.target.src = '/placeholder-image.svg';
+                    }}
                   />
                   <div className="thumbnail-overlay"></div>
                 </button>
@@ -214,6 +231,9 @@ function ProductDetail() {
                   src={images[selectedImage]} 
                   alt={product.title}
                   loading="eager"
+                  onError={(e) => {
+                    e.target.src = '/placeholder-image.svg';
+                  }}
                   style={{
                     transformOrigin: isZoomed ? `${mousePosition.x}% ${mousePosition.y}%` : 'center',
                     transform: isZoomed ? 'scale(2.5)' : 'scale(1)'
@@ -342,50 +362,70 @@ function ProductDetail() {
               </div>
             )}
 
-            <div className="quantity-selector">
-              <label htmlFor="quantity">Cantidad:</label>
-              <div className="quantity-controls">
-                <button 
-                  onClick={() => handleQuantityChange(quantity - 1)}
-                  disabled={quantity <= 1}
-                >
-                  −
-                </button>
-                <input 
-                  type="number" 
-                  id="quantity"
-                  value={quantity}
-                  onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
-                  min="1"
-                  max={availableStock}
-                />
-                <button 
-                  onClick={() => handleQuantityChange(quantity + 1)}
-                  disabled={quantity >= availableStock}
-                >
-                  +
-                </button>
+            {!currentUser || !isProductOwner(product.sellerId) ? (
+              <div className="quantity-selector">
+                <label htmlFor="quantity">Cantidad:</label>
+                <div className="quantity-controls">
+                  <button 
+                    onClick={() => handleQuantityChange(quantity - 1)}
+                    disabled={quantity <= 1}
+                  >
+                    −
+                  </button>
+                  <input 
+                    type="number" 
+                    id="quantity"
+                    value={quantity}
+                    onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
+                    min="1"
+                    max={availableStock}
+                  />
+                  <button 
+                    onClick={() => handleQuantityChange(quantity + 1)}
+                    disabled={quantity >= availableStock}
+                  >
+                    +
+                  </button>
+                </div>
+                <span className="stock-info">
+                  ({availableStock} disponibles{currentQuantity > 0 && `, ${currentQuantity} en carrito`})
+                </span>
               </div>
-              <span className="stock-info">
-                ({availableStock} disponibles{currentQuantity > 0 && `, ${currentQuantity} en carrito`})
-              </span>
-            </div>
+            ) : (
+              <div className="owner-info">
+                <p>✅ Este es tu producto</p>
+                <p>Usa el botón "Editar" para modificar la información, precio o stock.</p>
+              </div>
+            )}
 
             <div className="action-buttons">
-              <button 
-                className={`buy-now-btn ${isOutOfStock || availableStock === 0 ? 'disabled' : ''}`}
-                onClick={handleBuyNow}
-                disabled={isOutOfStock || availableStock === 0}
-              >
-                {isOutOfStock ? 'Sin stock' : 'Comprar ahora'}
-              </button>
-              <button 
-                className={`add-to-cart-btn ${isOutOfStock || availableStock === 0 ? 'disabled' : ''}`}
-                onClick={handleAddToCart}
-                disabled={isOutOfStock || availableStock === 0}
-              >
-                {isOutOfStock ? 'Sin stock' : availableStock === 0 ? 'Máximo en carrito' : 'Agregar al carrito'}
-              </button>
+              {currentUser && isProductOwner(product.sellerId) ? (
+                // Botones para el dueño del producto
+                <button 
+                  className="edit-product-btn"
+                  onClick={handleEditProduct}
+                >
+                  ✏️ Editar mi producto
+                </button>
+              ) : (
+                // Botones para compradores
+                <>
+                  <button 
+                    className={`buy-now-btn ${isOutOfStock || availableStock === 0 ? 'disabled' : ''}`}
+                    onClick={handleBuyNow}
+                    disabled={isOutOfStock || availableStock === 0}
+                  >
+                    {isOutOfStock ? 'Sin stock' : 'Comprar ahora'}
+                  </button>
+                  <button 
+                    className={`add-to-cart-btn ${isOutOfStock || availableStock === 0 ? 'disabled' : ''}`}
+                    onClick={handleAddToCart}
+                    disabled={isOutOfStock || availableStock === 0}
+                  >
+                    {isOutOfStock ? 'Sin stock' : availableStock === 0 ? 'Máximo en carrito' : 'Agregar al carrito'}
+                  </button>
+                </>
+              )}
             </div>
 
             <div className="product-features">

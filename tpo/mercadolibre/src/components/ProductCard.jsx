@@ -64,7 +64,8 @@ function ProductCard({ product }) {
   const handleEditProduct = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate('/vender');
+    console.log('Navegando a panel de vendedor con producto desde card:', product);
+    navigate('/vender', { state: { editProduct: product } });
   };
 
   const isOutOfStock = product.stock === 0;
@@ -77,7 +78,13 @@ function ProductCard({ product }) {
     <div className={`product-card ${isOutOfStock ? 'out-of-stock' : ''}`}>
       <Link to={`/producto/${product.id}`} className="product-link">
         <div className="product-image">
-          <img src={product.thumbnail} alt={product.title} />
+          <img 
+            src={product.thumbnail || '/placeholder-image.svg'} 
+            alt={product.title}
+            onError={(e) => {
+              e.target.src = '/placeholder-image.svg';
+            }}
+          />
           <FavoriteButton 
             product={product} 
             size="small" 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import Notification from '../components/Notification';
@@ -7,12 +7,19 @@ import './SellerPanel.css';
 
 function SellerPanel() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentUser, getSellerInfo } = useAuth();
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [notification, setNotification] = useState(null);
   const [loading, setLoading] = useState(false);
   const [sellerInfo, setSellerInfo] = useState(null);
+  const [currentView, setCurrentView] = useState('list'); // 'list' o 'form'
+  
+  // Debug: observar cambios en currentView
+  useEffect(() => {
+    console.log('currentView cambió a:', currentView);
+  }, [currentView]);
   const [formData, setFormData] = useState({
     title: '',
     price: '',
@@ -41,6 +48,35 @@ function SellerPanel() {
     
     loadSellerProducts();
   }, [currentUser, navigate, getSellerInfo]);
+
+  // useEffect para manejar cuando se llega desde ProductDetail con un producto para editar
+  useEffect(() => {
+    console.log('SellerPanel useEffect editProduct - location.state:', location.state);
+    if (location.state?.editProduct) {
+      const productToEdit = location.state.editProduct;
+      console.log('Producto para editar recibido:', productToEdit);
+      setSelectedProduct(productToEdit);
+      setCurrentView('form');
+      setFormData({
+        title: productToEdit.title || '',
+        price: productToEdit.price?.toString() || '',
+        description: productToEdit.description || '',
+        category: productToEdit.category || '',
+        thumbnail: productToEdit.thumbnail || '',
+        images: productToEdit.images?.length > 0 ? productToEdit.images : [''],
+        stock: productToEdit.stock?.toString() || '',
+        condition: productToEdit.condition || 'new',
+        free_shipping: productToEdit.free_shipping || false,
+        location: productToEdit.location || '',
+        tags: productToEdit.tags?.join(', ') || ''
+      });
+      
+      // Limpiar el estado de navegación después de procesar
+      setTimeout(() => {
+        navigate('/vender', { replace: true, state: {} });
+      }, 100);
+    }
+  }, [location.state?.editProduct, navigate]);
 
   const loadSellerProducts = async () => {
     try {
@@ -119,6 +155,12 @@ function SellerPanel() {
       // Preparar datos del producto
       const validImages = formData.images.filter(url => url.trim() !== '');
       
+      // Validar máximo de imágenes (opcional: 0-8)
+      if (validImages.length > 8) {
+        showNotification('Máximo 8 imágenes permitidas por producto', 'error');
+        return;
+      }
+      
       const productData = {
         ...formData,
         price: parseInt(formData.price),
@@ -131,7 +173,7 @@ function SellerPanel() {
         location: formData.location || sellerInfo.location || 'Argentina',
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
         images: validImages,
-        thumbnail: validImages[0] || '', // Primera imagen válida como thumbnail
+        thumbnail: validImages.length > 0 ? validImages[0] : null, // null si no hay imágenes
         currency: 'ARS',
         installments: {
           quantity: 12,
@@ -166,6 +208,7 @@ function SellerPanel() {
 
   const handleEdit = (product) => {
     setSelectedProduct(product);
+    setCurrentView('form'); // Cambiar a vista de formulario
     setFormData({
       title: product.title || '',
       price: product.price?.toString() || '',
@@ -202,6 +245,7 @@ function SellerPanel() {
 
   const resetForm = () => {
     setSelectedProduct(null);
+    setCurrentView('list'); // Volver a la vista de lista
     setFormData({
       title: '',
       price: '',
@@ -243,12 +287,39 @@ function SellerPanel() {
             <span className="reputation bronze">🥉 Bronze</span>
           </div>
         )}
+        
+        {/* Navegación entre vistas */}
+        <div className="view-navigation">
+          <button 
+            className={`nav-btn ${currentView === 'list' ? 'active' : ''}`}
+            onClick={() => {
+              console.log('Navegando a vista de lista');
+              setCurrentView('list');
+            }}
+          >
+            📋 Mis Productos ({products.length})
+          </button>
+          <button 
+            className={`nav-btn ${currentView === 'form' ? 'active' : ''}`}
+            onClick={() => {
+              console.log('Navegando a vista de formulario');
+              setCurrentView('form');
+              if (selectedProduct) {
+                resetForm(); // Limpiar si había un producto seleccionado
+              }
+            }}
+          >
+            ➕ {selectedProduct ? 'Editar Producto' : 'Nuevo Producto'}
+          </button>
+        </div>
       </div>
 
       <div className="seller-content">
-        <div className="product-form-section">
-          <h3>{selectedProduct ? 'Editar Producto' : 'Nuevo Producto'}</h3>
-          <form onSubmit={handleSubmit} className="seller-form">
+        {currentView === 'form' ? (
+          // Vista del formulario
+          <div className="product-form-section">
+            <h3>{selectedProduct ? 'Editar Producto' : 'Nuevo Producto'}</h3>
+            <form onSubmit={handleSubmit} className="seller-form">
             <div className="form-row">
               <input
                 type="text"
@@ -307,7 +378,7 @@ function SellerPanel() {
             {/* Sección de imágenes múltiples */}
             <div className="images-section">
               <h4>Imágenes del producto</h4>
-              <p className="images-help">Agrega hasta 8 imágenes. La primera imagen será la principal.</p>
+              <p className="images-help">Agrega hasta 8 imágenes de tu producto (opcional). La primera imagen será la principal.</p>
               
               {formData.images.map((imageUrl, index) => (
                 <div key={index} className="image-url-row">
@@ -315,8 +386,7 @@ function SellerPanel() {
                     type="url"
                     value={imageUrl}
                     onChange={(e) => handleImageUrlChange(index, e.target.value)}
-                    placeholder={index === 0 ? "URL de la imagen principal *" : `URL de imagen ${index + 1}`}
-                    required={index === 0}
+                    placeholder={index === 0 ? "URL de la imagen principal (opcional)" : `URL de imagen ${index + 1} (opcional)`}
                   />
                   {formData.images.length > 1 && (
                     <button
@@ -409,60 +479,62 @@ function SellerPanel() {
               )}
             </div>
           </form>
-        </div>
+          </div>
+        ) : (
+          // Vista de lista de productos
+          <div className="products-list-section">
+            <h3>Mis Productos ({products.length})</h3>
+            {loading && <p>Cargando productos...</p>}
+            
+            {!loading && products.length === 0 && (
+              <div className="no-products">
+                <p>Aún no tienes productos en venta.</p>
+                <p>¡Crea tu primer producto con el botón "Nuevo Producto"!</p>
+              </div>
+            )}
 
-        <div className="products-list-section">
-          <h3>Mis Productos ({products.length})</h3>
-          {loading && <p>Cargando productos...</p>}
-          
-          {!loading && products.length === 0 && (
-            <div className="no-products">
-              <p>Aún no tienes productos en venta.</p>
-              <p>¡Crea tu primer producto arriba!</p>
-            </div>
-          )}
-
-          {!loading && products.length > 0 && (
-            <div className="products-grid">
-              {products.map(product => (
-                <div key={product.id} className="product-card seller">
-                  <div className="product-image">
-                    {product.thumbnail ? (
-                      <img src={product.thumbnail} alt={product.title} />
-                    ) : (
-                      <div className="no-image">Sin imagen</div>
-                    )}
+            {!loading && products.length > 0 && (
+              <div className="products-grid">
+                {products.map(product => (
+                  <div key={product.id} className="product-card seller">
+                    <div className="product-image">
+                      {product.thumbnail ? (
+                        <img src={product.thumbnail} alt={product.title} />
+                      ) : (
+                        <div className="no-image">Sin imagen</div>
+                      )}
+                    </div>
+                    <div className="product-info">
+                      <h4>{product.title}</h4>
+                      <p className="price">${product.price?.toLocaleString()} ARS</p>
+                      <p className="stock">Stock: {product.stock}</p>
+                      <p className="category">{product.category}</p>
+                      {product.tags && product.tags.length > 0 && (
+                        <div className="tags">
+                          {product.tags.map((tag, index) => (
+                            <span key={index} className="tag">{tag}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <div className="product-actions">
+                      <button onClick={() => handleEdit(product)} disabled={loading}>
+                        Editar
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(product.id)}
+                        className="delete"
+                        disabled={loading}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
                   </div>
-                  <div className="product-info">
-                    <h4>{product.title}</h4>
-                    <p className="price">${product.price?.toLocaleString()} ARS</p>
-                    <p className="stock">Stock: {product.stock}</p>
-                    <p className="category">{product.category}</p>
-                    {product.tags && product.tags.length > 0 && (
-                      <div className="tags">
-                        {product.tags.map((tag, index) => (
-                          <span key={index} className="tag">{tag}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="product-actions">
-                    <button onClick={() => handleEdit(product)} disabled={loading}>
-                      Editar
-                    </button>
-                    <button 
-                      onClick={() => handleDelete(product.id)}
-                      className="delete"
-                      disabled={loading}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -720,6 +720,30 @@
         "quantity": 12,
         "amount": 25000
       }
+    },
+    {
+      "id": "18b2",
+      "title": "Producto de prueba",
+      "price": 123,
+      "description": "aaa",
+      "category": "computacion",
+      "thumbnail": null,
+      "images": [],
+      "stock": 22,
+      "condition": "new",
+      "free_shipping": false,
+      "location": "Argentina",
+      "tags": [],
+      "sellerId": "9",
+      "seller": {
+        "nickname": "NICOLAS_STORE",
+        "reputation": "bronze"
+      },
+      "currency": "ARS",
+      "installments": {
+        "quantity": 12,
+        "amount": 10
+      }
     }
   ],
   "users": [
@@ -826,7 +850,7 @@
       "createdAt": "2025-09-09T14:47:13.167Z"
     },
     {
-      "id": 7,
+      "id": "7",
       "email": "e.h.lanzillotta@gmail.com",
       "password": "123456789",
       "firstName": "Eliel",
@@ -836,7 +860,7 @@
       "createdAt": "2025-09-16T17:40:59.060Z"
     },
     {
-      "id": 8,
+      "id": "8",
       "email": "admin2@gmail.com",
       "password": "admin1234",
       "firstName": "Admin2",
