@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import { useFavorites } from '../context/FavoritesContext';
+import { getSearchHistory, addSearchTerm, clearSearchHistory } from '../utils/searchHistory';
 import CategoryDropdown from './CategoryDropdown';
 import logoML from '../assets/mercado libre.png';
 import promoImage from '../assets/images.png';
@@ -14,6 +15,8 @@ function Header() {
   const { getFavoritesCount } = useFavorites();
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [historyVisible, setHistoryVisible] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,6 +27,7 @@ function Header() {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setIsSearchOpen(false);
+        setHistoryVisible(false);
       }
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
@@ -37,8 +41,35 @@ function Header() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
+      // save search term per-user and navigate
+      addSearchTerm(currentUser, searchTerm.trim());
       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
     }
+  };
+
+  const handleFocus = () => {
+    const hist = getSearchHistory(currentUser);
+    setSuggestions(hist);
+    setHistoryVisible(true);
+  };
+
+  const handleSuggestionClick = (term) => {
+    setSearchTerm(term);
+    setHistoryVisible(false);
+    addSearchTerm(currentUser, term);
+    navigate(`/search?q=${encodeURIComponent(term)}`);
+  };
+
+  const handleInputChange = (e) => {
+    const v = e.target.value;
+    setSearchTerm(v);
+    if (v.trim() === '') {
+      setSuggestions(getSearchHistory(currentUser));
+      return;
+    }
+    const hist = getSearchHistory(currentUser);
+    const filtered = hist.filter(h => h.toLowerCase().startsWith(v.toLowerCase()));
+    setSuggestions(filtered);
   };
 
   const handleLogout = () => {
@@ -84,9 +115,23 @@ function Header() {
                   type="text"
                   placeholder="Buscar productos, marcas y más..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={handleInputChange}
+                  onFocus={handleFocus}
                   className="search-input"
                 />
+                {historyVisible && (
+                  <div className="search-suggestions" role="listbox">
+                    {suggestions.length === 0 ? (
+                      <div className="no-suggestions">No hay búsquedas recientes</div>
+                    ) : (
+                      suggestions.map((s, i) => (
+                        <div key={i} className="suggestion-item" onMouseDown={() => handleSuggestionClick(s)}>
+                          {s}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
                 <button type="submit" className="search-button">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <path
@@ -145,15 +190,11 @@ function Header() {
             <nav className={`nav-menu ${isMenuOpen ? 'menu-open' : ''}`} ref={menuRef}>
               <CategoryDropdown />
               <Link to="/offers">Ofertas</Link>
-              <Link to="/history">Historial</Link>
-              <Link to="/supermarket">Supermercado</Link>
-              <Link to="/fashion">Moda</Link>
               {currentUser && (
                 <Link to="/vender" className="sell-link">
                   Vender
                 </Link>
               )}
-              
             </nav>
 
             {/* Usuario y Carrito */}

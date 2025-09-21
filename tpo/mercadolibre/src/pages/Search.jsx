@@ -29,7 +29,13 @@ function Search() {
       
       try {
         const products = await api.searchProducts(query);
-        let filteredResults = products;
+        // Ensure search respects the query: only include products whose title or description
+        // include the query string (case-insensitive). Do not fall back to unrelated products.
+        const q = query.trim().toLowerCase();
+        let filteredResults = products.filter(p => (
+          (p.title && p.title.toLowerCase().includes(q)) ||
+          (p.description && p.description.toLowerCase().includes(q))
+        ));
 
         // Apply filters
         if (filters.condition) {

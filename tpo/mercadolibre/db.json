@@ -159,36 +159,6 @@
       "sellerId": "4"
     },
     {
-      "id": "6",
-      "title": "Auriculares Sony WH-1000XM4",
-      "price": 299999,
-      "currency": "ARS",
-      "condition": "new",
-      "free_shipping": true,
-      "installments": {
-        "quantity": 12,
-        "amount": 25000
-      },
-      "thumbnail": "https://www.sony.com.ar/image/5d02da5df552836db894cead8a68f5f3?fmt=pjpeg",
-      "images": [
-        "https://nissei.com/media/wysiwyg/ba1f3cad13d0ebefb8ba68d0d08b8141_copia.jpg",
-        "https://m.media-amazon.com/images/I/81rVZu5JHUL._AC_SL1500_.jpg"
-      ],
-      "category": "audio",
-      "seller": {
-        "nickname": "ELIEL_STORE",
-        "reputation": "silver"
-      },
-      "location": "Mendoza",
-      "description": "Auriculares inalámbricos Sony con cancelación de ruido líder en la industria y 30 horas de batería.",
-      "stock": 10,
-      "tags": [
-        "Envío gratis",
-        "Noise cancelling"
-      ],
-      "sellerId": "6"
-    },
-    {
       "id": "7",
       "title": "Ray-Ban Wayfarer Classic",
       "price": 189999,
@@ -664,62 +634,6 @@
         "Resistente"
       ],
       "sellerId": "6"
-    },
-    {
-      "id": "22",
-      "title": "Marshall Acton III",
-      "price": 449999,
-      "currency": "ARS",
-      "condition": "new",
-      "free_shipping": true,
-      "installments": {
-        "quantity": 18,
-        "amount": 25000
-      },
-      "thumbnail": "https://images.unsplash.com/photo-11169-0a1dd7228f2d?w=600",
-      "images": [
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600",
-        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600",
-        "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600",
-        "https://images.unsplash.com/photo-1531104985437-603d6490e6d4?w=600"
-      ],
-      "category": "audio",
-      "seller": {
-        "nickname": "ELIEL_STORE",
-        "reputation": "silver"
-      },
-      "location": "Mendoza",
-      "description": "Parlante Marshall Acton III con conectividad inalámbrica y sonido Marshall clásico.",
-      "stock": 5,
-      "tags": [
-        "Marshall",
-        "Premium"
-      ],
-      "sellerId": "6"
-    },
-    {
-      "id": "b344",
-      "title": "prueba vendedor editado",
-      "price": 300000,
-      "description": "prueba vendedor editado",
-      "category": "anteojos",
-      "thumbnail": "",
-      "stock": 300,
-      "condition": "new",
-      "free_shipping": true,
-      "location": "Capital Federal",
-      "tags": [],
-      "sellerId": "1",
-      "seller": {
-        "nickname": "ADMIN_STORE",
-        "reputation": "gold"
-      },
-      "images": [],
-      "currency": "ARS",
-      "installments": {
-        "quantity": 12,
-        "amount": 25000
-      }
     },
     {
       "id": "18b2",
