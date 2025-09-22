@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useFavorites } from '../context/FavoritesContext';
 import { getSearchHistory, addSearchTerm, clearSearchHistory } from '../utils/searchHistory';
 import CategoryDropdown from './CategoryDropdown';
-import logoML from '../assets/mercado libre.png';
+import logoML from '../assets/mercado libre 2.0.png';
 import promoImage from '../assets/images.png';
 import './Header.css';
 
@@ -187,9 +187,9 @@ function Header() {
             </button>
 
             {/* Navegación */}
-            <nav className={`nav-menu ${isMenuOpen ? 'menu-open' : ''}`} ref={menuRef}>
+            <nav className={`nav-menu prueba ${isMenuOpen ? 'menu-open' : ''}`} ref={menuRef}>
               <CategoryDropdown />
-              <Link to="/offers">Ofertas</Link>
+              <Link to="/offers" className="sell-link"> Ofertas</Link>
               {currentUser && (
                 <Link to="/vender" className="sell-link">
                   Vender
