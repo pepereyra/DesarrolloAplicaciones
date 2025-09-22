@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { productsApi } from '../services/api';
 import { useCart } from '../hooks/useCart';
 import { useAuth } from '../context/AuthContext';
@@ -9,6 +9,7 @@ import './ProductDetail.css';
 function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { 
     addToCart, 
     getItemQuantity, 
@@ -68,6 +69,13 @@ function ProductDetail() {
   }, [id]);
 
   const handleAddToCart = () => {
+    if (!currentUser) {
+      // Guardar intención en sessionStorage y redirigir a login
+      sessionStorage.setItem('pendingAddToCart', JSON.stringify({ productId: product.id }));
+      navigate('/login', { state: { from: location } });
+      return;
+    }
+    
     if (product.stock === 0) return;
     
     const availableStock = getAvailableStock(product);
@@ -146,9 +154,18 @@ function ProductDetail() {
   }, [product, selectedImage, getProductImages]);
 
   const handleBuyNow = () => {
-    handleAddToCart();
-    // Redireccionar al carrito después de agregar
-    window.location.href = '/cart';
+    if (!currentUser) {
+      // Guardar intención en sessionStorage y redirigir a login
+      sessionStorage.setItem('pendingAddToCart', JSON.stringify({ productId: product.id }));
+      navigate('/login', { state: { from: location } });
+      return;
+    }
+    
+    if (canAddToCart(product)) {
+      addToCart(product);
+      // Redireccionar al carrito después de agregar
+      navigate('/carrito');
+    }
   };
 
   if (loading) {

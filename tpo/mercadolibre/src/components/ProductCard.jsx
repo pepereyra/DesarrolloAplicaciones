@@ -44,7 +44,14 @@ function ProductCard({ product }) {
   const handleBuyNow = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // Permitir comprar aunque no haya usuario logueado
+    
+    if (!currentUser) {
+      // Guardar intención en sessionStorage y redirigir a login
+      sessionStorage.setItem('pendingAddToCart', JSON.stringify({ productId: product.id }));
+      navigate('/login', { state: { from: location } });
+      return;
+    }
+    
     if (currentUser && !canPurchaseProduct(product.sellerId)) {
       return; // No puede comprar sus propios productos
     }
