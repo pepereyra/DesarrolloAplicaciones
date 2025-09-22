@@ -5,7 +5,7 @@
   border: none;
   padding: 8px;
   cursor: pointer;
-  color: #333;
+  color: #ffffff;
   margin-left: auto;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .header.admin-header {
-  background-color: #ffe600;
+  background-color: #3483fa;
   padding: 12px 0;
 }
 
@@ -37,12 +37,12 @@
 }
 
 .header-top {
-  background-color: #ffe600;
+  background-color: #3483fa;
   padding: 16px 0;
 }
 
 .header-bottom {
-  background-color: #ffe600;
+  background-color: #3483fa;
 }
 
 .container {
@@ -96,6 +96,7 @@
 /* Botón móvil de búsqueda - oculto por defecto */
 .mobile-search-button {
   display: none;
+  color: #ffffff;
 }
 
 /* Buscador */
@@ -149,8 +150,8 @@
   align-items: center;
   font-size: 14px;
   color: #333;
-  min-width: 180px;
   justify-content: flex-end;
+  width: 9%;
 }
 
 .promo-disney img {
@@ -173,18 +174,18 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #666;
+  color: #ffffff;
   font-size: 14px;
 }
 
 .location-label {
-  color: #999;
+  color: #ffffff;
 }
 
 .location-value {
   margin-left: 10px;
   font-weight: 500;
-  color: #333;
+  color: #ffffff;
 }
 
 /* Navegación */
@@ -194,15 +195,16 @@
   gap: 30px;
 }
 
-.nav-menu a {
+.prueba{
   text-decoration: none;
-  color: #000000;
+  color: #ffffff;
   font-size: 14px;
   transition: color 0.3s;
 }
 
+
 .nav-menu a:hover {
-  color: #3483fa;
+  color: #036bf3;
 }
 
 /* Acciones de usuario */
@@ -219,13 +221,13 @@
 
 .auth-links a {
   text-decoration: none;
-  color: #666;
+  color: #ffffff;
   font-size: 14px;
   transition: color 0.3s;
 }
 
 .auth-links a:hover {
-  color: #3483fa;
+  color: #ffffff;
 }
 
 /* Menu de usuario */
@@ -238,7 +240,7 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #333;
+  color: #ffffff;
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 4px;
@@ -304,20 +306,20 @@
   position: relative;
   display: flex;
   align-items: center;
-  color: #666;
+  color: #ffffff;
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .cart-link:hover {
-  color: #3483fa;
+  color: #ffffff;
 }
 
 .cart-count {
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: #ff4757;
+  background-color: #4bdd26;
   color: white;
   border-radius: 50%;
   width: 18px;
@@ -335,7 +337,7 @@
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #000000;
+  color: #ffffff;
   font-size: 14px;
   transition: color 0.3s;
   margin-left: 8px;
@@ -344,14 +346,14 @@
 }
 
 .favorites-action-link:hover {
-  color: #3483fa;
+  color: #ffffff;
 }
 
 .favorites-action-count {
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: #ff4757;
+  background-color: #4bdd26;
   color: white;
   border-radius: 50%;
   width: 18px;
@@ -377,15 +379,16 @@
     justify-content: center;
     align-items: center;
     margin-left: auto;
-    background-color: #ffe600;
+    background-color: #3483fa;
     border: none;
     padding: 8px;
     cursor: pointer;
     border-radius: 4px;
+    color: #ffffff;
   }
 
   .mobile-search-button:hover {
-    background-color: #f0d000;
+    background-color: #3483fa;
   }
 
   .hamburger-menu {
@@ -496,7 +499,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #000000;
+  color: #ffffff;
   text-decoration: none;
   font-size: 14px;
   transition: color 0.3s;
@@ -531,7 +534,7 @@
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: #ff4757;
+  background-color: #4bdd26;
   color: white;
   border-radius: 50%;
   width: 18px;
