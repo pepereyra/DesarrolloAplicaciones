@@ -1,0 +1,86 @@
+package com.api.e_commerce.controller;
+
+import com.api.e_commerce.dto.producto.ProductoDTO;
+import com.api.e_commerce.service.ProductoService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/productos")
+@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
+public class ProductoController {
+    
+    private final ProductoService productoService;
+    
+    @GetMapping
+    public ResponseEntity<Page<ProductoDTO>> getAllProductos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String usuarioId) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductoDTO> productos = usuarioId != null ?
+            productoService.getAllProductos(usuarioId, pageable) :
+            productoService.getAllProductos(pageable);
+        
+        return ResponseEntity.ok(productos);
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<Page<ProductoDTO>> searchProductos(
+            @RequestParam String q,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String usuarioId) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductoDTO> productos = usuarioId != null ?
+            productoService.searchProductos(q, usuarioId, pageable) :
+            productoService.searchProductos(q, pageable);
+        
+        return ResponseEntity.ok(productos);
+    }
+    
+    @GetMapping("/categoria/{categoria}")
+    public ResponseEntity<Page<ProductoDTO>> getProductosByCategoria(
+            @PathVariable String categoria,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String usuarioId) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductoDTO> productos = usuarioId != null ?
+            productoService.getProductosByCategoria(categoria, usuarioId, pageable) :
+            productoService.getProductosByCategoria(categoria, pageable);
+        
+        return ResponseEntity.ok(productos);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductoDTO> getProductoById(
+            @PathVariable String id,
+            @RequestParam(required = false) String usuarioId) {
+        
+        ProductoDTO producto = usuarioId != null ?
+            productoService.getProductoById(id, usuarioId) :
+            productoService.getProductoById(id);
+        
+        return ResponseEntity.ok(producto);
+    }
+    
+    @GetMapping("/{id}/relacionados")
+    public ResponseEntity<List<ProductoDTO>> getProductosRelacionados(
+            @PathVariable String id,
+            @RequestParam(defaultValue = "4") int limit) {
+        
+        List<ProductoDTO> productos = productoService.getProductosRelacionados(id, limit);
+        return ResponseEntity.ok(productos);
+    }
+}
