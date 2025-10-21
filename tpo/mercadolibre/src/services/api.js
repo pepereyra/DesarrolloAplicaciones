@@ -1,13 +1,13 @@
 import { localProductsService } from './localProductsService.js';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://localhost:8080/api';
 
 // Servicio principal - usa json-server como fuente principal
 export const productsApi = {
   getProducts: async () => {
     try {
       // Usar json-server como fuente principal
-      const response = await fetch(`${API_URL}/products`);
+      const response = await fetch(`${API_URL}/productos`);
       if (!response.ok) {
         throw new Error('Error al cargar productos');
       }
@@ -27,7 +27,7 @@ export const productsApi = {
   getProduct: async (id) => {
     try {
       // Usar json-server como fuente principal
-      const response = await fetch(`${API_URL}/products/${id}`);
+      const response = await fetch(`${API_URL}/productos/${id}`);
       if (!response.ok) {
         throw new Error('Producto no encontrado');
       }
@@ -46,7 +46,7 @@ export const productsApi = {
 
   getProductsByCategory: async (category) => {
     try {
-      const response = await fetch(`${API_URL}/products?category=${category}`);
+      const response = await fetch(`${API_URL}/productos/categoria/${category}`);
       if (!response.ok) {
         throw new Error('Error al filtrar productos');
       }
@@ -75,7 +75,7 @@ export const productsApi = {
 
   searchProducts: async (query) => {
     try {
-      const response = await fetch(`${API_URL}/products?q=${query}`);
+      const response = await fetch(`${API_URL}/productos?q=${query}`);
       if (!response.ok) {
         throw new Error('Error en búsqueda');
       }
@@ -169,7 +169,7 @@ export const api = {
 
   // Administración de productos
   createProduct: async (productData) => {
-    const response = await fetch(`${API_URL}/products`, {
+    const response = await fetch(`${API_URL}/productos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ export const api = {
   },
 
   updateProduct: async (id, productData) => {
-    const response = await fetch(`${API_URL}/products/${id}`, {
+    const response = await fetch(`${API_URL}/productos/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ export const api = {
   },
 
   deleteProduct: async (id) => {
-    const response = await fetch(`${API_URL}/products/${id}`, {
+    const response = await fetch(`${API_URL}/productos/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) {
