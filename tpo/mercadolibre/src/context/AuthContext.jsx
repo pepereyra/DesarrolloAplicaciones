@@ -31,14 +31,21 @@ const AuthProvider = ({ children }) => {
             if (savedUser && savedUser.id) {
                 try {
                     // Cargar datos completos del usuario desde la API
-                    const response = await fetch(`http://localhost:3000/users/${savedUser.id}`);
+                    const response = await fetch(`http://localhost:8080/api/usuarios/${savedUser.id}`);
                     if (response.ok) {
                         const completeUser = await response.json();
                         setCurrentUser(completeUser);
                         localStorage.setItem('currentUser', JSON.stringify(completeUser));
+                    } else {
+                        // Si el usuario no existe en el backend, limpiar el localStorage
+                        console.warn('Usuario no encontrado en el backend, limpiando sesión local');
+                        setCurrentUser(null);
+                        localStorage.removeItem('currentUser');
                     }
                 } catch (error) {
                     console.error('Error loading complete user data:', error);
+                    // En caso de error de conexión, mantener el usuario local
+                    console.log('Manteniendo sesión local debido a error de conexión');
                 }
             }
         };
@@ -59,7 +66,7 @@ const AuthProvider = ({ children }) => {
     const register = async (userData) => {
         try {
             // Verificar si el usuario ya existe
-            const response = await fetch('http://localhost:3000/users');
+            const response = await fetch('http://localhost:8080/api/usuarios');
             const users = await response.json();
             
             if (users.some(user => user.email === userData.email)) {
@@ -83,7 +90,7 @@ const AuthProvider = ({ children }) => {
             };
 
             // Guardar nuevo usuario
-            const saveUser = await fetch('http://localhost:3000/users', {
+            const saveUser = await fetch('http://localhost:8080/api/usuarios', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -109,7 +116,7 @@ const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             // Buscar usuario por email
-            const response = await fetch(`http://localhost:3000/users?email=${email}`);
+            const response = await fetch(`http://localhost:8080/api/usuarios?email=${email}`);
             const users = await response.json();
 
             const user = users.find(u => u.password === password);
