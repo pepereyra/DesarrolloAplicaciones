@@ -89,6 +89,14 @@ public class ProductoController {
         return ResponseEntity.ok(nuevoProducto);
     }
     
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductoDTO> updateProducto(
+            @PathVariable String id,
+            @RequestBody ProductoDTO productoDTO) {
+        ProductoDTO productoActualizado = productoService.updateProducto(id, productoDTO);
+        return ResponseEntity.ok(productoActualizado);
+    }
+    
     @GetMapping("/vendedor/{vendedorId}")
     public ResponseEntity<Page<ProductoDTO>> getProductosByVendedor(
             @PathVariable String vendedorId,

@@ -163,6 +163,75 @@ public class ProductoService {
         return convertToProductoDTO(savedProducto, null);
     }
     
+    @Transactional
+    public ProductoDTO updateProducto(String id, ProductoDTO productoDTO) {
+        // Buscar el producto existente
+        Producto productoExistente = productoRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Producto con ID " + id + " no encontrado"));
+        
+        // Validar que el seller_id existe si se está actualizando
+        if (productoDTO.getSellerId() != null && !productoDTO.getSellerId().isBlank()) {
+            if (!usuarioRepository.existsById(productoDTO.getSellerId())) {
+                throw new NotFoundException("El vendedor con ID " + productoDTO.getSellerId() + " no existe");
+            }
+            productoExistente.setSellerId(productoDTO.getSellerId());
+        }
+        
+        // Actualizar campos del producto
+        if (productoDTO.getTitle() != null) {
+            productoExistente.setTitle(productoDTO.getTitle());
+        }
+        if (productoDTO.getPrice() != null) {
+            productoExistente.setPrice(productoDTO.getPrice());
+        }
+        if (productoDTO.getDescription() != null) {
+            productoExistente.setDescription(productoDTO.getDescription());
+        }
+        if (productoDTO.getCategory() != null) {
+            productoExistente.setCategory(productoDTO.getCategory());
+        }
+        if (productoDTO.getThumbnail() != null) {
+            productoExistente.setThumbnail(productoDTO.getThumbnail());
+        }
+        if (productoDTO.getLocation() != null) {
+            productoExistente.setLocation(productoDTO.getLocation());
+        }
+        if (productoDTO.getCurrency() != null) {
+            productoExistente.setCurrency(productoDTO.getCurrency());
+        }
+        if (productoDTO.getFreeShipping() != null) {
+            productoExistente.setFreeShipping(productoDTO.getFreeShipping());
+        }
+        if (productoDTO.getStock() != null) {
+            productoExistente.setStock(productoDTO.getStock());
+        }
+        
+        // Actualizar condition si se proporciona
+        if (productoDTO.getCondition() != null) {
+            try {
+                productoExistente.setConditionType(Producto.ConditionType.valueOf(productoDTO.getCondition()));
+            } catch (IllegalArgumentException e) {
+                productoExistente.setConditionType(Producto.ConditionType.new_);
+            }
+        }
+        
+        // Actualizar installments si se proporcionan
+        if (productoDTO.getInstallments() != null) {
+            Object quantity = productoDTO.getInstallments().get("quantity");
+            Object amount = productoDTO.getInstallments().get("amount");
+            
+            if (quantity instanceof Integer) {
+                productoExistente.setInstallmentsQuantity((Integer) quantity);
+            }
+            if (amount instanceof Number) {
+                productoExistente.setInstallmentsAmount(java.math.BigDecimal.valueOf(((Number) amount).doubleValue()));
+            }
+        }
+        
+        Producto productoActualizado = productoRepository.save(productoExistente);
+        return convertToProductoDTO(productoActualizado, null);
+    }
+    
     private Producto convertToProducto(ProductoDTO dto) {
         Producto producto = new Producto();
         producto.setTitle(dto.getTitle());
