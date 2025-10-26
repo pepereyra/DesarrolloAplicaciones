@@ -15,23 +15,27 @@ const handleResponse = async (response) => {
 const mapProductFromBackend = (backendProduct) => {
   return {
     id: backendProduct.id,
-    title: backendProduct.nombre,
-    price: backendProduct.precio,
-    currency: 'ARS',
-    condition: 'new',
-    freeShipping: true,
-    thumbnail: backendProduct.imagenes && backendProduct.imagenes.length > 0 
-      ? backendProduct.imagenes[0] 
-      : 'https://via.placeholder.com/150',
-    category: backendProduct.categoria,
-    seller: {
-      id: '1',
-      nickname: backendProduct.vendedorNombre || 'Vendedor'
+    title: backendProduct.title,
+    price: backendProduct.price,
+    currency: backendProduct.currency || 'ARS',
+    condition: backendProduct.condition || 'new',
+    freeShipping: backendProduct.freeShipping || false,
+    thumbnail: backendProduct.thumbnail || 
+      (backendProduct.images && backendProduct.images.length > 0 
+        ? backendProduct.images[0] 
+        : 'https://via.placeholder.com/150'),
+    category: backendProduct.category,
+    seller: backendProduct.seller || {
+      id: backendProduct.sellerId || '1',
+      nickname: 'Vendedor'
     },
-    location: 'Buenos Aires',
-    description: backendProduct.descripcion,
-    stock: 100,
-    images: backendProduct.imagenes || [],
+    sellerId: backendProduct.sellerId, // ¡IMPORTANTE! Agregar este campo
+    location: backendProduct.location || 'Buenos Aires',
+    description: backendProduct.description,
+    stock: backendProduct.stock || 100,
+    images: backendProduct.images || [],
+    tags: backendProduct.tags || [],
+    installments: backendProduct.installments,
     isFavorite: backendProduct.esFavorito || false
   };
 };
@@ -122,6 +126,22 @@ export const productsApi = {
       return products.map(mapProductFromBackend);
     } catch (error) {
       console.error('Error searching products:', error);
+      return [];
+    }
+  },
+
+  getProductsByVendedor: async (vendedorId) => {
+    try {
+      const response = await fetch(`${API_URL}/productos/vendedor/${vendedorId}?size=100`);
+      const data = await handleResponse(response);
+      
+      // El backend devuelve una estructura paginada
+      const products = data.content || [];
+      
+      // Mapear los productos al formato esperado por el frontend
+      return products.map(mapProductFromBackend);
+    } catch (error) {
+      console.error('Error fetching products by vendedor:', error);
       return [];
     }
   }
@@ -272,6 +292,7 @@ export const api = {
   getProduct: (id) => productsApi.getProduct(id),
   searchProducts: (query) => productsApi.searchProducts(query),
   getProductsByCategory: (category) => productsApi.getProductsByCategory(category),
+  getProductsByVendedor: (vendedorId) => productsApi.getProductsByVendedor(vendedorId),
   getCategories: () => productsApi.getCategories(),
   getUsers: () => authApi.getUsers(),
   createUser: (userData) => authApi.createUser(userData),

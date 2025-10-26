@@ -82,4 +82,21 @@ public class ProductoController {
         List<ProductoDTO> productos = productoService.getProductosRelacionados(id, limit);
         return ResponseEntity.ok(productos);
     }
+    
+    @PostMapping
+    public ResponseEntity<ProductoDTO> createProducto(@RequestBody ProductoDTO productoDTO) {
+        ProductoDTO nuevoProducto = productoService.createProducto(productoDTO);
+        return ResponseEntity.ok(nuevoProducto);
+    }
+    
+    @GetMapping("/vendedor/{vendedorId}")
+    public ResponseEntity<Page<ProductoDTO>> getProductosByVendedor(
+            @PathVariable String vendedorId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductoDTO> productos = productoService.getProductosByVendedor(vendedorId, pageable);
+        return ResponseEntity.ok(productos);
+    }
 }
