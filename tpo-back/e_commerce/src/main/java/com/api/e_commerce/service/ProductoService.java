@@ -232,6 +232,16 @@ public class ProductoService {
         return convertToProductoDTO(productoActualizado, null);
     }
     
+    @Transactional
+    public void deleteProducto(String id) {
+        // Verificar que el producto existe
+        Producto producto = productoRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Producto con ID " + id + " no encontrado"));
+        
+        // Eliminar el producto
+        productoRepository.delete(producto);
+    }
+    
     private Producto convertToProducto(ProductoDTO dto) {
         Producto producto = new Producto();
         producto.setTitle(dto.getTitle());

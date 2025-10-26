@@ -8,7 +8,16 @@ const handleResponse = async (response) => {
     const error = await response.text();
     throw new Error(`HTTP ${response.status}: ${error}`);
   }
-  return await response.json();
+  
+  // Si la respuesta no tiene contenido (como en DELETE), retornar null
+  const contentType = response.headers.get('content-type');
+  if (response.status === 204 || !contentType || !contentType.includes('application/json')) {
+    return null;
+  }
+  
+  // Solo intentar parsear JSON si hay contenido
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
 };
 
 // Función para mapear productos del backend al formato del frontend

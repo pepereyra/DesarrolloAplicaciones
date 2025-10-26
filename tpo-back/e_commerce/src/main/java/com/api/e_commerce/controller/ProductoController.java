@@ -97,6 +97,12 @@ public class ProductoController {
         return ResponseEntity.ok(productoActualizado);
     }
     
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProducto(@PathVariable String id) {
+        productoService.deleteProducto(id);
+        return ResponseEntity.noContent().build();
+    }
+    
     @GetMapping("/vendedor/{vendedorId}")
     public ResponseEntity<Page<ProductoDTO>> getProductosByVendedor(
             @PathVariable String vendedorId,
