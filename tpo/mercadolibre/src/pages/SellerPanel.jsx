@@ -81,9 +81,8 @@ function SellerPanel() {
   const loadSellerProducts = async () => {
     try {
       setLoading(true);
-      const allProducts = await api.getProducts();
-      // Filtrar solo los productos del vendedor actual
-      const sellerProducts = allProducts.filter(product => product.sellerId === currentUser.id);
+      // Usar el endpoint específico del vendedor en lugar de filtrar todos los productos
+      const sellerProducts = await api.getProductsByVendedor(currentUser.id);
       setProducts(sellerProducts);
     } catch (error) {
       console.error('Error loading seller products:', error);
@@ -145,10 +144,14 @@ function SellerPanel() {
       console.log('Current User:', currentUser);
       console.log('Seller Info from state:', sellerInfo);
       
-      // Validar que tenemos la información del vendedor
-      if (!sellerInfo) {
-        throw new Error('No se pudo obtener la información del vendedor');
-      }
+      // Crear información del vendedor si no existe
+      const currentSellerInfo = sellerInfo || {
+        nickname: `${currentUser.firstName}_STORE`,
+        reputation: 'bronze',
+        location: 'Argentina'
+      };
+      
+      console.log('Using Seller Info:', currentSellerInfo);
       
       console.log('Form Data:', formData);
       
@@ -167,10 +170,10 @@ function SellerPanel() {
         stock: parseInt(formData.stock),
         sellerId: currentUser.id,
         seller: {
-          nickname: sellerInfo.nickname || `${currentUser.firstName}_STORE`,
-          reputation: sellerInfo.reputation || 'bronze'
+          nickname: currentSellerInfo.nickname || `${currentUser.firstName}_STORE`,
+          reputation: currentSellerInfo.reputation || 'bronze'
         },
-        location: formData.location || sellerInfo.location || 'Argentina',
+        location: formData.location || currentSellerInfo.location || 'Argentina',
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
         images: validImages,
         thumbnail: validImages.length > 0 ? validImages[0] : null, // null si no hay imágenes
