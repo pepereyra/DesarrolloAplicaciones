@@ -1,8 +1,10 @@
 package com.api.e_commerce.service;
 
 import com.api.e_commerce.dto.producto.ProductoDTO;
+import com.api.e_commerce.dto.CategoriaDTO;
 import com.api.e_commerce.exception.NotFoundException;
 import com.api.e_commerce.model.Producto;
+import com.api.e_commerce.model.Categoria;
 import com.api.e_commerce.repository.FavoritoRepository;
 import com.api.e_commerce.repository.ProductoRepository;
 import com.api.e_commerce.repository.UsuarioRepository;
@@ -26,6 +28,7 @@ public class ProductoService {
     private final ProductoRepository productoRepository;
     private final FavoritoRepository favoritoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final CategoriaService categoriaService;
     
     public Page<ProductoDTO> getAllProductos(Pageable pageable) {
         Page<Producto> productos = productoRepository.findAll(pageable);
@@ -48,12 +51,12 @@ public class ProductoService {
     }
     
     public Page<ProductoDTO> getProductosByCategoria(String categoria, Pageable pageable) {
-        Page<Producto> productos = productoRepository.findByCategory(categoria, pageable);
+        Page<Producto> productos = productoRepository.findByCategoriaName(categoria, pageable);
         return productos.map(producto -> convertToProductoDTO(producto, null));
     }
     
     public Page<ProductoDTO> getProductosByCategoria(String categoria, String usuarioId, Pageable pageable) {
-        Page<Producto> productos = productoRepository.findByCategory(categoria, pageable);
+        Page<Producto> productos = productoRepository.findByCategoriaName(categoria, pageable);
         return productos.map(producto -> convertToProductoDTO(producto, usuarioId));
     }
     
@@ -79,7 +82,7 @@ public class ProductoService {
             .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
         
         // Buscar productos de la misma categoría (limitado)
-        List<Producto> relacionados = productoRepository.findByCategoryAndIdNot(producto.getCategory(), productoId);
+        List<Producto> relacionados = productoRepository.findByCategoriaAndIdNot(producto.getCategoria(), productoId);
         
         return relacionados.stream()
             .limit(limit)
@@ -101,7 +104,18 @@ public class ProductoService {
         dto.setCondition(producto.getConditionType() != null ? producto.getConditionType().name() : "new");
         dto.setFreeShipping(producto.getFreeShipping());
         dto.setThumbnail(producto.getThumbnail());
-        dto.setCategory(producto.getCategory());
+        
+        if (producto.getCategoria() != null) {
+            CategoriaDTO categoriaDTO = new CategoriaDTO(
+                producto.getCategoria().getId(),
+                producto.getCategoria().getName(),
+                producto.getCategoria().getDescription(),
+                producto.getCategoria().getImage()
+            );
+            dto.setCategoria(categoriaDTO);
+            dto.setCategory(producto.getCategoria().getName());
+        }
+        
         dto.setSellerId(producto.getSellerId());
         dto.setLocation(producto.getLocation());
         dto.setStock(producto.getStock());
@@ -188,7 +202,8 @@ public class ProductoService {
             productoExistente.setDescription(productoDTO.getDescription());
         }
         if (productoDTO.getCategory() != null) {
-            productoExistente.setCategory(productoDTO.getCategory());
+            Categoria categoria = categoriaService.getCategoriaEntityByName(productoDTO.getCategory());
+            productoExistente.setCategoria(categoria);
         }
         if (productoDTO.getThumbnail() != null) {
             productoExistente.setThumbnail(productoDTO.getThumbnail());
@@ -247,7 +262,12 @@ public class ProductoService {
         producto.setTitle(dto.getTitle());
         producto.setPrice(dto.getPrice());
         producto.setDescription(dto.getDescription());
-        producto.setCategory(dto.getCategory());
+        
+        if (dto.getCategory() != null) {
+            Categoria categoria = categoriaService.getCategoriaEntityByName(dto.getCategory());
+            producto.setCategoria(categoria);
+        }
+        
         producto.setThumbnail(dto.getThumbnail());
         producto.setSellerId(dto.getSellerId());
         producto.setLocation(dto.getLocation());

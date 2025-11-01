@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.api.e_commerce.model.Producto;
+import com.api.e_commerce.model.Categoria;
 
 public interface ProductoRepository extends JpaRepository<Producto, String> {
     
@@ -16,21 +17,26 @@ public interface ProductoRepository extends JpaRepository<Producto, String> {
     List<Producto> findByTitleContainingIgnoreCase(String title);
     Page<Producto> findByTitleContainingIgnoreCase(String title, Pageable pageable);
     
-    // Búsqueda por categoría
-    List<Producto> findByCategory(String category);
-    Page<Producto> findByCategory(String category, Pageable pageable);
+    List<Producto> findByCategoria(Categoria categoria);
+    Page<Producto> findByCategoria(Categoria categoria, Pageable pageable);
+    
+    // Búsqueda por nombre de categoría
+    @Query("SELECT p FROM Producto p WHERE p.categoria.name = :categoryName")
+    List<Producto> findByCategoriaName(@Param("categoryName") String categoryName);
+    
+    @Query("SELECT p FROM Producto p WHERE p.categoria.name = :categoryName")
+    Page<Producto> findByCategoriaName(@Param("categoryName") String categoryName, Pageable pageable);
     
     // Productos relacionados (misma categoría, excluyendo un producto)
-    List<Producto> findByCategoryAndIdNot(String category, String excludeId);
+    List<Producto> findByCategoriaAndIdNot(Categoria categoria, String excludeId);
     
     // Búsqueda por rango de precio
     List<Producto> findByPriceBetween(Integer minPrice, Integer maxPrice);
     Page<Producto> findByPriceBetween(Integer minPrice, Integer maxPrice, Pageable pageable);
     
-    // Búsqueda combinada
     @Query("SELECT p FROM Producto p WHERE " +
            "(:search IS NULL OR LOWER(p.title) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
-           "(:category IS NULL OR p.category = :category) AND " +
+           "(:category IS NULL OR p.categoria.name = :category) AND " +
            "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
            "(:maxPrice IS NULL OR p.price <= :maxPrice)")
     Page<Producto> findProductosWithFilters(

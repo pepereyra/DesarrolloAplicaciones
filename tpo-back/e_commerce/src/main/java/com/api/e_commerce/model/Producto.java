@@ -39,8 +39,9 @@ public class Producto {
     @Column(length = 500)
     private String thumbnail;
     
-    @Column(length = 100)
-    private String category;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Categoria categoria;
     
     @Column(name = "seller_id", length = 10)
     private String sellerId;

@@ -2,6 +2,7 @@ package com.api.e_commerce.dto.producto;
 
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.api.e_commerce.dto.CategoriaDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class ProductoDTO {
     @JsonProperty("free_shipping")
     private Boolean freeShipping;
     private String thumbnail;
+    private CategoriaDTO categoria;
     private String category;
     private String sellerId;
     private String location;
@@ -28,7 +30,5 @@ public class ProductoDTO {
     private Map<String, Object> seller;
     private Map<String, Object> installments;
     private LocalDateTime createdAt;
-    
-    // Campos adicionales para respuestas
-    private Boolean esFavorito; // Para indicar si es favorito del usuario actual
+    private Boolean esFavorito;
 }
