@@ -24,7 +24,7 @@ function ProductCard({ product }) {
     }).format(price);
   };
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (!currentUser) {
@@ -37,11 +37,16 @@ function ProductCard({ product }) {
       return; // No puede comprar sus propios productos
     }
     if (canAddToCart(product)) {
-      addToCart(product);
+      try {
+        await addToCart(product);
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        // Aquí podrías mostrar una notificación de error
+      }
     }
   };
 
-  const handleBuyNow = (e) => {
+  const handleBuyNow = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     
@@ -56,8 +61,13 @@ function ProductCard({ product }) {
       return; // No puede comprar sus propios productos
     }
     if (canAddToCart(product)) {
-      addToCart(product);
-      navigate('/carrito');
+      try {
+        await addToCart(product);
+        navigate('/carrito');
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        // Aquí podrías mostrar una notificación de error
+      }
     }
   };
 

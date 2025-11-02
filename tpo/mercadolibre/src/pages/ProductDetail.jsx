@@ -68,7 +68,7 @@ function ProductDetail() {
     fetchProduct();
   }, [id]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!currentUser) {
       // Guardar intención en sessionStorage y redirigir a login
       sessionStorage.setItem('pendingAddToCart', JSON.stringify({ productId: product.id }));
@@ -82,9 +82,14 @@ function ProductDetail() {
     const maxQuantity = Math.min(quantity, availableStock);
     
     if (maxQuantity > 0) {
-      addToCart(product, maxQuantity);
-      alert(`${maxQuantity} ${product.title} agregado(s) al carrito`);
-      setQuantity(1); // Reset quantity after adding
+      try {
+        await addToCart(product, maxQuantity);
+        alert(`${maxQuantity} ${product.title} agregado(s) al carrito`);
+        setQuantity(1); // Reset quantity after adding
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        alert('Error al agregar al carrito. Inténtalo de nuevo.');
+      }
     } else {
       alert('No hay suficiente stock disponible');
     }

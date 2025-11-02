@@ -213,37 +213,47 @@ export const authApi = {
   }
 };
 
-// API de carrito
+// API de carrito - Integrada con endpoints del CarritoController
 export const cartApi = {
-  getCart: async () => {
+  /**
+   * Obtener el carrito de un usuario específico
+   * Endpoint: GET /api/carrito/{usuarioId}
+   */
+  getCart: async (usuarioId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/carrito`, {
+      const response = await fetch(`${API_URL}/carrito/${usuarioId}`, {
+        method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
       return await handleResponse(response);
     } catch (error) {
       console.error('Error fetching cart:', error);
-      return [];
+      // Retornar estructura vacía en caso de error (usuario sin carrito)
+      return {
+        id: null,
+        usuarioId,
+        items: [],
+        totalPrice: 0,
+        totalItems: 0,
+        createdAt: null,
+        updatedAt: null
+      };
     }
   },
 
-  addToCart: async (product) => {
+  /**
+   * Agregar un item al carrito
+   * Endpoint: POST /api/carrito/{usuarioId}/items?productoId=X&cantidad=Y
+   */
+  addToCart: async (usuarioId, productoId, cantidad = 1) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/carrito/agregar`, {
+      const response = await fetch(`${API_URL}/carrito/${usuarioId}/items?productoId=${productoId}&cantidad=${cantidad}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          productoId: product.id,
-          cantidad: product.quantity || 1
-        }),
       });
       return await handleResponse(response);
     } catch (error) {
@@ -252,13 +262,35 @@ export const cartApi = {
     }
   },
 
-  removeFromCart: async (id) => {
+  /**
+   * Actualizar cantidad de un item en el carrito
+   * Endpoint: PUT /api/carrito/{usuarioId}/items/{itemId}?cantidad=Z
+   */
+  updateCartItem: async (usuarioId, itemId, cantidad) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/carrito/eliminar/${id}`, {
+      const response = await fetch(`${API_URL}/carrito/${usuarioId}/items/${itemId}?cantidad=${cantidad}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return await handleResponse(response);
+    } catch (error) {
+      console.error('Error updating cart item:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Eliminar un item específico del carrito
+   * Endpoint: DELETE /api/carrito/{usuarioId}/items/{itemId}
+   */
+  removeFromCart: async (usuarioId, itemId) => {
+    try {
+      const response = await fetch(`${API_URL}/carrito/${usuarioId}/items/${itemId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
       return await handleResponse(response);
@@ -268,31 +300,16 @@ export const cartApi = {
     }
   },
 
-  updateCartItem: async (id, data) => {
+  /**
+   * Vaciar completamente el carrito
+   * Endpoint: DELETE /api/carrito/{usuarioId}
+   */
+  clearCart: async (usuarioId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/carrito/actualizar`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id, ...data }),
-      });
-      return await handleResponse(response);
-    } catch (error) {
-      console.error('Error updating cart item:', error);
-      throw error;
-    }
-  },
-
-  clearCart: async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/carrito/limpiar`, {
+      const response = await fetch(`${API_URL}/carrito/${usuarioId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
       return await handleResponse(response);
@@ -314,11 +331,13 @@ export const api = {
   getUsers: () => authApi.getUsers(),
   createUser: (userData) => authApi.createUser(userData),
   loginUser: (email, password) => authApi.loginUser(email, password),
-  getCart: () => cartApi.getCart(),
-  addToCart: (product) => cartApi.addToCart(product),
-  removeFromCart: (id) => cartApi.removeFromCart(id),
-  updateCartItem: (id, data) => cartApi.updateCartItem(id, data),
-  clearCart: () => cartApi.clearCart(),
+  
+  // Métodos de carrito actualizados para usar usuarioId
+  getCart: (usuarioId) => cartApi.getCart(usuarioId),
+  addToCart: (usuarioId, productoId, cantidad) => cartApi.addToCart(usuarioId, productoId, cantidad),
+  removeFromCart: (usuarioId, itemId) => cartApi.removeFromCart(usuarioId, itemId),
+  updateCartItem: (usuarioId, itemId, cantidad) => cartApi.updateCartItem(usuarioId, itemId, cantidad),
+  clearCart: (usuarioId) => cartApi.clearCart(usuarioId),
   
   createProduct: async (productData) => {
     try {

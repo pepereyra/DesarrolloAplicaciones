@@ -34,6 +34,15 @@ public class CarritoService {
     public CarritoDTO getCarritoByUsuario(String usuarioId) {
         Carrito carrito = carritoRepository.findByUsuarioId(usuarioId)
             .orElseGet(() -> createCarritoForUser(usuarioId));
+        
+        // Forzar carga de imágenes dentro de la transacción
+        carrito.getItems().forEach(item -> {
+            item.getProducto().getImagenes().size(); // Trigger lazy load
+            if (item.getProducto().getSeller() != null) {
+                item.getProducto().getSeller().getSellerNickname(); // Trigger lazy load
+            }
+        });
+        
         return convertToCarritoDTO(carrito);
     }
     
@@ -43,6 +52,7 @@ public class CarritoService {
         
         Carrito carrito = new Carrito();
         carrito.setUsuario(usuario);
+        carrito.setUsuarioId(usuarioId); // ✅ Setear campo primitivo explícitamente
         carrito.setItems(new ArrayList<>());
         carrito.setCreatedAt(LocalDateTime.now());
         carrito.setUpdatedAt(LocalDateTime.now());
@@ -67,12 +77,16 @@ public class CarritoService {
         
         if (existingItem != null) {
             existingItem.setCantidad(existingItem.getCantidad() + cantidad);
+            carritoItemRepository.save(existingItem); // ✅ Guardar cambios
         } else {
             CarritoItem newItem = new CarritoItem();
             newItem.setCarrito(carrito);
+            newItem.setCarritoId(carrito.getId()); // ✅ Setear campo primitivo
             newItem.setProducto(producto);
+            newItem.setProductoId(producto.getId()); // ✅ Setear campo primitivo
             newItem.setCantidad(cantidad);
             newItem.setPrecioUnitario(producto.getPrice());
+            newItem.setAddedAt(LocalDateTime.now()); // ✅ Setear timestamp
             carritoItemRepository.save(newItem);
         }
         
@@ -166,6 +180,17 @@ public class CarritoService {
         
         dto.setQuantity(item.getCantidad());
         dto.setUnitPrice(item.getPrecioUnitario().intValue());
+        
+        // Agregar campos adicionales del producto
+        dto.setStock(item.getProducto().getStock());
+        dto.setFreeShipping(item.getProducto().getFreeShipping());
+        
+        // Agregar información del vendedor
+        if (item.getProducto().getSeller() != null) {
+            dto.setSellerNickname(item.getProducto().getSeller().getSellerNickname());
+            // Por ahora usar valor por defecto para reputation
+            dto.setSellerReputation("standard");
+        }
         
         return dto;
     }

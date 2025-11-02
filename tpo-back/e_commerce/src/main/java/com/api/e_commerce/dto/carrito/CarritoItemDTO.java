@@ -10,4 +10,8 @@ public class CarritoItemDTO {
     private String imageUrl;
     private Integer unitPrice;
     private Integer quantity;
+    private Integer stock;
+    private Boolean freeShipping;
+    private String sellerNickname;
+    private String sellerReputation;
 }
