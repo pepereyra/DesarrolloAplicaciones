@@ -384,7 +384,6 @@ function SellerPanel() {
               >
                 <option value="new">Nuevo</option>
                 <option value="used">Usado</option>
-                <option value="refurbished">Reacondicionado</option>
               </select>
             </div>
 
