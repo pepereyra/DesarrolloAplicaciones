@@ -72,14 +72,23 @@ Un prototipo de e-commerce inspirado en Mercado Libre, desarrollado con React, V
    - El login
    - La gestión de productos
    - El carrito de compras
-
 ### Scripts Disponibles
 
 - `npm run dev` - Inicia el servidor de desarrollo de Vite
-- `npm run server` - Inicia json-server en puerto 3002
 - `npm run build` - Construye la aplicación para producción
 - `npm run preview` - Previsualiza la build de producción
 - `npm run lint` - Ejecuta ESLint para revisar el código
+
+### Backend (Spring Boot + MySQL)
+
+Para usar la aplicación completa, necesitas levantar el backend:
+
+```bash
+cd ../tpo-back/e_commerce
+.\mvnw.cmd spring-boot:run
+```
+
+El backend estará disponible en `http://localhost:8080`
 
 ## 📱 Uso de la Aplicación
 

@@ -1,5 +1,3 @@
-import { localProductsService } from './localProductsService.js';
-
 const API_URL = 'http://localhost:8080/api';
 
 // Configuración para manejar errores
@@ -210,6 +208,20 @@ export const authApi = {
       console.error('Error fetching users:', error);
       return [];
     }
+  },
+  
+  getUserById: async (userId) => {
+    try {
+      const response = await fetch(`${API_URL}/usuarios/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      return await handleResponse(response);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      throw error;
+    }
   }
 };
 
@@ -329,6 +341,7 @@ export const api = {
   getProductsByVendedor: (vendedorId) => productsApi.getProductsByVendedor(vendedorId),
   getCategories: () => productsApi.getCategories(),
   getUsers: () => authApi.getUsers(),
+  getUserById: (userId) => authApi.getUserById(userId),
   createUser: (userData) => authApi.createUser(userData),
   loginUser: (email, password) => authApi.loginUser(email, password),
   

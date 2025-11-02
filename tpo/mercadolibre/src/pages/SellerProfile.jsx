@@ -21,12 +21,8 @@ function SellerProfile() {
 
         console.log('Loading seller data for sellerId:', sellerId);
 
-        // Cargar datos del vendedor
-        const usersResponse = await fetch(`http://localhost:3000/users/${sellerId}`);
-        if (!usersResponse.ok) {
-          throw new Error('Vendedor no encontrado');
-        }
-        const sellerData = await usersResponse.json();
+        // Cargar datos del vendedor desde el backend
+        const sellerData = await api.getUserById(sellerId);
         console.log('Seller data loaded:', sellerData);
         setSeller(sellerData);
 
