@@ -36,9 +36,6 @@ public class Producto {
     @Column(name = "free_shipping")
     private Boolean freeShipping = false;
     
-    @Column(length = 500)
-    private String thumbnail;
-    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
     private Categoria categoria;
