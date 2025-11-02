@@ -33,7 +33,9 @@ const mapProductFromBackend = (backendProduct) => {
       (backendProduct.images && backendProduct.images.length > 0 
         ? backendProduct.images[0] 
         : 'https://via.placeholder.com/150'),
-    category: backendProduct.category,
+    category: backendProduct.categoria ? backendProduct.categoria.name : backendProduct.category,
+    categoryId: backendProduct.categoria ? backendProduct.categoria.id : null,
+    categoryData: backendProduct.categoria || null, // Objeto completo de categoría
     seller: backendProduct.seller || {
       id: backendProduct.sellerId || '1',
       nickname: 'Vendedor'
@@ -98,28 +100,34 @@ export const productsApi = {
 
   getCategories: async () => {
     try {
-      // Obtener productos primero
-      const productsData = await productsApi.getProducts();
+      // Usar el nuevo endpoint de categorías
+      const response = await fetch(`${API_URL}/categorias`);
+      const categorias = await handleResponse(response);
       
-      console.log('Products data for categories:', productsData); // Debug log
+      console.log('Categories from API:', categorias); // Debug log
       
       // Verificar que sea un array
-      if (!Array.isArray(productsData)) {
-        console.warn('Products data is not an array:', productsData);
-        return [];
+      if (!Array.isArray(categorias)) {
+        console.warn('Categories data is not an array:', categorias);
+        throw new Error('Invalid categories data format');
       }
       
-      // Extraer categorías únicas de los productos (ahora mapeados con campo 'category')
-      const categories = [...new Set(productsData.map(product => product.category))];
-      
-      // Filtrar valores nulos/undefined y retornar
-      const validCategories = categories.filter(cat => cat && cat.trim() !== '');
-      console.log('Valid categories found:', validCategories); // Debug log
-      
-      return validCategories;
+      // Retornar las categorías completas (con id, name, description, image)
+      return categorias;
     } catch (error) {
       console.error('Error fetching categories:', error);
-      return [];
+      // No hacer fallback - dejar que falle
+      throw error;
+    }
+  },
+
+  getCategoryById: async (id) => {
+    try {
+      const response = await fetch(`${API_URL}/categorias/${id}`);
+      return await handleResponse(response);
+    } catch (error) {
+      console.error('Error fetching category by id:', error);
+      return null;
     }
   },
 
@@ -369,4 +377,5 @@ export const api = {
 export const getProducts = () => productsApi.getProducts();
 export const getProduct = (id) => productsApi.getProduct(id);
 export const getCategories = () => productsApi.getCategories();
+export const getCategoryById = (id) => productsApi.getCategoryById(id);
 export const searchProducts = (query) => productsApi.searchProducts(query);

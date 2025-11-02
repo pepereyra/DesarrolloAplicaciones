@@ -12,13 +12,13 @@ function CategoryFilter({ categories, selectedCategory, onCategoryChange, sortBy
           >
             Todas las categorías
           </button>
-          {categories.map(category => (
+          {categories.map(categoria => (
             <button
-              key={category}
-              className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
-              onClick={() => onCategoryChange(category)}
+              key={categoria.id || categoria.name}
+              className={`category-btn ${selectedCategory === categoria.name ? 'active' : ''}`}
+              onClick={() => onCategoryChange(categoria.name)}
             >
-              {category}
+              {categoria.name}
             </button>
           ))}
         </div>

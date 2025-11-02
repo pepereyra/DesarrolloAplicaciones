@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { api } from '../services/api';
+import { api, getCategories } from '../services/api';
 import Notification from '../components/Notification';
 import './SellerPanel.css';
 
@@ -10,6 +10,7 @@ function SellerPanel() {
   const location = useLocation();
   const { currentUser, getSellerInfo } = useAuth();
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [notification, setNotification] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -47,6 +48,7 @@ function SellerPanel() {
     setSellerInfo(currentSellerInfo);
     
     loadSellerProducts();
+    loadCategories();
   }, [currentUser, navigate, getSellerInfo]);
 
   // useEffect para manejar cuando se llega desde ProductDetail con un producto para editar
@@ -89,6 +91,18 @@ function SellerPanel() {
       showNotification('Error al cargar productos', 'error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadCategories = async () => {
+    try {
+      const categorias = await getCategories();
+      setCategories(categorias);
+    } catch (error) {
+      console.error('Error loading categories:', error);
+      setCategories([]);
+      // Mostrar notificación de error
+      showNotification('Error al cargar categorías. Verifique la conexión con el servidor.', 'error');
     }
   };
 
@@ -349,14 +363,19 @@ function SellerPanel() {
                 value={formData.category}
                 onChange={handleInputChange}
                 required
+                disabled={categories.length === 0}
               >
-                <option value="">Seleccionar categoría *</option>
-                <option value="celulares">Celulares</option>
-                <option value="computacion">Computación</option>
-                <option value="electrodomesticos">Electrodomésticos</option>
-                <option value="deportes">Deportes</option>
-                <option value="audio">Audio</option>
-                <option value="anteojos">Anteojos</option>
+                <option value="">
+                  {categories.length === 0 
+                    ? "No se pudieron cargar las categorías" 
+                    : "Seleccionar categoría *"
+                  }
+                </option>
+                {categories.map((categoria) => (
+                  <option key={categoria.id} value={categoria.name}>
+                    {categoria.name}
+                  </option>
+                ))}
               </select>
               <select
                 name="condition"

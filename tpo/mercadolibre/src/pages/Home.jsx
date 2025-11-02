@@ -21,16 +21,24 @@ function Home() {
       dispatch({ type: 'SET_LOADING', payload: true });
       try {
         const products = await productsApi.getProducts();
-        const categoriesList = await productsApi.getCategories();
         
         dispatch({ type: 'SET_PRODUCTS', payload: products });
         setAllProducts(products);
         setFilteredProducts(products);
-        setCategories(categoriesList);
         
         // Productos destacados (primeros 6 con stock)
         const productsWithStock = products.filter(p => p.stock > 0);
         setFeaturedProducts(productsWithStock.slice(0, 6));
+        
+        // Cargar categorías por separado para manejar errores independientemente
+        try {
+          const categoriesList = await productsApi.getCategories();
+          setCategories(categoriesList);
+        } catch (categoryError) {
+          console.error('Error fetching categories:', categoryError);
+          setCategories([]); // Continuar sin categorías
+        }
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {

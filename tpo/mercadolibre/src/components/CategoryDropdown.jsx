@@ -14,6 +14,7 @@ function CategoryDropdown() {
         setCategories(data);
       } catch (error) {
         console.error('Error fetching categories:', error);
+        setCategories([]); // Mostrar dropdown vacío si falla
       }
     };
 
@@ -63,14 +64,14 @@ function CategoryDropdown() {
       {isOpen && (
         <div className="category-dropdown-menu">
           <ul className="category-list">
-            {categories.map((category) => (
-              <li key={category} className="category-list-item">
+            {categories.map((categoria) => (
+              <li key={categoria.id || categoria.name} className="category-list-item">
                 <Link
-                  to={`/?category=${encodeURIComponent(category)}`}
+                  to={`/?category=${encodeURIComponent(categoria.name)}`}
                   className="category-text-item"
                   onClick={() => setIsOpen(false)}
                 >
-                  {category}
+                  {categoria.name}
                 </Link>
               </li>
             ))}
