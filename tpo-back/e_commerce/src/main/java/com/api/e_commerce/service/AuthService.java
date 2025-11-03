@@ -11,11 +11,16 @@ import com.api.e_commerce.model.Usuario;
 import com.api.e_commerce.repository.CarritoRepository;
 import com.api.e_commerce.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,17 +30,33 @@ public class AuthService {
     private final UsuarioRepository usuarioRepository;
     private final CarritoRepository carritoRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
     
     public AuthResponse login(LoginRequest request) {
+        // Autenticar con Spring Security
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+        
         Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new UnauthorizedException("Credenciales inválidas"));
         
-        // Aquí normalmente verificarías la contraseña encriptada
-        if (!request.getPassword().equals(usuario.getPassword())) {
-            throw new UnauthorizedException("Credenciales inválidas");
-        }
+        // Generar token JWT con información adicional del usuario
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("userId", usuario.getId());
+        extraClaims.put("role", usuario.getRole().name());
         
-        String token = jwtService.generateToken(usuario);
+        var userDetails = org.springframework.security.core.userdetails.User.builder()
+                .username(usuario.getEmail())
+                .password(usuario.getPassword())
+                .roles(usuario.getRole().name())
+                .build();
+        
+        String token = jwtService.generateToken(extraClaims, userDetails);
         UserDTO userDTO = convertToUserDTO(usuario);
         
         return new AuthResponse(token, userDTO);
@@ -47,8 +68,11 @@ public class AuthService {
         }
         
         Usuario usuario = new Usuario();
+        // Generar ID único (10 caracteres)
+        usuario.setId(generateUserId());
         usuario.setEmail(request.getEmail());
-        usuario.setPassword(request.getPassword()); // En producción esto debe estar encriptado
+        // Encriptar la contraseña con BCrypt
+        usuario.setPassword(passwordEncoder.encode(request.getPassword()));
         usuario.setFirstName(request.getNombre());
         usuario.setLastName(request.getApellido());
         usuario.setRole(Usuario.Role.user);
@@ -64,7 +88,18 @@ public class AuthService {
         carrito.setUpdatedAt(LocalDateTime.now());
         carritoRepository.save(carrito);
         
-        String token = jwtService.generateToken(savedUsuario);
+        // Generar token JWT
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("userId", savedUsuario.getId());
+        extraClaims.put("role", savedUsuario.getRole().name());
+        
+        var userDetails = org.springframework.security.core.userdetails.User.builder()
+                .username(savedUsuario.getEmail())
+                .password(savedUsuario.getPassword())
+                .roles(savedUsuario.getRole().name())
+                .build();
+        
+        String token = jwtService.generateToken(extraClaims, userDetails);
         UserDTO userDTO = convertToUserDTO(savedUsuario);
         
         return new AuthResponse(token, userDTO);
@@ -78,8 +113,13 @@ public class AuthService {
         dto.setEmail(usuario.getEmail());
         dto.setRole(usuario.getRole());
         dto.setCreatedAt(usuario.getCreatedAt());
-        dto.setActive(true); // Por defecto siempre activo en esta implementación
+        dto.setActive(true);
         
         return dto;
+    }
+    
+    private String generateUserId() {
+        // Generar un ID único de 10 caracteres usando UUID
+        return java.util.UUID.randomUUID().toString().replace("-", "").substring(0, 10);
     }
 }
