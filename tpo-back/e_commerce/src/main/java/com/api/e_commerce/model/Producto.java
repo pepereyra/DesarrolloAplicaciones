@@ -37,7 +37,7 @@ public class Producto {
     private Boolean freeShipping = false;
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = true)
     private Categoria categoria;
     
     @Column(name = "seller_id", length = 10)

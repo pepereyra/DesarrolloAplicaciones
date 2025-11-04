@@ -4,9 +4,23 @@ import lombok.Data;
 
 @Data
 public class RegisterRequest {
-    private String nombre;
-    private String apellido;
+    // Usar nombres en inglés que coincidan con el frontend
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
-    private String telefono;
+    private String phone;
+    
+    // Métodos de compatibilidad para el código en español
+    public String getNombre() {
+        return firstName;
+    }
+    
+    public String getApellido() {
+        return lastName;
+    }
+    
+    public String getTelefono() {
+        return phone;
+    }
 }
