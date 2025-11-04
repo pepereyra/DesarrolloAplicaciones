@@ -1,5 +1,19 @@
 const API_URL = 'http://localhost:8080/api';
 
+// Función helper para obtener los headers con autenticación
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('authToken');
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
+  return headers;
+};
+
 // Configuración para manejar errores
 const handleResponse = async (response) => {
   if (!response.ok) {
@@ -199,9 +213,7 @@ export const authApi = {
   getUsers: async () => {
     try {
       const response = await fetch(`${API_URL}/usuarios`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
+        headers: getAuthHeaders(),
       });
       return await handleResponse(response);
     } catch (error) {
@@ -213,9 +225,7 @@ export const authApi = {
   getUserById: async (userId) => {
     try {
       const response = await fetch(`${API_URL}/usuarios/${userId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
+        headers: getAuthHeaders(),
       });
       return await handleResponse(response);
     } catch (error) {
@@ -235,9 +245,7 @@ export const cartApi = {
     try {
       const response = await fetch(`${API_URL}/carrito/${usuarioId}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
       });
       return await handleResponse(response);
     } catch (error) {
@@ -263,9 +271,7 @@ export const cartApi = {
     try {
       const response = await fetch(`${API_URL}/carrito/${usuarioId}/items?productoId=${productoId}&cantidad=${cantidad}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
       });
       return await handleResponse(response);
     } catch (error) {
@@ -282,9 +288,7 @@ export const cartApi = {
     try {
       const response = await fetch(`${API_URL}/carrito/${usuarioId}/items/${itemId}?cantidad=${cantidad}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
       });
       return await handleResponse(response);
     } catch (error) {
@@ -301,9 +305,7 @@ export const cartApi = {
     try {
       const response = await fetch(`${API_URL}/carrito/${usuarioId}/items/${itemId}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
       });
       return await handleResponse(response);
     } catch (error) {
@@ -320,9 +322,7 @@ export const cartApi = {
     try {
       const response = await fetch(`${API_URL}/carrito/${usuarioId}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
       });
       return await handleResponse(response);
     } catch (error) {
@@ -354,13 +354,9 @@ export const api = {
   
   createProduct: async (productData) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}/productos`, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(productData),
       });
       return await handleResponse(response);
@@ -372,13 +368,9 @@ export const api = {
 
   updateProduct: async (id, productData) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}/productos/${id}`, {
         method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(productData),
       });
       return await handleResponse(response);
@@ -390,12 +382,9 @@ export const api = {
 
   deleteProduct: async (id) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}/productos/${id}`, {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(),
       });
       return await handleResponse(response);
     } catch (error) {

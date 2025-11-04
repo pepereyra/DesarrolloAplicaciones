@@ -68,15 +68,32 @@ public class AuthService {
         }
         
         Usuario usuario = new Usuario();
-        // Generar ID único (10 caracteres)
-        usuario.setId(generateUserId());
-        usuario.setEmail(request.getEmail());
+        // Generar ID único (10 caracteres) - asegurar que no exista
+        String userId;
+        do {
+            userId = generateUserId();
+        } while (usuarioRepository.existsById(userId)); // Verificar que no exista
+        
+        usuario.setId(userId);
+        usuario.setEmail(request.getEmail().toLowerCase().trim()); // Normalizar email
         // Encriptar la contraseña con BCrypt
         usuario.setPassword(passwordEncoder.encode(request.getPassword()));
-        usuario.setFirstName(request.getNombre());
-        usuario.setLastName(request.getApellido());
+        
+        // Manejar nombres con null-safety
+        String firstName = request.getNombre() != null ? request.getNombre() : "Usuario";
+        String lastName = request.getApellido() != null ? request.getApellido() : "";
+        
+        usuario.setFirstName(firstName);
+        usuario.setLastName(lastName);
         usuario.setRole(Usuario.Role.user);
         usuario.setCreatedAt(LocalDateTime.now());
+        
+        // Inicializar valores por defecto para seller
+        usuario.setSellerNickname(firstName.toUpperCase() + "_STORE");
+        usuario.setSellerReputation(Usuario.SellerReputation.bronze);
+        usuario.setSellerDescription("Tienda de " + firstName);
+        usuario.setSellerLocation("Argentina");
+        usuario.setSellerPhone(request.getTelefono() != null ? request.getTelefono() : "");
         
         Usuario savedUsuario = usuarioRepository.save(usuario);
         

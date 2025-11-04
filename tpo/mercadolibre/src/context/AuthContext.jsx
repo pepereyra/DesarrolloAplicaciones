@@ -28,19 +28,27 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const loadCompleteUser = async () => {
             const savedUser = loadUserFromStorage();
-            if (savedUser && savedUser.id) {
+            const authToken = localStorage.getItem('authToken');
+            
+            if (savedUser && savedUser.id && authToken) {
                 try {
-                    // Cargar datos completos del usuario desde la API
-                    const response = await fetch(`http://localhost:8080/api/usuarios/${savedUser.id}`);
+                    // Cargar datos completos del usuario desde la API con autenticación
+                    const response = await fetch(`http://localhost:8080/api/usuarios/${savedUser.id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+                    
                     if (response.ok) {
                         const completeUser = await response.json();
                         setCurrentUser(completeUser);
                         localStorage.setItem('currentUser', JSON.stringify(completeUser));
                     } else {
-                        // Si el usuario no existe en el backend, limpiar el localStorage
-                        console.warn('Usuario no encontrado en el backend, limpiando sesión local');
+                        // Si el token es inválido o el usuario no existe, limpiar la sesión
+                        console.warn('Usuario no autenticado, limpiando sesión local');
                         setCurrentUser(null);
                         localStorage.removeItem('currentUser');
+                        localStorage.removeItem('authToken');
                     }
                 } catch (error) {
                     console.error('Error loading complete user data:', error);
@@ -65,47 +73,35 @@ const AuthProvider = ({ children }) => {
     // Función para registrar un nuevo usuario
     const register = async (userData) => {
         try {
-            // Verificar si el usuario ya existe
-            const response = await fetch('http://localhost:8080/api/usuarios');
-            const users = await response.json();
-            
-            if (users.some(user => user.email === userData.email)) {
-                throw new Error('El email ya está registrado');
-            }
-
-            // Preparar los datos del nuevo usuario
-            const newUserData = {
-                ...userData,
-                id: (users.length + 1).toString(),
-                role: 'user',
-                avatar: 'https://via.placeholder.com/150',
-                sellerProfile: {
-                    nickname: `${userData.firstName}_STORE`.toUpperCase(),
-                    reputation: 'bronze',
-                    description: `Tienda de ${userData.firstName} ${userData.lastName}`,
-                    location: 'Argentina',
-                    phone: '+54 11 0000-0000'
-                },
-                createdAt: new Date().toISOString()
-            };
-
-            // Guardar nuevo usuario
-            const saveUser = await fetch('http://localhost:8080/api/usuarios', {
+            // Usar el endpoint de registro de Spring Boot
+            const response = await fetch('http://localhost:8080/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newUserData)
+                body: JSON.stringify({
+                    email: userData.email,
+                    password: userData.password,
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    phone: userData.phone || ''
+                })
             });
 
-            if (!saveUser.ok) {
-                throw new Error('Error al registrar usuario');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al registrar usuario');
             }
 
-            const newUser = await saveUser.json();
-            setCurrentUser(newUser);
+            const authResponse = await response.json();
+            
+            // Guardar el token JWT en localStorage
+            localStorage.setItem('authToken', authResponse.token);
+            
+            // Establecer el usuario actual
+            setCurrentUser(authResponse.user);
             setError('');
-            return newUser;
+            return authResponse.user;
         } catch (error) {
             setError(error.message);
             throw error;
@@ -115,19 +111,32 @@ const AuthProvider = ({ children }) => {
     // Función para iniciar sesión
     const login = async (email, password) => {
         try {
-            // Buscar usuario por email
-            const response = await fetch(`http://localhost:8080/api/usuarios?email=${email}`);
-            const users = await response.json();
+            // Usar el endpoint de login de Spring Boot
+            const response = await fetch('http://localhost:8080/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
 
-            const user = users.find(u => u.password === password);
-
-            if (!user) {
-                throw new Error('Credenciales inválidas');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Credenciales inválidas');
             }
 
-            setCurrentUser(user);
+            const authResponse = await response.json();
+            
+            // Guardar el token JWT en localStorage
+            localStorage.setItem('authToken', authResponse.token);
+            
+            // Establecer el usuario actual
+            setCurrentUser(authResponse.user);
             setError('');
-            return user;
+            return authResponse.user;
         } catch (error) {
             setError(error.message);
             throw error;
@@ -137,6 +146,7 @@ const AuthProvider = ({ children }) => {
     // Función para cerrar sesión
     const logout = () => {
         setCurrentUser(null);
+        localStorage.removeItem('authToken');
         setError('');
     };
 
