@@ -1,31 +1,52 @@
 import { useApp } from '../context/AppContext';
 
 export const useCart = () => {
-  const { state, dispatch } = useApp();
+  const { 
+    state, 
+    addToCart: contextAddToCart,
+    removeFromCart: contextRemoveFromCart, 
+    updateCartQuantity: contextUpdateQuantity,
+    clearCart: contextClearCart
+  } = useApp();
 
-  const addToCart = (product, quantity = 1) => {
-    for (let i = 0; i < quantity; i++) {
-      dispatch({ type: 'ADD_TO_CART', payload: product });
+  const addToCart = async (product, quantity = 1) => {
+    try {
+      await contextAddToCart(product, quantity);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      throw error;
     }
   };
 
-  const removeFromCart = (productId) => {
-    dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
-  };
-
-  const updateQuantity = (productId, newQuantity) => {
-    if (newQuantity <= 0) {
-      removeFromCart(productId);
-    } else {
-      dispatch({ 
-        type: 'UPDATE_CART_QUANTITY', 
-        payload: { id: productId, quantity: newQuantity } 
-      });
+  const removeFromCart = async (productId) => {
+    try {
+      await contextRemoveFromCart(productId);
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+      throw error;
     }
   };
 
-  const clearCart = () => {
-    dispatch({ type: 'CLEAR_CART' });
+  const updateQuantity = async (productId, newQuantity) => {
+    try {
+      if (newQuantity <= 0) {
+        await removeFromCart(productId);
+      } else {
+        await contextUpdateQuantity(productId, newQuantity);
+      }
+    } catch (error) {
+      console.error('Error updating cart quantity:', error);
+      throw error;
+    }
+  };
+
+  const clearCart = async () => {
+    try {
+      await contextClearCart();
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+      throw error;
+    }
   };
 
   const getItemQuantity = (productId) => {
@@ -71,6 +92,8 @@ export const useCart = () => {
 
   return {
     cart: state.cart,
+    cartLoading: state.cartLoading,
+    cartError: state.cartError,
     addToCart,
     removeFromCart,
     updateQuantity,

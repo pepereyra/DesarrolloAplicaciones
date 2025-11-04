@@ -14,6 +14,35 @@ function Cart() {
     formatPrice 
   } = useCart();
 
+  // Handlers async para operaciones del carrito
+  const handleUpdateQuantity = async (productId, newQuantity) => {
+    try {
+      await updateQuantity(productId, newQuantity);
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+      // Aquí podrías mostrar una notificación de error
+    }
+  };
+
+  const handleRemoveFromCart = async (productId) => {
+    try {
+      await removeFromCart(productId);
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+      // Aquí podrías mostrar una notificación de error
+    }
+  };
+
+  const handleClearCart = async () => {
+    try {
+      await clearCart();
+      setSelected({}); // Limpiar selección también
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+      // Aquí podrías mostrar una notificación de error
+    }
+  };
+
   // Estado de selección
   const [selected, setSelected] = useState(() => {
     // Por defecto, todos seleccionados
@@ -158,8 +187,8 @@ function Cart() {
                         />
                         <CartItem
                           item={item}
-                          onUpdateQuantity={updateQuantity}
-                          onRemove={removeFromCart}
+                          onUpdateQuantity={handleUpdateQuantity}
+                          onRemove={handleRemoveFromCart}
                           formatPrice={formatPrice}
                         />
                       </div>
@@ -186,7 +215,7 @@ function Cart() {
               );
             })}
             {/* Botón para vaciar carrito debajo de los productos */}
-            <button onClick={clearCart} className="clear-cart-btn below-list">
+            <button onClick={handleClearCart} className="clear-cart-btn below-list">
               Vaciar carrito
             </button>
           </div>

@@ -14,25 +14,22 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOriginPatterns(
-                            "http://localhost:*",      // Cualquier puerto localhost
-                            "http://127.0.0.1:*",     // Cualquier puerto 127.0.0.1
-                            "https://localhost:*",     // HTTPS localhost
-                            "https://127.0.0.1:*"     // HTTPS 127.0.0.1
+                        .allowedOrigins(
+                            "http://localhost:3000",      // React dev server
+                            "http://localhost:5173",      // Vite dev server
+                            "http://localhost:8080",      // Swagger UI
+                            "http://127.0.0.1:3000",
+                            "http://127.0.0.1:5173",
+                            "http://127.0.0.1:8080"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders(
-                            "Origin",
-                            "Content-Type", 
-                            "Accept",
-                            "Authorization",
+                            "Content-Type",
+                            "Authorization", 
                             "X-Requested-With",
-                            "Access-Control-Request-Method",
-                            "Access-Control-Request-Headers"
-                        )
-                        .exposedHeaders(
-                            "Access-Control-Allow-Origin",
-                            "Access-Control-Allow-Credentials"
+                            "Accept",
+                            "Origin",
+                            "Cache-Control"
                         )
                         .allowCredentials(true)
                         .maxAge(3600); // Cache preflight por 1 hora

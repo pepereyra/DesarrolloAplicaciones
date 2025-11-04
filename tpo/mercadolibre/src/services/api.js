@@ -1,5 +1,3 @@
-import { localProductsService } from './localProductsService.js';
-
 const API_URL = 'http://localhost:8080/api';
 
 // Configuración para manejar errores
@@ -33,7 +31,9 @@ const mapProductFromBackend = (backendProduct) => {
       (backendProduct.images && backendProduct.images.length > 0 
         ? backendProduct.images[0] 
         : 'https://via.placeholder.com/150'),
-    category: backendProduct.category,
+    category: backendProduct.categoria ? backendProduct.categoria.name : backendProduct.category,
+    categoryId: backendProduct.categoria ? backendProduct.categoria.id : null,
+    categoryData: backendProduct.categoria || null, // Objeto completo de categoría
     seller: backendProduct.seller || {
       id: backendProduct.sellerId || '1',
       nickname: 'Vendedor'
@@ -98,28 +98,34 @@ export const productsApi = {
 
   getCategories: async () => {
     try {
-      // Obtener productos primero
-      const productsData = await productsApi.getProducts();
+      // Usar el nuevo endpoint de categorías
+      const response = await fetch(`${API_URL}/categorias`);
+      const categorias = await handleResponse(response);
       
-      console.log('Products data for categories:', productsData); // Debug log
+      console.log('Categories from API:', categorias); // Debug log
       
       // Verificar que sea un array
-      if (!Array.isArray(productsData)) {
-        console.warn('Products data is not an array:', productsData);
-        return [];
+      if (!Array.isArray(categorias)) {
+        console.warn('Categories data is not an array:', categorias);
+        throw new Error('Invalid categories data format');
       }
       
-      // Extraer categorías únicas de los productos (ahora mapeados con campo 'category')
-      const categories = [...new Set(productsData.map(product => product.category))];
-      
-      // Filtrar valores nulos/undefined y retornar
-      const validCategories = categories.filter(cat => cat && cat.trim() !== '');
-      console.log('Valid categories found:', validCategories); // Debug log
-      
-      return validCategories;
+      // Retornar las categorías completas (con id, name, description, image)
+      return categorias;
     } catch (error) {
       console.error('Error fetching categories:', error);
-      return [];
+      // No hacer fallback - dejar que falle
+      throw error;
+    }
+  },
+
+  getCategoryById: async (id) => {
+    try {
+      const response = await fetch(`${API_URL}/categorias/${id}`);
+      return await handleResponse(response);
+    } catch (error) {
+      console.error('Error fetching category by id:', error);
+      return null;
     }
   },
 
@@ -202,40 +208,64 @@ export const authApi = {
       console.error('Error fetching users:', error);
       return [];
     }
+  },
+  
+  getUserById: async (userId) => {
+    try {
+      const response = await fetch(`${API_URL}/usuarios/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      return await handleResponse(response);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      throw error;
+    }
   }
 };
 
-// API de carrito
+// API de carrito - Integrada con endpoints del CarritoController
 export const cartApi = {
-  getCart: async () => {
+  /**
+   * Obtener el carrito de un usuario específico
+   * Endpoint: GET /api/carrito/{usuarioId}
+   */
+  getCart: async (usuarioId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/carrito`, {
+      const response = await fetch(`${API_URL}/carrito/${usuarioId}`, {
+        method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
       return await handleResponse(response);
     } catch (error) {
       console.error('Error fetching cart:', error);
-      return [];
+      // Retornar estructura vacía en caso de error (usuario sin carrito)
+      return {
+        id: null,
+        usuarioId,
+        items: [],
+        totalPrice: 0,
+        totalItems: 0,
+        createdAt: null,
+        updatedAt: null
+      };
     }
   },
 
-  addToCart: async (product) => {
+  /**
+   * Agregar un item al carrito
+   * Endpoint: POST /api/carrito/{usuarioId}/items?productoId=X&cantidad=Y
+   */
+  addToCart: async (usuarioId, productoId, cantidad = 1) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/carrito/agregar`, {
+      const response = await fetch(`${API_URL}/carrito/${usuarioId}/items?productoId=${productoId}&cantidad=${cantidad}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          productoId: product.id,
-          cantidad: product.quantity || 1
-        }),
       });
       return await handleResponse(response);
     } catch (error) {
@@ -244,13 +274,35 @@ export const cartApi = {
     }
   },
 
-  removeFromCart: async (id) => {
+  /**
+   * Actualizar cantidad de un item en el carrito
+   * Endpoint: PUT /api/carrito/{usuarioId}/items/{itemId}?cantidad=Z
+   */
+  updateCartItem: async (usuarioId, itemId, cantidad) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/carrito/eliminar/${id}`, {
+      const response = await fetch(`${API_URL}/carrito/${usuarioId}/items/${itemId}?cantidad=${cantidad}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return await handleResponse(response);
+    } catch (error) {
+      console.error('Error updating cart item:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Eliminar un item específico del carrito
+   * Endpoint: DELETE /api/carrito/{usuarioId}/items/{itemId}
+   */
+  removeFromCart: async (usuarioId, itemId) => {
+    try {
+      const response = await fetch(`${API_URL}/carrito/${usuarioId}/items/${itemId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
       return await handleResponse(response);
@@ -260,31 +312,16 @@ export const cartApi = {
     }
   },
 
-  updateCartItem: async (id, data) => {
+  /**
+   * Vaciar completamente el carrito
+   * Endpoint: DELETE /api/carrito/{usuarioId}
+   */
+  clearCart: async (usuarioId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/carrito/actualizar`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id, ...data }),
-      });
-      return await handleResponse(response);
-    } catch (error) {
-      console.error('Error updating cart item:', error);
-      throw error;
-    }
-  },
-
-  clearCart: async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/carrito/limpiar`, {
+      const response = await fetch(`${API_URL}/carrito/${usuarioId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
       return await handleResponse(response);
@@ -304,13 +341,16 @@ export const api = {
   getProductsByVendedor: (vendedorId) => productsApi.getProductsByVendedor(vendedorId),
   getCategories: () => productsApi.getCategories(),
   getUsers: () => authApi.getUsers(),
+  getUserById: (userId) => authApi.getUserById(userId),
   createUser: (userData) => authApi.createUser(userData),
   loginUser: (email, password) => authApi.loginUser(email, password),
-  getCart: () => cartApi.getCart(),
-  addToCart: (product) => cartApi.addToCart(product),
-  removeFromCart: (id) => cartApi.removeFromCart(id),
-  updateCartItem: (id, data) => cartApi.updateCartItem(id, data),
-  clearCart: () => cartApi.clearCart(),
+  
+  // Métodos de carrito actualizados para usar usuarioId
+  getCart: (usuarioId) => cartApi.getCart(usuarioId),
+  addToCart: (usuarioId, productoId, cantidad) => cartApi.addToCart(usuarioId, productoId, cantidad),
+  removeFromCart: (usuarioId, itemId) => cartApi.removeFromCart(usuarioId, itemId),
+  updateCartItem: (usuarioId, itemId, cantidad) => cartApi.updateCartItem(usuarioId, itemId, cantidad),
+  clearCart: (usuarioId) => cartApi.clearCart(usuarioId),
   
   createProduct: async (productData) => {
     try {
@@ -369,4 +409,5 @@ export const api = {
 export const getProducts = () => productsApi.getProducts();
 export const getProduct = (id) => productsApi.getProduct(id);
 export const getCategories = () => productsApi.getCategories();
+export const getCategoryById = (id) => productsApi.getCategoryById(id);
 export const searchProducts = (query) => productsApi.searchProducts(query);
