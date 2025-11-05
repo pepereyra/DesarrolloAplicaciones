@@ -31,7 +31,7 @@ public class CarritoService {
     private final ProductoRepository productoRepository;
     private final UsuarioRepository usuarioRepository;
     
-    public CarritoDTO getCarritoByUsuario(String usuarioId) {
+    public CarritoDTO getCarritoByUsuario(Long usuarioId) {
         Carrito carrito = carritoRepository.findByUsuarioId(usuarioId)
             .orElseGet(() -> createCarritoForUser(usuarioId));
         
@@ -46,7 +46,7 @@ public class CarritoService {
         return convertToCarritoDTO(carrito);
     }
     
-    private Carrito createCarritoForUser(String usuarioId) {
+    private Carrito createCarritoForUser(Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
             .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
         
@@ -60,7 +60,7 @@ public class CarritoService {
         return carritoRepository.save(carrito);
     }
     
-    public CarritoDTO addItemToCarrito(String usuarioId, String productoId, Integer cantidad) {
+    public CarritoDTO addItemToCarrito(Long usuarioId, Long productoId, Integer cantidad) {
         if (cantidad <= 0) {
             throw new BadRequestException("La cantidad debe ser mayor a 0");
         }
@@ -96,7 +96,7 @@ public class CarritoService {
         return convertToCarritoDTO(carrito);
     }
     
-    public CarritoDTO updateItemQuantity(String usuarioId, Long itemId, Integer cantidad) {
+    public CarritoDTO updateItemQuantity(Long usuarioId, Long itemId, Integer cantidad) {
         if (cantidad <= 0) {
             throw new BadRequestException("La cantidad debe ser mayor a 0");
         }
@@ -117,7 +117,7 @@ public class CarritoService {
         return convertToCarritoDTO(item.getCarrito());
     }
     
-    public CarritoDTO removeItemFromCarrito(String usuarioId, Long itemId) {
+    public CarritoDTO removeItemFromCarrito(Long usuarioId, Long itemId) {
         CarritoItem item = carritoItemRepository.findById(itemId)
             .orElseThrow(() -> new NotFoundException("Item no encontrado"));
         
@@ -134,7 +134,7 @@ public class CarritoService {
         return convertToCarritoDTO(carrito);
     }
     
-    public void clearCarrito(String usuarioId) {
+    public void clearCarrito(Long usuarioId) {
         Carrito carrito = carritoRepository.findByUsuarioId(usuarioId)
             .orElseThrow(() -> new NotFoundException("Carrito no encontrado"));
         

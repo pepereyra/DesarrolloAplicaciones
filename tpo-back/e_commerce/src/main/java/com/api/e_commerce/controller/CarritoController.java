@@ -14,15 +14,15 @@ public class CarritoController {
     private final CarritoService carritoService;
     
     @GetMapping("/{usuarioId}")
-    public ResponseEntity<CarritoDTO> getCarrito(@PathVariable String usuarioId) {
+    public ResponseEntity<CarritoDTO> getCarrito(@PathVariable Long usuarioId) {
         CarritoDTO carrito = carritoService.getCarritoByUsuario(usuarioId);
         return ResponseEntity.ok(carrito);
     }
     
     @PostMapping("/{usuarioId}/items")
     public ResponseEntity<CarritoDTO> addItemToCarrito(
-            @PathVariable String usuarioId,
-            @RequestParam String productoId,
+            @PathVariable Long usuarioId,
+            @RequestParam Long productoId,
             @RequestParam Integer cantidad) {
         
         CarritoDTO carrito = carritoService.addItemToCarrito(usuarioId, productoId, cantidad);
@@ -31,7 +31,7 @@ public class CarritoController {
     
     @PutMapping("/{usuarioId}/items/{itemId}")
     public ResponseEntity<CarritoDTO> updateItemQuantity(
-            @PathVariable String usuarioId,
+            @PathVariable Long usuarioId,
             @PathVariable Long itemId,
             @RequestParam Integer cantidad) {
         
@@ -41,7 +41,7 @@ public class CarritoController {
     
     @DeleteMapping("/{usuarioId}/items/{itemId}")
     public ResponseEntity<CarritoDTO> removeItemFromCarrito(
-            @PathVariable String usuarioId,
+            @PathVariable Long usuarioId,
             @PathVariable Long itemId) {
         
         CarritoDTO carrito = carritoService.removeItemFromCarrito(usuarioId, itemId);
@@ -49,7 +49,7 @@ public class CarritoController {
     }
     
     @DeleteMapping("/{usuarioId}")
-    public ResponseEntity<Void> clearCarrito(@PathVariable String usuarioId) {
+    public ResponseEntity<Void> clearCarrito(@PathVariable Long usuarioId) {
         carritoService.clearCarrito(usuarioId);
         return ResponseEntity.ok().build();
     }

@@ -17,8 +17,8 @@ public class ProductoImagen {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "producto_id", length = 10)
-    private String productoId;
+    @Column(name = "producto_id")
+    private Long productoId;
     
     @Column(name = "image_url", nullable = false, length = 500)
     private String imageUrl;

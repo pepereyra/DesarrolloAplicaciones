@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Data
 public class ProductoDTO {
-    private String id;
+    private Long id;
     private String title;
     private String description;
     private BigDecimal price;
@@ -22,7 +22,7 @@ public class ProductoDTO {
     private String thumbnail;
     private CategoriaDTO categoria;
     private String category;
-    private String sellerId;
+    private Long sellerId;
     private String location;
     private Integer stock;
     private List<String> images;

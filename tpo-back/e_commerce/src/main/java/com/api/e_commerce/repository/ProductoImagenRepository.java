@@ -11,10 +11,10 @@ import java.util.List;
 @Repository
 public interface ProductoImagenRepository extends JpaRepository<ProductoImagen, Long> {
     
-    List<ProductoImagen> findByProductoIdOrderByOrden(String productoId);
+    List<ProductoImagen> findByProductoIdOrderByOrden(Long productoId);
     
-    void deleteByProductoId(String productoId);
+    void deleteByProductoId(Long productoId);
     
     @Query("SELECT pi FROM ProductoImagen pi WHERE pi.productoId = :productoId ORDER BY pi.orden ASC")
-    List<ProductoImagen> findImagenesByProductoId(@Param("productoId") String productoId);
+    List<ProductoImagen> findImagenesByProductoId(@Param("productoId") Long productoId);
 }

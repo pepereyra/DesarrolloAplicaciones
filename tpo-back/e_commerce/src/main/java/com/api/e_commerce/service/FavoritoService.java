@@ -25,12 +25,12 @@ public class FavoritoService {
     private final UsuarioRepository usuarioRepository;
     private final ProductoService productoService;
     
-    public Page<ProductoDTO> getFavoritosByUsuarioId(String usuarioId, Pageable pageable) {
+    public Page<ProductoDTO> getFavoritosByUsuarioId(Long usuarioId, Pageable pageable) {
         Page<Favorito> favoritos = favoritoRepository.findByUsuarioIdOrderByCreatedAtDesc(usuarioId, pageable);
         return favoritos.map(favorito -> productoService.convertToProductoDTO(favorito.getProducto()));
     }
     
-    public void addToFavoritos(String usuarioId, String productoId) {
+    public void addFavorito(Long usuarioId, Long productoId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
             .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
         
@@ -49,7 +49,7 @@ public class FavoritoService {
         favoritoRepository.save(favorito);
     }
     
-    public void removeFromFavoritos(String usuarioId, String productoId) {
+    public void removeFromFavoritos(Long usuarioId, Long productoId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
             .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
         
@@ -62,11 +62,11 @@ public class FavoritoService {
         favoritoRepository.delete(favorito);
     }
     
-    public boolean isProductoInFavoritos(String usuarioId, String productoId) {
+    public boolean isProductoInFavoritos(Long usuarioId, Long productoId) {
         return favoritoRepository.existsByUsuarioIdAndProductoId(usuarioId, productoId);
     }
     
-    public Long countFavoritosByUsuarioId(String usuarioId) {
+    public Long countFavoritosByUsuarioId(Long usuarioId) {
         return favoritoRepository.countByUsuarioId(usuarioId);
     }
 }

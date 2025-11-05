@@ -18,9 +18,13 @@ public class CorsConfig {
                             "http://localhost:3000",      // React dev server
                             "http://localhost:5173",      // Vite dev server
                             "http://localhost:8080",      // Swagger UI
+                            "http://localhost:80",        // Docker frontend with port
+                            "http://localhost",           // Docker frontend default port 80
+                            "http://127.0.0.1:80",
                             "http://127.0.0.1:3000",
                             "http://127.0.0.1:5173",
-                            "http://127.0.0.1:8080"
+                            "http://127.0.0.1:8080",
+                            "http://127.0.0.1"           // Default port 80
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders(

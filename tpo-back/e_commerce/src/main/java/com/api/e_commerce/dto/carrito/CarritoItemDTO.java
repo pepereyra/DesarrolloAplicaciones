@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CarritoItemDTO {
     private Long id;
-    private String productoId;
+    private Long productoId;
     private String title;
     private String imageUrl;
     private Integer unitPrice;

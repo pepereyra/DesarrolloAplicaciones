@@ -1,4 +1,9 @@
-const API_URL = 'http://localhost:8080/api';
+// Base URL de la API - usa variable de entorno o fallback
+// En Docker, usamos la URL interna del nginx proxy
+// En desarrollo local, usamos localhost
+const API_URL = import.meta.env.VITE_API_URL 
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : (import.meta.env.MODE === 'production' ? '/api' : 'http://localhost:8080/api');
 
 // Función helper para obtener los headers con autenticación
 const getAuthHeaders = () => {

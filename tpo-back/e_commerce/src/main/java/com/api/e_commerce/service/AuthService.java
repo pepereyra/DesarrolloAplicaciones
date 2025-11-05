@@ -68,13 +68,8 @@ public class AuthService {
         }
         
         Usuario usuario = new Usuario();
-        // Generar ID único (10 caracteres) - asegurar que no exista
-        String userId;
-        do {
-            userId = generateUserId();
-        } while (usuarioRepository.existsById(userId)); // Verificar que no exista
+        // No longer need to generate ID - database auto-increment will handle it
         
-        usuario.setId(userId);
         usuario.setEmail(request.getEmail().toLowerCase().trim()); // Normalizar email
         // Encriptar la contraseña con BCrypt
         usuario.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -133,10 +128,5 @@ public class AuthService {
         dto.setActive(true);
         
         return dto;
-    }
-    
-    private String generateUserId() {
-        // Generar un ID único de 10 caracteres usando UUID
-        return java.util.UUID.randomUUID().toString().replace("-", "").substring(0, 10);
     }
 }

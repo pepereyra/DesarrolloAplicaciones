@@ -35,7 +35,7 @@ public class UsuarioService implements UserDetailsService {
         return usuarioRepository.findAll();
     }
 
-    public Usuario getUsuarioById(String id) {
+    public Usuario getUsuarioById(Long id) {
         return usuarioRepository.findById(id).orElse(null);
     }
 

@@ -22,7 +22,7 @@ public class ProductoController {
     public ResponseEntity<Page<ProductoDTO>> getAllProductos(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String usuarioId) {
+            @RequestParam(required = false) Long usuarioId) {
         
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductoDTO> productos = usuarioId != null ?
@@ -37,7 +37,7 @@ public class ProductoController {
             @RequestParam String q,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String usuarioId) {
+            @RequestParam(required = false) Long usuarioId) {
         
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductoDTO> productos = usuarioId != null ?
@@ -52,7 +52,7 @@ public class ProductoController {
             @PathVariable String categoria,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String usuarioId) {
+            @RequestParam(required = false) Long usuarioId) {
         
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductoDTO> productos = usuarioId != null ?
@@ -64,8 +64,8 @@ public class ProductoController {
     
     @GetMapping("/{id}")
     public ResponseEntity<ProductoDTO> getProductoById(
-            @PathVariable String id,
-            @RequestParam(required = false) String usuarioId) {
+            @PathVariable Long id,
+            @RequestParam(required = false) Long usuarioId) {
         
         ProductoDTO producto = usuarioId != null ?
             productoService.getProductoById(id, usuarioId) :
@@ -76,7 +76,7 @@ public class ProductoController {
     
     @GetMapping("/{id}/relacionados")
     public ResponseEntity<List<ProductoDTO>> getProductosRelacionados(
-            @PathVariable String id,
+            @PathVariable Long id,
             @RequestParam(defaultValue = "4") int limit) {
         
         List<ProductoDTO> productos = productoService.getProductosRelacionados(id, limit);
@@ -91,21 +91,21 @@ public class ProductoController {
     
     @PutMapping("/{id}")
     public ResponseEntity<ProductoDTO> updateProducto(
-            @PathVariable String id,
+            @PathVariable Long id,
             @RequestBody ProductoDTO productoDTO) {
         ProductoDTO productoActualizado = productoService.updateProducto(id, productoDTO);
         return ResponseEntity.ok(productoActualizado);
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProducto(@PathVariable String id) {
+    public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
         productoService.deleteProducto(id);
         return ResponseEntity.noContent().build();
     }
     
     @GetMapping("/vendedor/{vendedorId}")
     public ResponseEntity<Page<ProductoDTO>> getProductosByVendedor(
-            @PathVariable String vendedorId,
+            @PathVariable Long vendedorId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         

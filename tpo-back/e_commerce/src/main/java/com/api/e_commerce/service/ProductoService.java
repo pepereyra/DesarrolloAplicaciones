@@ -6,6 +6,7 @@ import com.api.e_commerce.exception.NotFoundException;
 import com.api.e_commerce.model.Producto;
 import com.api.e_commerce.model.ProductoImagen;
 import com.api.e_commerce.model.Categoria;
+import com.api.e_commerce.model.Usuario;
 import com.api.e_commerce.repository.FavoritoRepository;
 import com.api.e_commerce.repository.ProductoRepository;
 import com.api.e_commerce.repository.ProductoImagenRepository;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +38,7 @@ public class ProductoService {
         return productos.map(producto -> convertToProductoDTO(producto, null));
     }
     
-    public Page<ProductoDTO> getAllProductos(String usuarioId, Pageable pageable) {
+    public Page<ProductoDTO> getAllProductos(Long usuarioId, Pageable pageable) {
         Page<Producto> productos = productoRepository.findAll(pageable);
         return productos.map(producto -> convertToProductoDTO(producto, usuarioId));
     }
@@ -48,7 +48,7 @@ public class ProductoService {
         return productos.map(producto -> convertToProductoDTO(producto, null));
     }
     
-    public Page<ProductoDTO> searchProductos(String query, String usuarioId, Pageable pageable) {
+    public Page<ProductoDTO> searchProductos(String query, Long usuarioId, Pageable pageable) {
         Page<Producto> productos = productoRepository.findByTitleContainingIgnoreCase(query, pageable);
         return productos.map(producto -> convertToProductoDTO(producto, usuarioId));
     }
@@ -58,29 +58,29 @@ public class ProductoService {
         return productos.map(producto -> convertToProductoDTO(producto, null));
     }
     
-    public Page<ProductoDTO> getProductosByCategoria(String categoria, String usuarioId, Pageable pageable) {
+    public Page<ProductoDTO> getProductosByCategoria(String categoria, Long usuarioId, Pageable pageable) {
         Page<Producto> productos = productoRepository.findByCategoriaName(categoria, pageable);
         return productos.map(producto -> convertToProductoDTO(producto, usuarioId));
     }
     
-    public Page<ProductoDTO> getProductosByVendedor(String vendedorId, Pageable pageable) {
+    public Page<ProductoDTO> getProductosByVendedor(Long vendedorId, Pageable pageable) {
         Page<Producto> productos = productoRepository.findBySellerId(vendedorId, pageable);
         return productos.map(producto -> convertToProductoDTO(producto, null));
     }
     
-    public ProductoDTO getProductoById(String id) {
+    public ProductoDTO getProductoById(Long id) {
         Producto producto = productoRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
         return convertToProductoDTO(producto, null);
     }
     
-    public ProductoDTO getProductoById(String id, String usuarioId) {
+    public ProductoDTO getProductoById(Long id, Long usuarioId) {
         Producto producto = productoRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
         return convertToProductoDTO(producto, usuarioId);
     }
     
-    public List<ProductoDTO> getProductosRelacionados(String productoId, int limit) {
+    public List<ProductoDTO> getProductosRelacionados(Long productoId, int limit) {
         Producto producto = productoRepository.findById(productoId)
             .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
         
@@ -97,7 +97,7 @@ public class ProductoService {
         return convertToProductoDTO(producto, null);
     }
     
-    public ProductoDTO convertToProductoDTO(Producto producto, String usuarioId) {
+    public ProductoDTO convertToProductoDTO(Producto producto, Long usuarioId) {
         ProductoDTO dto = new ProductoDTO();
         dto.setId(producto.getId());
         dto.setTitle(producto.getTitle());
@@ -118,7 +118,7 @@ public class ProductoService {
             dto.setCategory(producto.getCategoria().getName());
         }
         
-        dto.setSellerId(producto.getSellerId());
+        dto.setSellerId(producto.getSeller() != null ? producto.getSeller().getId() : null);
         dto.setLocation(producto.getLocation());
         dto.setStock(producto.getStock());
         dto.setCreatedAt(producto.getCreatedAt());
@@ -168,7 +168,7 @@ public class ProductoService {
     @Transactional
     public ProductoDTO createProducto(ProductoDTO productoDTO) {
         // Validar que el seller_id existe en la tabla usuario
-        if (productoDTO.getSellerId() != null && !productoDTO.getSellerId().isBlank()) {
+        if (productoDTO.getSellerId() != null) {
             if (!usuarioRepository.existsById(productoDTO.getSellerId())) {
                 throw new NotFoundException("El vendedor con ID " + productoDTO.getSellerId() + " no existe");
             }
@@ -177,12 +177,7 @@ public class ProductoService {
         }
         
         Producto producto = convertToProducto(productoDTO);
-        // Si no tiene ID, generar uno único (10 caracteres) para la columna id (length=10)
-        if (producto.getId() == null || producto.getId().isBlank()) {
-            String generated = UUID.randomUUID().toString().replace("-", "");
-            // Truncar a 10 caracteres para caber en la columna
-            producto.setId(generated.substring(0, Math.min(10, generated.length())));
-        }
+        // ID will be auto-generated by database
         
         Producto savedProducto = productoRepository.save(producto);
         
@@ -195,17 +190,19 @@ public class ProductoService {
     }
     
     @Transactional
-    public ProductoDTO updateProducto(String id, ProductoDTO productoDTO) {
+    public ProductoDTO updateProducto(Long id, ProductoDTO productoDTO) {
         // Buscar el producto existente
         Producto productoExistente = productoRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Producto con ID " + id + " no encontrado"));
         
         // Validar que el seller_id existe si se está actualizando
-        if (productoDTO.getSellerId() != null && !productoDTO.getSellerId().isBlank()) {
+        if (productoDTO.getSellerId() != null) {
             if (!usuarioRepository.existsById(productoDTO.getSellerId())) {
                 throw new NotFoundException("El vendedor con ID " + productoDTO.getSellerId() + " no existe");
             }
-            productoExistente.setSellerId(productoDTO.getSellerId());
+            Usuario seller = usuarioRepository.findById(productoDTO.getSellerId())
+                .orElseThrow(() -> new NotFoundException("Vendedor no encontrado"));
+            productoExistente.setSeller(seller);
         }
         
         // Actualizar campos del producto
@@ -273,7 +270,7 @@ public class ProductoService {
     }
     
     @Transactional
-    public void deleteProducto(String id) {
+    public void deleteProducto(Long id) {
         // Verificar que el producto existe
         Producto producto = productoRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Producto con ID " + id + " no encontrado"));
@@ -293,7 +290,11 @@ public class ProductoService {
             producto.setCategoria(categoria);
         }
         
-        producto.setSellerId(dto.getSellerId());
+        if (dto.getSellerId() != null) {
+            Usuario seller = usuarioRepository.findById(dto.getSellerId())
+                .orElseThrow(() -> new NotFoundException("Vendedor no encontrado"));
+            producto.setSeller(seller);
+        }
         producto.setLocation(dto.getLocation());
         producto.setCurrency(dto.getCurrency() != null ? dto.getCurrency() : "ARS");
         producto.setFreeShipping(dto.getFreeShipping() != null ? dto.getFreeShipping() : false);
@@ -326,7 +327,7 @@ public class ProductoService {
         return producto;
     }
     
-    private void saveProductoImages(String productoId, List<String> imageUrls) {
+    private void saveProductoImages(Long productoId, List<String> imageUrls) {
         for (int i = 0; i < imageUrls.size(); i++) {
             String imageUrl = imageUrls.get(i);
             if (imageUrl != null && !imageUrl.trim().isEmpty()) {

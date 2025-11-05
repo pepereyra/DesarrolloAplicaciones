@@ -18,11 +18,11 @@ public class Favorito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "usuario_id", length = 10)
-    private String usuarioId;
+    @Column(name = "usuario_id")
+    private Long usuarioId;
     
-    @Column(name = "producto_id", length = 10)
-    private String productoId;
+    @Column(name = "producto_id")
+    private Long productoId;
     
     @Column(name = "created_at")
     private LocalDateTime createdAt;

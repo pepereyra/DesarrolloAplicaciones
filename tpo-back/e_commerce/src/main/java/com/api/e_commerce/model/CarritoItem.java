@@ -22,8 +22,8 @@ public class CarritoItem {
     @Column(name = "carrito_id")
     private Long carritoId;
     
-    @Column(name = "producto_id", length = 10)
-    private String productoId;
+    @Column(name = "producto_id")
+    private Long productoId;
     
     @Column(nullable = false)
     private Integer cantidad = 1;

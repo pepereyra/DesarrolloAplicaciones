@@ -17,8 +17,8 @@ import java.util.List;
 public class Producto {
     
     @Id
-    @Column(length = 10)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     
     @Column(nullable = false)
     private String title;
@@ -40,8 +40,9 @@ public class Producto {
     @JoinColumn(name = "category_id", nullable = true)
     private Categoria categoria;
     
-    @Column(name = "seller_id", length = 10)
-    private String sellerId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "seller_id", nullable = true)
+    private Usuario seller;
     
     @Column(length = 200)
     private String location;
@@ -59,11 +60,6 @@ public class Producto {
     
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-    
-    // Relaciones
-    @ManyToOne
-    @JoinColumn(name = "seller_id", insertable = false, updatable = false)
-    private Usuario seller;
     
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore  // Evitar serialización circular

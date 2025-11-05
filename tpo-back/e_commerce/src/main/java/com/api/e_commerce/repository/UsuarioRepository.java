@@ -8,7 +8,7 @@ import com.api.e_commerce.model.Usuario;
 /**
  * Repositorio para manejar operaciones CRUD de la entidad Usuario.
  */
-public interface UsuarioRepository extends JpaRepository<Usuario, String> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
     Optional<Usuario> findByEmail(String email);
     Boolean existsByEmail(String email);

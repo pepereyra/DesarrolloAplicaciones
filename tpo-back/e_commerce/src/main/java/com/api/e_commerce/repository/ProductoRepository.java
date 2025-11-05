@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import com.api.e_commerce.model.Producto;
 import com.api.e_commerce.model.Categoria;
 
-public interface ProductoRepository extends JpaRepository<Producto, String> {
+public interface ProductoRepository extends JpaRepository<Producto, Long> {
     
     // Búsqueda por título
     List<Producto> findByTitleContainingIgnoreCase(String title);
@@ -28,7 +28,7 @@ public interface ProductoRepository extends JpaRepository<Producto, String> {
     Page<Producto> findByCategoriaName(@Param("categoryName") String categoryName, Pageable pageable);
     
     // Productos relacionados (misma categoría, excluyendo un producto)
-    List<Producto> findByCategoriaAndIdNot(Categoria categoria, String excludeId);
+    List<Producto> findByCategoriaAndIdNot(Categoria categoria, Long excludeId);
     
     // Búsqueda por rango de precio
     List<Producto> findByPriceBetween(Integer minPrice, Integer maxPrice);
@@ -48,6 +48,6 @@ public interface ProductoRepository extends JpaRepository<Producto, String> {
     );
     
     // Productos por vendedor
-    List<Producto> findBySellerId(String sellerId);
-    Page<Producto> findBySellerId(String sellerId, Pageable pageable);
+    List<Producto> findBySellerId(Long sellerId);
+    Page<Producto> findBySellerId(Long sellerId, Pageable pageable);
 }

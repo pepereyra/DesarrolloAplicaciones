@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Servicio del Frontend (React + Nginx)
+  frontend:
+    build:
+      context: ./mercadotrucho-front # Tu carpeta del frontend
+    container_name: ecommerce_frontend
+    ports:
+      - "80:80" # Puerto 80 para el frontend
+    environment:
+      - VITE_API_URL=http://localhost:8080 # URL del backend
+    depends_on:
+      - backend
+    networks:
+      - ecommerce_network
+
+  # Servicio del Backend (Spring Boot API)
+  backend:
+    build:
+      context: ./e_commerce # Tu carpeta del backend
+    container_name: ecommerce_backend
+    ports:
+      - "8080:8080"
+    environment:
+      # Configuración de la base de datos para Spring Boot
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/ecommerce_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ecom_user
+      SPRING_DATASOURCE_PASSWORD: ecom_pass
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: docker
+      # JWT Configuration
+      JWT_SECRET: mySecretKey123456789012345678901234567890123456789012345678901234567890
+      JWT_EXPIRATION: 86400000
+      JWT_REFRESH_EXPIRATION: 604800000
+    depends_on:
+      - database
+    networks:
+      - ecommerce_network
+    restart: unless-stopped
+
+  # Servicio de la Base de Datos (MySQL)
+  database:
+    image: mysql:8.0
+    container_name: ecommerce_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: ecommerce_db
+      MYSQL_USER: ecom_user
+      MYSQL_PASSWORD: ecom_pass
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3307:3306" # Puerto 3307 para evitar conflictos con MySQL local
+    networks:
+      - ecommerce_network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  ecommerce_network:
+    driver: bridge

@@ -13,12 +13,12 @@ import java.util.Optional;
 
 @Repository
 public interface FavoritoRepository extends JpaRepository<Favorito, Long> {
-    List<Favorito> findByUsuarioId(String usuarioId);
-    Page<Favorito> findByUsuarioIdOrderByCreatedAtDesc(String usuarioId, Pageable pageable);
-    Optional<Favorito> findByUsuarioIdAndProductoId(String usuarioId, String productoId);
+    List<Favorito> findByUsuarioId(Long usuarioId);
+    Page<Favorito> findByUsuarioIdOrderByCreatedAtDesc(Long usuarioId, Pageable pageable);
+    Optional<Favorito> findByUsuarioIdAndProductoId(Long usuarioId, Long productoId);
     Optional<Favorito> findByUsuarioAndProducto(Usuario usuario, Producto producto);
-    boolean existsByUsuarioIdAndProductoId(String usuarioId, String productoId);
+    boolean existsByUsuarioIdAndProductoId(Long usuarioId, Long productoId);
     boolean existsByUsuarioAndProducto(Usuario usuario, Producto producto);
-    Long countByUsuarioId(String usuarioId);
-    void deleteByUsuarioIdAndProductoId(String usuarioId, String productoId);
+    Long countByUsuarioId(Long usuarioId);
+    void deleteByUsuarioIdAndProductoId(Long usuarioId, Long productoId);
 }

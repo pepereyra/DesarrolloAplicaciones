@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class CarritoDTO {
     private Long id;
-    private String usuarioId;
+    private Long usuarioId;
     private List<CarritoItemDTO> items;
     private Integer totalPrice;
     private Integer totalItems;

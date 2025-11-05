@@ -18,7 +18,7 @@ public class FavoritoController {
     
     @GetMapping("/{usuarioId}")
     public ResponseEntity<Page<ProductoDTO>> getFavoritos(
-            @PathVariable String usuarioId,
+            @PathVariable Long usuarioId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         
@@ -29,17 +29,17 @@ public class FavoritoController {
     
     @PostMapping("/{usuarioId}")
     public ResponseEntity<Void> addToFavoritos(
-            @PathVariable String usuarioId,
-            @RequestParam String productoId) {
+            @PathVariable Long usuarioId,
+            @RequestParam Long productoId) {
         
-        favoritoService.addToFavoritos(usuarioId, productoId);
+        favoritoService.addFavorito(usuarioId, productoId);
         return ResponseEntity.ok().build();
     }
     
     @DeleteMapping("/{usuarioId}")
     public ResponseEntity<Void> removeFromFavoritos(
-            @PathVariable String usuarioId,
-            @RequestParam String productoId) {
+            @PathVariable Long usuarioId,
+            @RequestParam Long productoId) {
         
         favoritoService.removeFromFavoritos(usuarioId, productoId);
         return ResponseEntity.ok().build();
@@ -47,15 +47,15 @@ public class FavoritoController {
     
     @GetMapping("/{usuarioId}/check")
     public ResponseEntity<Boolean> isProductoInFavoritos(
-            @PathVariable String usuarioId,
-            @RequestParam String productoId) {
+            @PathVariable Long usuarioId,
+            @RequestParam Long productoId) {
         
         boolean isFavorito = favoritoService.isProductoInFavoritos(usuarioId, productoId);
         return ResponseEntity.ok(isFavorito);
     }
     
     @GetMapping("/{usuarioId}/count")
-    public ResponseEntity<Long> countFavoritos(@PathVariable String usuarioId) {
+    public ResponseEntity<Long> countFavoritos(@PathVariable Long usuarioId) {
         Long count = favoritoService.countFavoritosByUsuarioId(usuarioId);
         return ResponseEntity.ok(count);
     }

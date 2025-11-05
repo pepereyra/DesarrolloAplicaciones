@@ -19,8 +19,8 @@ public class Carrito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "usuario_id", length = 10)
-    private String usuarioId;
+    @Column(name = "usuario_id")
+    private Long usuarioId;
     
     @Column(name = "created_at")
     private LocalDateTime createdAt;
