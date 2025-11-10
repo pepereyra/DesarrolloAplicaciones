@@ -266,19 +266,27 @@ export function AppProvider({ children }) {
       // Usuario autenticado: usar backend
       try {
         dispatch({ type: 'SET_CART_LOADING', payload: true });
+        
         // Buscar el itemId en el carrito actual
         const item = state.cart.find(item => item.id === productId);
+        
         if (item && item.itemId) {
           const carritoDTO = await cartApi.removeFromCart(
             currentUser.id, 
             item.itemId
           );
+          
           const frontendCart = convertBackendCartToFrontend(carritoDTO);
           dispatch({ type: 'SET_CART_FROM_BACKEND', payload: frontendCart });
+        } else {
+          // Fallback: eliminar directamente del estado local
+          dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
+          dispatch({ type: 'SET_CART_LOADING', payload: false });
         }
       } catch (error) {
         console.error('Error eliminando del carrito:', error);
         dispatch({ type: 'SET_CART_ERROR', payload: error.message });
+        
         // Fallback a localStorage en caso de error
         dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
         dispatch({ type: 'SET_CART_LOADING', payload: false });
