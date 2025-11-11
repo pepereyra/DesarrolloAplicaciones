@@ -2,6 +2,7 @@ package com.api.e_commerce.service;
 
 import com.api.e_commerce.dto.CategoriaDTO;
 import com.api.e_commerce.exception.NotFoundException;
+import com.api.e_commerce.exception.CategoriaNotFoundException;
 import com.api.e_commerce.model.Categoria;
 import com.api.e_commerce.repository.CategoriaRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,18 +28,18 @@ public class CategoriaService {
     
     public CategoriaDTO getCategoriaById(Long id) {
         Categoria categoria = categoriaRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Categoría no encontrada"));
+                .orElseThrow(() -> new CategoriaNotFoundException(id));
         return convertToDTO(categoria);
     }
     
     public Categoria getCategoriaEntityByName(String name) {
         return categoriaRepository.findByName(name)
-                .orElseThrow(() -> new NotFoundException("Categoría no encontrada: " + name));
+                .orElseThrow(() -> new CategoriaNotFoundException("Categoría no encontrada: " + name));
     }
     
     public Categoria getCategoriaEntityById(Long id) {
         return categoriaRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Categoría no encontrada"));
+                .orElseThrow(() -> new CategoriaNotFoundException(id));
     }
     
     private CategoriaDTO convertToDTO(Categoria categoria) {

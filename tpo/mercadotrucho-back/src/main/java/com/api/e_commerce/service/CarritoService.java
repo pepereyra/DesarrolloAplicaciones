@@ -4,6 +4,10 @@ import com.api.e_commerce.dto.carrito.CarritoDTO;
 import com.api.e_commerce.dto.carrito.CarritoItemDTO;
 import com.api.e_commerce.exception.BadRequestException;
 import com.api.e_commerce.exception.NotFoundException;
+import com.api.e_commerce.exception.UsuarioNotFoundException;
+import com.api.e_commerce.exception.ProductoNotFoundException;
+import com.api.e_commerce.exception.CarritoNotFoundException;
+import com.api.e_commerce.exception.InsufficientStockException;
 import com.api.e_commerce.model.Carrito;
 import com.api.e_commerce.model.CarritoItem;
 import com.api.e_commerce.model.Producto;
@@ -48,7 +52,7 @@ public class CarritoService {
     
     private Carrito createCarritoForUser(Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
-            .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+            .orElseThrow(() -> new UsuarioNotFoundException(usuarioId));
         
         Carrito carrito = new Carrito();
         carrito.setUsuario(usuario);
@@ -69,14 +73,24 @@ public class CarritoService {
             .orElseGet(() -> createCarritoForUser(usuarioId));
         
         Producto producto = productoRepository.findById(productoId)
-            .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
+            .orElseThrow(() -> new ProductoNotFoundException(productoId));
+        
+        // Verificar stock disponible
+        if (producto.getStock() < cantidad) {
+            throw new InsufficientStockException(producto.getTitle(), producto.getStock(), cantidad);
+        }
         
         // Verificar si el item ya existe en el carrito
         CarritoItem existingItem = carritoItemRepository.findByCarritoAndProducto(carrito, producto)
             .orElse(null);
         
         if (existingItem != null) {
-            existingItem.setCantidad(existingItem.getCantidad() + cantidad);
+            // Verificar stock para la nueva cantidad total
+            int nuevaCantidad = existingItem.getCantidad() + cantidad;
+            if (producto.getStock() < nuevaCantidad) {
+                throw new InsufficientStockException(producto.getTitle(), producto.getStock(), nuevaCantidad);
+            }
+            existingItem.setCantidad(nuevaCantidad);
             carritoItemRepository.save(existingItem); // ✅ Guardar cambios
         } else {
             CarritoItem newItem = new CarritoItem();
@@ -130,7 +144,7 @@ public class CarritoService {
         
         // Refrescar el carrito desde la base de datos para obtener la lista actualizada
         Carrito carrito = carritoRepository.findByUsuarioId(usuarioId)
-            .orElseThrow(() -> new NotFoundException("Carrito no encontrado"));
+            .orElseThrow(() -> new CarritoNotFoundException(usuarioId));
         
         carrito.setUpdatedAt(LocalDateTime.now());
         carritoRepository.save(carrito);
@@ -140,7 +154,7 @@ public class CarritoService {
     
     public void clearCarrito(Long usuarioId) {
         Carrito carrito = carritoRepository.findByUsuarioId(usuarioId)
-            .orElseThrow(() -> new NotFoundException("Carrito no encontrado"));
+            .orElseThrow(() -> new CarritoNotFoundException(usuarioId));
         
         carritoItemRepository.deleteByCarrito(carrito);
         carrito.setUpdatedAt(LocalDateTime.now());

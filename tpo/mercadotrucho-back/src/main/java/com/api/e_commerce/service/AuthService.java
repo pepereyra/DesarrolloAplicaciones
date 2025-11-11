@@ -4,8 +4,8 @@ import com.api.e_commerce.dto.auth.AuthResponse;
 import com.api.e_commerce.dto.auth.LoginRequest;
 import com.api.e_commerce.dto.auth.RegisterRequest;
 import com.api.e_commerce.dto.user.UserDTO;
-import com.api.e_commerce.exception.BadRequestException;
 import com.api.e_commerce.exception.UnauthorizedException;
+import com.api.e_commerce.exception.EmailAlreadyExistsException;
 import com.api.e_commerce.model.Carrito;
 import com.api.e_commerce.model.Usuario;
 import com.api.e_commerce.repository.CarritoRepository;
@@ -64,7 +64,7 @@ public class AuthService {
     
     public AuthResponse register(RegisterRequest request) {
         if (usuarioRepository.existsByEmail(request.getEmail())) {
-            throw new BadRequestException("El email ya está registrado");
+            throw new EmailAlreadyExistsException(request.getEmail());
         }
         
         Usuario usuario = new Usuario();

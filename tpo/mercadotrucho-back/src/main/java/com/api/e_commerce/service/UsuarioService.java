@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.*;
 
+import com.api.e_commerce.exception.UsuarioNotFoundException;
 import com.api.e_commerce.model.Usuario;
 import com.api.e_commerce.repository.UsuarioRepository;
 
@@ -36,7 +37,8 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public Usuario getUsuarioById(Long id) {
-        return usuarioRepository.findById(id).orElse(null);
+        return usuarioRepository.findById(id)
+            .orElseThrow(() -> new UsuarioNotFoundException(id));
     }
 
     public Usuario save(Usuario usuario) {

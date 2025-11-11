@@ -2,7 +2,8 @@ package com.api.e_commerce.service;
 
 import com.api.e_commerce.dto.producto.ProductoDTO;
 import com.api.e_commerce.dto.CategoriaDTO;
-import com.api.e_commerce.exception.NotFoundException;
+import com.api.e_commerce.exception.ProductoNotFoundException;
+import com.api.e_commerce.exception.UsuarioNotFoundException;
 import com.api.e_commerce.model.Producto;
 import com.api.e_commerce.model.ProductoImagen;
 import com.api.e_commerce.model.Categoria;
@@ -70,19 +71,19 @@ public class ProductoService {
     
     public ProductoDTO getProductoById(Long id) {
         Producto producto = productoRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
+            .orElseThrow(() -> new ProductoNotFoundException(id));
         return convertToProductoDTO(producto, null);
     }
     
     public ProductoDTO getProductoById(Long id, Long usuarioId) {
         Producto producto = productoRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
+            .orElseThrow(() -> new ProductoNotFoundException(id));
         return convertToProductoDTO(producto, usuarioId);
     }
     
     public List<ProductoDTO> getProductosRelacionados(Long productoId, int limit) {
         Producto producto = productoRepository.findById(productoId)
-            .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
+            .orElseThrow(() -> new ProductoNotFoundException(productoId));
         
         // Buscar productos de la misma categoría (limitado)
         List<Producto> relacionados = productoRepository.findByCategoriaAndIdNot(producto.getCategoria(), productoId);
@@ -170,7 +171,7 @@ public class ProductoService {
         // Validar que el seller_id existe en la tabla usuario
         if (productoDTO.getSellerId() != null) {
             if (!usuarioRepository.existsById(productoDTO.getSellerId())) {
-                throw new NotFoundException("El vendedor con ID " + productoDTO.getSellerId() + " no existe");
+                throw new UsuarioNotFoundException(productoDTO.getSellerId());
             }
         } else {
             throw new IllegalArgumentException("seller_id es requerido para crear un producto");
@@ -193,15 +194,15 @@ public class ProductoService {
     public ProductoDTO updateProducto(Long id, ProductoDTO productoDTO) {
         // Buscar el producto existente
         Producto productoExistente = productoRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Producto con ID " + id + " no encontrado"));
+            .orElseThrow(() -> new ProductoNotFoundException(id));
         
         // Validar que el seller_id existe si se está actualizando
         if (productoDTO.getSellerId() != null) {
             if (!usuarioRepository.existsById(productoDTO.getSellerId())) {
-                throw new NotFoundException("El vendedor con ID " + productoDTO.getSellerId() + " no existe");
+                throw new UsuarioNotFoundException(productoDTO.getSellerId());
             }
             Usuario seller = usuarioRepository.findById(productoDTO.getSellerId())
-                .orElseThrow(() -> new NotFoundException("Vendedor no encontrado"));
+                .orElseThrow(() -> new UsuarioNotFoundException(productoDTO.getSellerId()));
             productoExistente.setSeller(seller);
         }
         
@@ -273,7 +274,7 @@ public class ProductoService {
     public void deleteProducto(Long id) {
         // Verificar que el producto existe
         Producto producto = productoRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Producto con ID " + id + " no encontrado"));
+            .orElseThrow(() -> new ProductoNotFoundException(id));
         
         // Eliminar el producto
         productoRepository.delete(producto);
@@ -292,7 +293,7 @@ public class ProductoService {
         
         if (dto.getSellerId() != null) {
             Usuario seller = usuarioRepository.findById(dto.getSellerId())
-                .orElseThrow(() -> new NotFoundException("Vendedor no encontrado"));
+                .orElseThrow(() -> new UsuarioNotFoundException(dto.getSellerId()));
             producto.setSeller(seller);
         }
         producto.setLocation(dto.getLocation());

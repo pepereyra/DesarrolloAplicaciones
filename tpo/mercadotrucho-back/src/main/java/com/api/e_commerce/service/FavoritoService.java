@@ -3,6 +3,8 @@ package com.api.e_commerce.service;
 import com.api.e_commerce.dto.producto.ProductoDTO;
 import com.api.e_commerce.exception.BadRequestException;
 import com.api.e_commerce.exception.NotFoundException;
+import com.api.e_commerce.exception.UsuarioNotFoundException;
+import com.api.e_commerce.exception.ProductoNotFoundException;
 import com.api.e_commerce.model.Favorito;
 import com.api.e_commerce.model.Producto;
 import com.api.e_commerce.model.Usuario;
@@ -32,10 +34,10 @@ public class FavoritoService {
     
     public void addFavorito(Long usuarioId, Long productoId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
-            .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+            .orElseThrow(() -> new UsuarioNotFoundException(usuarioId));
         
         Producto producto = productoRepository.findById(productoId)
-            .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
+            .orElseThrow(() -> new ProductoNotFoundException(productoId));
         
         // Verificar si ya está en favoritos
         if (favoritoRepository.existsByUsuarioAndProducto(usuario, producto)) {
@@ -51,10 +53,10 @@ public class FavoritoService {
     
     public void removeFromFavoritos(Long usuarioId, Long productoId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
-            .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+            .orElseThrow(() -> new UsuarioNotFoundException(usuarioId));
         
         Producto producto = productoRepository.findById(productoId)
-            .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
+            .orElseThrow(() -> new ProductoNotFoundException(productoId));
         
         Favorito favorito = favoritoRepository.findByUsuarioAndProducto(usuario, producto)
             .orElseThrow(() -> new NotFoundException("El producto no está en favoritos"));

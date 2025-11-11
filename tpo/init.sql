@@ -2,14 +2,12 @@
 SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
 SET CHARACTER SET utf8mb4;
 
-CREATE DATABASE IF NOT EXISTS ecommerce_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS mercadotrucho_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE ecommerce_db;
+USE mercadotrucho_db;
 
 -- El usuario ya se crea automáticamente por las variables de entorno de MySQL
--- Pero podemos asegurar permisos adicionales si es necesario
-GRANT ALL PRIVILEGES ON ecommerce_db.* TO 'ecom_user'@'%';
-FLUSH PRIVILEGES;
+-- No necesitamos GRANT porque el usuario ya tiene permisos
 
 -- CREAR TABLAS PRIMERO
 CREATE TABLE IF NOT EXISTS categoria (

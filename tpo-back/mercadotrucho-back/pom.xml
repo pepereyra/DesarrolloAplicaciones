@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.api</groupId>
-	<artifactId>e_commerce</artifactId>
+	<artifactId>mercadotrucho-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>e_commerce</name>
-	<description>Demo project for Spring Boot</description>
+	<name>mercadotrucho-backend</name>
+	<description>MercadoTrucho Backend API</description>
 	<url/>
 	<licenses>
 		<license/>

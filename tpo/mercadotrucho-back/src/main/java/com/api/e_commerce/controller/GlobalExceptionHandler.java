@@ -3,6 +3,12 @@ package com.api.e_commerce.controller;
 import com.api.e_commerce.exception.BadRequestException;
 import com.api.e_commerce.exception.NotFoundException;
 import com.api.e_commerce.exception.UnauthorizedException;
+import com.api.e_commerce.exception.ProductoNotFoundException;
+import com.api.e_commerce.exception.UsuarioNotFoundException;
+import com.api.e_commerce.exception.CategoriaNotFoundException;
+import com.api.e_commerce.exception.CarritoNotFoundException;
+import com.api.e_commerce.exception.EmailAlreadyExistsException;
+import com.api.e_commerce.exception.InsufficientStockException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +27,27 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFoundException(NotFoundException ex) {
         return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    // Manejo específico de excepciones personalizadas NOT FOUND
+    @ExceptionHandler({
+        ProductoNotFoundException.class,
+        UsuarioNotFoundException.class,
+        CategoriaNotFoundException.class,
+        CarritoNotFoundException.class
+    })
+    public ResponseEntity<Map<String, Object>> handleSpecificNotFoundException(RuntimeException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<Map<String, Object>> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(InsufficientStockException.class)
+    public ResponseEntity<Map<String, Object>> handleInsufficientStock(InsufficientStockException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     
     @ExceptionHandler(BadRequestException.class)
