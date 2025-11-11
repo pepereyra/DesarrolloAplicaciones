@@ -126,8 +126,12 @@ public class CarritoService {
         }
         
         carritoItemRepository.delete(item);
+        carritoItemRepository.flush(); // Forzar la ejecución inmediata del DELETE
         
-        Carrito carrito = item.getCarrito();
+        // Refrescar el carrito desde la base de datos para obtener la lista actualizada
+        Carrito carrito = carritoRepository.findByUsuarioId(usuarioId)
+            .orElseThrow(() -> new NotFoundException("Carrito no encontrado"));
+        
         carrito.setUpdatedAt(LocalDateTime.now());
         carritoRepository.save(carrito);
         

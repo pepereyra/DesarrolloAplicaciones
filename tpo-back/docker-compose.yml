@@ -24,7 +24,7 @@ services:
       - "8080:8080"
     environment:
       # Configuración de la base de datos para Spring Boot
-      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/ecommerce_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/ecommerce_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci
       SPRING_DATASOURCE_USERNAME: ecom_user
       SPRING_DATASOURCE_PASSWORD: ecom_pass
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
@@ -45,6 +45,7 @@ services:
   database:
     image: mysql:8.0
     container_name: ecommerce_mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: ecommerce_db
