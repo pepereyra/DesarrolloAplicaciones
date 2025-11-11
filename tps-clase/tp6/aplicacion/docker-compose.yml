@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # Servicio del Frontend (React + Nginx)
+  frontend:
+    build:
+      context: ./mercadotrucho-front # Tu carpeta del frontend
+    container_name: mercadotrucho_frontend
+    ports:
+      - "80:80" # Puerto 80 para el frontend
+    environment:
+      - VITE_API_URL=http://backend:8080 # URL del backend
+    depends_on:
+      - backend
+    networks:
+      - mercadotrucho_network
+
+  # Servicio del Backend (Spring Boot API)
+  backend:
+    build:
+      context: ./mercadotrucho-back # Tu carpeta del backend
+    container_name: mercadotrucho_backend
+    ports:
+      - "8080:8080"
+    environment:
+      # Configuración de la base de datos para Spring Boot
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/mercadotrucho_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci
+      SPRING_DATASOURCE_USERNAME: mercadotrucho_user
+      SPRING_DATASOURCE_PASSWORD: mercadotrucho_pass
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: docker
+      # JWT Configuration
+      JWT_SECRET: mySecretKey123456789012345678901234567890123456789012345678901234567890
+      JWT_EXPIRATION: 86400000
+      JWT_REFRESH_EXPIRATION: 604800000
+    depends_on:
+      - database
+    networks:
+      - mercadotrucho_network
+    restart: unless-stopped
+
+  # Servicio de la Base de Datos (MySQL)
+  database:
+    image: mysql:8.0
+    container_name: mercadotrucho_mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mercadotrucho_db
+      MYSQL_USER: mercadotrucho_user
+      MYSQL_PASSWORD: mercadotrucho_pass
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3307:3306" # Puerto 3307 para evitar conflictos con MySQL local
+    networks:
+      - mercadotrucho_network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  mercadotrucho_network:
+    driver: bridge
