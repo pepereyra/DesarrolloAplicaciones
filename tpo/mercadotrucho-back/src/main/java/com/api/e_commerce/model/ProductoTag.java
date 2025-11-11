@@ -17,8 +17,8 @@ public class ProductoTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "producto_id", length = 10)
-    private String productoId;
+    @Column(name = "producto_id")
+    private Long productoId;
     
     @Column(name = "tag_name", nullable = false, length = 100)
     private String tagName;
