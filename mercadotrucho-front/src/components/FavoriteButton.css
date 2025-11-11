@@ -1,0 +1,78 @@
+.favorite-button {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e6e6e6;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: #666;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.favorite-button:hover {
+  background: white;
+  color: #ff4757;
+  border-color: #ff4757;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.favorite-button.active {
+  background: #ff4757;
+  color: white;
+  border-color: #ff4757;
+}
+
+.favorite-button.active:hover {
+  background: #ff3838;
+  border-color: #ff3838;
+}
+
+.favorite-button.animating {
+  animation: heartbeat 0.3s ease-in-out;
+}
+
+/* Sizes */
+.favorite-button.small {
+  width: 32px;
+  height: 32px;
+}
+
+.favorite-button.medium {
+  width: 40px;
+  height: 40px;
+}
+
+.favorite-button.large {
+  width: 48px;
+  height: 48px;
+}
+
+/* Animation */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Focus styles for accessibility */
+.favorite-button:focus {
+  outline: 2px solid #3483fa;
+  outline-offset: 2px;
+}
+
+/* When button is in a card overlay */
+.favorite-button.overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+/* When product is out of stock, position below stock badge */
+.product-card.out-of-stock .favorite-button.overlay {
+  top: 50px;
+}
