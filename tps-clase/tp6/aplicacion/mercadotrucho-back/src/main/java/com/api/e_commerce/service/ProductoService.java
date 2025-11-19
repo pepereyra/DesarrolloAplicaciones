@@ -1,0 +1,343 @@
+package com.api.e_commerce.service;
+
+import com.api.e_commerce.dto.producto.ProductoDTO;
+import com.api.e_commerce.dto.CategoriaDTO;
+import com.api.e_commerce.exception.ProductoNotFoundException;
+import com.api.e_commerce.exception.UsuarioNotFoundException;
+import com.api.e_commerce.model.Producto;
+import com.api.e_commerce.model.ProductoImagen;
+import com.api.e_commerce.model.Categoria;
+import com.api.e_commerce.model.Usuario;
+import com.api.e_commerce.repository.FavoritoRepository;
+import com.api.e_commerce.repository.ProductoRepository;
+import com.api.e_commerce.repository.ProductoImagenRepository;
+import com.api.e_commerce.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class ProductoService {
+    
+    private final ProductoRepository productoRepository;
+    private final ProductoImagenRepository productoImagenRepository;
+    private final FavoritoRepository favoritoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final CategoriaService categoriaService;
+    
+    public Page<ProductoDTO> getAllProductos(Pageable pageable) {
+        Page<Producto> productos = productoRepository.findAll(pageable);
+        return productos.map(producto -> convertToProductoDTO(producto, null));
+    }
+    
+    public Page<ProductoDTO> getAllProductos(Long usuarioId, Pageable pageable) {
+        Page<Producto> productos = productoRepository.findAll(pageable);
+        return productos.map(producto -> convertToProductoDTO(producto, usuarioId));
+    }
+    
+    public Page<ProductoDTO> searchProductos(String query, Pageable pageable) {
+        Page<Producto> productos = productoRepository.findByTitleContainingIgnoreCase(query, pageable);
+        return productos.map(producto -> convertToProductoDTO(producto, null));
+    }
+    
+    public Page<ProductoDTO> searchProductos(String query, Long usuarioId, Pageable pageable) {
+        Page<Producto> productos = productoRepository.findByTitleContainingIgnoreCase(query, pageable);
+        return productos.map(producto -> convertToProductoDTO(producto, usuarioId));
+    }
+    
+    public Page<ProductoDTO> getProductosByCategoria(String categoria, Pageable pageable) {
+        Page<Producto> productos = productoRepository.findByCategoriaName(categoria, pageable);
+        return productos.map(producto -> convertToProductoDTO(producto, null));
+    }
+    
+    public Page<ProductoDTO> getProductosByCategoria(String categoria, Long usuarioId, Pageable pageable) {
+        Page<Producto> productos = productoRepository.findByCategoriaName(categoria, pageable);
+        return productos.map(producto -> convertToProductoDTO(producto, usuarioId));
+    }
+    
+    public Page<ProductoDTO> getProductosByVendedor(Long vendedorId, Pageable pageable) {
+        Page<Producto> productos = productoRepository.findBySellerId(vendedorId, pageable);
+        return productos.map(producto -> convertToProductoDTO(producto, null));
+    }
+    
+    public ProductoDTO getProductoById(Long id) {
+        Producto producto = productoRepository.findById(id)
+            .orElseThrow(() -> new ProductoNotFoundException(id));
+        return convertToProductoDTO(producto, null);
+    }
+    
+    public ProductoDTO getProductoById(Long id, Long usuarioId) {
+        Producto producto = productoRepository.findById(id)
+            .orElseThrow(() -> new ProductoNotFoundException(id));
+        return convertToProductoDTO(producto, usuarioId);
+    }
+    
+    public List<ProductoDTO> getProductosRelacionados(Long productoId, int limit) {
+        Producto producto = productoRepository.findById(productoId)
+            .orElseThrow(() -> new ProductoNotFoundException(productoId));
+        
+        // Buscar productos de la misma categoría (limitado)
+        List<Producto> relacionados = productoRepository.findByCategoriaAndIdNot(producto.getCategoria(), productoId);
+        
+        return relacionados.stream()
+            .limit(limit)
+            .map(p -> convertToProductoDTO(p, null))
+            .collect(Collectors.toList());
+    }
+    
+    public ProductoDTO convertToProductoDTO(Producto producto) {
+        return convertToProductoDTO(producto, null);
+    }
+    
+    public ProductoDTO convertToProductoDTO(Producto producto, Long usuarioId) {
+        ProductoDTO dto = new ProductoDTO();
+        dto.setId(producto.getId());
+        dto.setTitle(producto.getTitle());
+        dto.setDescription(producto.getDescription());
+        dto.setPrice(producto.getPrice());
+        dto.setCurrency(producto.getCurrency());
+        dto.setCondition(producto.getConditionType() != null ? producto.getConditionType().name() : "new");
+        dto.setFreeShipping(producto.getFreeShipping());
+        
+        if (producto.getCategoria() != null) {
+            CategoriaDTO categoriaDTO = new CategoriaDTO(
+                producto.getCategoria().getId(),
+                producto.getCategoria().getName(),
+                producto.getCategoria().getDescription(),
+                producto.getCategoria().getImage()
+            );
+            dto.setCategoria(categoriaDTO);
+            dto.setCategory(producto.getCategoria().getName());
+        }
+        
+        dto.setSellerId(producto.getSeller() != null ? producto.getSeller().getId() : null);
+        dto.setLocation(producto.getLocation());
+        dto.setStock(producto.getStock());
+        dto.setCreatedAt(producto.getCreatedAt());
+        
+        // Cargar imágenes desde el repositorio
+        List<ProductoImagen> imagenes = productoImagenRepository.findByProductoIdOrderByOrden(producto.getId());
+        if (imagenes != null && !imagenes.isEmpty()) {
+            List<String> imagenesUrls = imagenes.stream()
+                .map(ProductoImagen::getImageUrl)
+                .collect(Collectors.toList());
+            dto.setImages(imagenesUrls);
+            
+            // Usar la primera imagen como thumbnail
+            dto.setThumbnail(imagenesUrls.get(0));
+        } else {
+            // Si no hay imágenes, usar placeholder
+            dto.setThumbnail("https://via.placeholder.com/150");
+            dto.setImages(List.of());
+        }
+        
+        // Información del vendedor
+        if (producto.getSeller() != null) {
+            Map<String, Object> seller = new HashMap<>();
+            seller.put("nickname", producto.getSeller().getFirstName() + "_STORE");
+            seller.put("reputation", "bronze");
+            dto.setSeller(seller);
+        }
+        
+        // Información de cuotas
+        if (producto.getInstallmentsQuantity() != null && producto.getInstallmentsAmount() != null) {
+            Map<String, Object> installments = new HashMap<>();
+            installments.put("quantity", producto.getInstallmentsQuantity());
+            installments.put("amount", producto.getInstallmentsAmount());
+            dto.setInstallments(installments);
+        }
+        
+        // Verificar si es favorito
+        if (usuarioId != null) {
+            dto.setEsFavorito(favoritoRepository.existsByUsuarioIdAndProductoId(usuarioId, producto.getId()));
+        } else {
+            dto.setEsFavorito(false);
+        }
+        
+        return dto;
+    }
+    
+    @Transactional
+    public ProductoDTO createProducto(ProductoDTO productoDTO) {
+        // Validar que el seller_id existe en la tabla usuario
+        if (productoDTO.getSellerId() != null) {
+            if (!usuarioRepository.existsById(productoDTO.getSellerId())) {
+                throw new UsuarioNotFoundException(productoDTO.getSellerId());
+            }
+        } else {
+            throw new IllegalArgumentException("seller_id es requerido para crear un producto");
+        }
+        
+        Producto producto = convertToProducto(productoDTO);
+        // ID will be auto-generated by database
+        
+        Producto savedProducto = productoRepository.save(producto);
+        
+        // Guardar imágenes si las hay
+        if (productoDTO.getImages() != null && !productoDTO.getImages().isEmpty()) {
+            saveProductoImages(savedProducto.getId(), productoDTO.getImages());
+        }
+        
+        return convertToProductoDTO(savedProducto, null);
+    }
+    
+    @Transactional
+    public ProductoDTO updateProducto(Long id, ProductoDTO productoDTO) {
+        // Buscar el producto existente
+        Producto productoExistente = productoRepository.findById(id)
+            .orElseThrow(() -> new ProductoNotFoundException(id));
+        
+        // Validar que el seller_id existe si se está actualizando
+        if (productoDTO.getSellerId() != null) {
+            if (!usuarioRepository.existsById(productoDTO.getSellerId())) {
+                throw new UsuarioNotFoundException(productoDTO.getSellerId());
+            }
+            Usuario seller = usuarioRepository.findById(productoDTO.getSellerId())
+                .orElseThrow(() -> new UsuarioNotFoundException(productoDTO.getSellerId()));
+            productoExistente.setSeller(seller);
+        }
+        
+        // Actualizar campos del producto
+        if (productoDTO.getTitle() != null) {
+            productoExistente.setTitle(productoDTO.getTitle());
+        }
+        if (productoDTO.getPrice() != null) {
+            productoExistente.setPrice(productoDTO.getPrice());
+        }
+        if (productoDTO.getDescription() != null) {
+            productoExistente.setDescription(productoDTO.getDescription());
+        }
+        if (productoDTO.getCategory() != null) {
+            Categoria categoria = categoriaService.getCategoriaEntityByName(productoDTO.getCategory());
+            productoExistente.setCategoria(categoria);
+        }
+        if (productoDTO.getLocation() != null) {
+            productoExistente.setLocation(productoDTO.getLocation());
+        }
+        if (productoDTO.getCurrency() != null) {
+            productoExistente.setCurrency(productoDTO.getCurrency());
+        }
+        if (productoDTO.getFreeShipping() != null) {
+            productoExistente.setFreeShipping(productoDTO.getFreeShipping());
+        }
+        if (productoDTO.getStock() != null) {
+            productoExistente.setStock(productoDTO.getStock());
+        }
+        
+        // Actualizar condition si se proporciona
+        if (productoDTO.getCondition() != null) {
+            try {
+                productoExistente.setConditionType(Producto.ConditionType.valueOf(productoDTO.getCondition()));
+            } catch (IllegalArgumentException e) {
+                productoExistente.setConditionType(Producto.ConditionType.new_);
+            }
+        }
+        
+        // Actualizar installments si se proporcionan
+        if (productoDTO.getInstallments() != null) {
+            Object quantity = productoDTO.getInstallments().get("quantity");
+            Object amount = productoDTO.getInstallments().get("amount");
+            
+            if (quantity instanceof Integer) {
+                productoExistente.setInstallmentsQuantity((Integer) quantity);
+            }
+            if (amount instanceof Number) {
+                productoExistente.setInstallmentsAmount(java.math.BigDecimal.valueOf(((Number) amount).doubleValue()));
+            }
+        }
+        
+        Producto productoActualizado = productoRepository.save(productoExistente);
+        
+        // Actualizar imágenes si se proporcionan
+        if (productoDTO.getImages() != null) {
+            // Eliminar imágenes existentes
+            productoImagenRepository.deleteByProductoId(id);
+            // Guardar nuevas imágenes
+            if (!productoDTO.getImages().isEmpty()) {
+                saveProductoImages(id, productoDTO.getImages());
+            }
+        }
+        
+        return convertToProductoDTO(productoActualizado, null);
+    }
+    
+    @Transactional
+    public void deleteProducto(Long id) {
+        // Verificar que el producto existe
+        Producto producto = productoRepository.findById(id)
+            .orElseThrow(() -> new ProductoNotFoundException(id));
+        
+        // Eliminar el producto
+        productoRepository.delete(producto);
+    }
+    
+    private Producto convertToProducto(ProductoDTO dto) {
+        Producto producto = new Producto();
+        producto.setTitle(dto.getTitle());
+        producto.setPrice(dto.getPrice());
+        producto.setDescription(dto.getDescription());
+        
+        if (dto.getCategory() != null) {
+            Categoria categoria = categoriaService.getCategoriaEntityByName(dto.getCategory());
+            producto.setCategoria(categoria);
+        }
+        
+        if (dto.getSellerId() != null) {
+            Usuario seller = usuarioRepository.findById(dto.getSellerId())
+                .orElseThrow(() -> new UsuarioNotFoundException(dto.getSellerId()));
+            producto.setSeller(seller);
+        }
+        producto.setLocation(dto.getLocation());
+        producto.setCurrency(dto.getCurrency() != null ? dto.getCurrency() : "ARS");
+        producto.setFreeShipping(dto.getFreeShipping() != null ? dto.getFreeShipping() : false);
+        producto.setStock(dto.getStock() != null ? dto.getStock() : 100);
+        
+        // Mapear condition string a enum
+        if (dto.getCondition() != null) {
+            try {
+                producto.setConditionType(Producto.ConditionType.valueOf(dto.getCondition()));
+            } catch (IllegalArgumentException e) {
+                producto.setConditionType(Producto.ConditionType.new_);
+            }
+        } else {
+            producto.setConditionType(Producto.ConditionType.new_);
+        }
+        
+        // Mapear installments
+        if (dto.getInstallments() != null) {
+            Object quantity = dto.getInstallments().get("quantity");
+            Object amount = dto.getInstallments().get("amount");
+            
+            if (quantity instanceof Integer) {
+                producto.setInstallmentsQuantity((Integer) quantity);
+            }
+            if (amount instanceof Number) {
+                producto.setInstallmentsAmount(java.math.BigDecimal.valueOf(((Number) amount).doubleValue()));
+            }
+        }
+        
+        return producto;
+    }
+    
+    private void saveProductoImages(Long productoId, List<String> imageUrls) {
+        for (int i = 0; i < imageUrls.size(); i++) {
+            String imageUrl = imageUrls.get(i);
+            if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                ProductoImagen imagen = new ProductoImagen();
+                imagen.setProductoId(productoId);
+                imagen.setImageUrl(imageUrl.trim());
+                imagen.setOrden(i);
+                productoImagenRepository.save(imagen);
+            }
+        }
+    }
+}

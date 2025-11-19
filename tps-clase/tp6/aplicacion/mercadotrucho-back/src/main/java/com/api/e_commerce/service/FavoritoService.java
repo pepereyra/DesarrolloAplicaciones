@@ -1,0 +1,74 @@
+package com.api.e_commerce.service;
+
+import com.api.e_commerce.dto.producto.ProductoDTO;
+import com.api.e_commerce.exception.BadRequestException;
+import com.api.e_commerce.exception.NotFoundException;
+import com.api.e_commerce.exception.UsuarioNotFoundException;
+import com.api.e_commerce.exception.ProductoNotFoundException;
+import com.api.e_commerce.model.Favorito;
+import com.api.e_commerce.model.Producto;
+import com.api.e_commerce.model.Usuario;
+import com.api.e_commerce.repository.FavoritoRepository;
+import com.api.e_commerce.repository.ProductoRepository;
+import com.api.e_commerce.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class FavoritoService {
+    
+    private final FavoritoRepository favoritoRepository;
+    private final ProductoRepository productoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final ProductoService productoService;
+    
+    public Page<ProductoDTO> getFavoritosByUsuarioId(Long usuarioId, Pageable pageable) {
+        Page<Favorito> favoritos = favoritoRepository.findByUsuarioIdOrderByCreatedAtDesc(usuarioId, pageable);
+        return favoritos.map(favorito -> productoService.convertToProductoDTO(favorito.getProducto()));
+    }
+    
+    public void addFavorito(Long usuarioId, Long productoId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+            .orElseThrow(() -> new UsuarioNotFoundException(usuarioId));
+        
+        Producto producto = productoRepository.findById(productoId)
+            .orElseThrow(() -> new ProductoNotFoundException(productoId));
+        
+        // Verificar si ya está en favoritos
+        if (favoritoRepository.existsByUsuarioAndProducto(usuario, producto)) {
+            throw new BadRequestException("El producto ya está en favoritos");
+        }
+        
+        Favorito favorito = new Favorito();
+        favorito.setUsuario(usuario);
+        favorito.setProducto(producto);
+        
+        favoritoRepository.save(favorito);
+    }
+    
+    public void removeFromFavoritos(Long usuarioId, Long productoId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+            .orElseThrow(() -> new UsuarioNotFoundException(usuarioId));
+        
+        Producto producto = productoRepository.findById(productoId)
+            .orElseThrow(() -> new ProductoNotFoundException(productoId));
+        
+        Favorito favorito = favoritoRepository.findByUsuarioAndProducto(usuario, producto)
+            .orElseThrow(() -> new NotFoundException("El producto no está en favoritos"));
+        
+        favoritoRepository.delete(favorito);
+    }
+    
+    public boolean isProductoInFavoritos(Long usuarioId, Long productoId) {
+        return favoritoRepository.existsByUsuarioIdAndProductoId(usuarioId, productoId);
+    }
+    
+    public Long countFavoritosByUsuarioId(Long usuarioId) {
+        return favoritoRepository.countByUsuarioId(usuarioId);
+    }
+}

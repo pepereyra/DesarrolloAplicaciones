@@ -1,0 +1,53 @@
+Relacion muchos a muchos: manytomany
+====================================
+productos				categorias
+
+pelota 					deporte 
+						futbol 
+						entretenimiento
+1						n  
+
+pelota 					deporte
+bicicleta
+guantes boxeo
+botines						
+n						1
+-----------------------------------
+n						n
+
+crear tabla producto_categoria
+
+campos
+producto_id	categoria_id
+
+
+
+Relación 1 a muchos: onetomany
+==============================
+usuario					pedidos
+santos					1 (termo, mate)
+						2 (bici, casco)
+						3 (auricular, rayban meta)
+						
+1						n
+1						1		
+---------------------------
+1						n -> id de usuario en tabla pedidos 
+
+tabla: usuario
+List<Pedidos> 
+
+atributos tabla:
+id nombre apellido dni
+
+tabla: pedido
+Usuario
+foreing key: usuario_id
+
+atributs tabla
+id nombre detalle usuario_id
+
+
+
+						
+

@@ -1,0 +1,227 @@
+[
+  {
+    "id": "p-001",
+    "nombre": "Ray-Ban Wayfarer Classic",
+    "categoria": "Anteojos de sol",
+    "descripcion": "Lentes polarizadas con protección UV 100%. Marco de acetato resistente y duradero. Diseño icónico y atemporal.",
+    "precio": 189999.99,
+    "stock": 12,
+    "imagen": "/images/products/rayban-wayfarer.jpg"
+  },
+  {
+    "id": "p-002",
+    "nombre": "Oakley Holbrook",
+    "categoria": "Anteojos de sol",
+    "descripcion": "Anteojos deportivos con lentes Prizm. Ideales para actividades al aire libre. Marco liviano y resistente.",
+    "precio": 245000.00,
+    "stock": 8,
+    "imagen": "/images/products/oakley-holbrook.jpg"
+  },
+  {
+    "id": "p-003",
+    "nombre": "Prada SPR 01V",
+    "categoria": "Anteojos de sol",
+    "descripcion": "Lentes de lujo con diseño elegante. Marco de acetato premium. Protección UV total.",
+    "precio": 380000.00,
+    "stock": 5,
+    "imagen": "/images/products/prada-spr01v.jpg"
+  },
+  {
+    "id": "p-004",
+    "nombre": "MacBook Pro 14 M3",
+    "categoria": "Laptops",
+    "descripcion": "Laptop profesional con chip M3, 16GB RAM, 512GB SSD. Pantalla Liquid Retina XDR de 14.2 pulgadas.",
+    "precio": 2499999.99,
+    "stock": 6,
+    "imagen": "/images/products/macbook-pro-14.jpg"
+  },
+  {
+    "id": "p-005",
+    "nombre": "Dell XPS 13 Plus",
+    "categoria": "Laptops",
+    "descripcion": "Ultrabook con Intel Core i7, 16GB RAM, 1TB SSD. Pantalla InfinityEdge de 13.4 pulgadas.",
+    "precio": 1899000.00,
+    "stock": 10,
+    "imagen": "/images/products/dell-xps-13.jpg"
+  },
+  {
+    "id": "p-006",
+    "nombre": "Lenovo ThinkPad X1 Carbon",
+    "categoria": "Laptops",
+    "descripcion": "Laptop empresarial ultraliviana. Intel Core i7, 32GB RAM, 1TB SSD. Certificación militar MIL-STD.",
+    "precio": 2200000.00,
+    "stock": 7,
+    "imagen": "/images/products/thinkpad-x1.jpg"
+  },
+  {
+    "id": "p-007",
+    "nombre": "ASUS ROG Zephyrus G14",
+    "categoria": "Laptops",
+    "descripcion": "Laptop gaming con AMD Ryzen 9, RTX 4060, 16GB RAM. Pantalla QHD de 14 pulgadas 165Hz.",
+    "precio": 1750000.00,
+    "stock": 4,
+    "imagen": "/images/products/asus-rog-g14.jpg"
+  },
+  {
+    "id": "p-008",
+    "nombre": "Philips Airfryer XXL",
+    "categoria": "Freidoras de aire",
+    "descripcion": "Freidora de aire de 7.3L. Tecnología Rapid Air para cocción uniforme. Control digital táctil.",
+    "precio": 185000.00,
+    "stock": 15,
+    "imagen": "/images/products/philips-airfryer-xxl.jpg"
+  },
+  {
+    "id": "p-009",
+    "nombre": "Ninja Foodi 8 qt",
+    "categoria": "Freidoras de aire",
+    "descripcion": "Freidora de aire multifunción. Fríe, hornea, asa y deshidrata. Capacidad para 8 porciones.",
+    "precio": 220000.00,
+    "stock": 9,
+    "imagen": "/images/products/ninja-foodi-8qt.jpg"
+  },
+  {
+    "id": "p-010",
+    "nombre": "Cosori Pro LE 5.8L",
+    "categoria": "Freidoras de aire",
+    "descripcion": "Freidora de aire compacta con 11 funciones preestablecidas. Control por app WiFi.",
+    "precio": 145000.00,
+    "stock": 20,
+    "imagen": "/images/products/cosori-pro-le.jpg"
+  },
+  {
+    "id": "p-011",
+    "nombre": "Samsung Neo QLED 65\"",
+    "categoria": "Televisores",
+    "descripcion": "Smart TV 4K con tecnología Neo QLED. Procesador Neural Quantum 4K. HDR10+ y Dolby Atmos.",
+    "precio": 1850000.00,
+    "stock": 3,
+    "imagen": "/images/products/samsung-neo-qled-65.jpg"
+  },
+  {
+    "id": "p-012",
+    "nombre": "LG OLED C3 55\"",
+    "categoria": "Televisores",
+    "descripcion": "Smart TV OLED 4K con webOS. Procesador α9 Gen6 AI. Perfect Black y colores infinitos.",
+    "precio": 1650000.00,
+    "stock": 5,
+    "imagen": "/images/products/lg-oled-c3-55.jpg"
+  },
+  {
+    "id": "p-013",
+    "nombre": "Sony Bravia XR 75\"",
+    "categoria": "Televisores",
+    "descripcion": "Smart TV LED 4K con procesador Cognitive XR. Compatible con PS5. Dolby Vision y Atmos.",
+    "precio": 2100000.00,
+    "stock": 2,
+    "imagen": "/images/products/sony-bravia-xr-75.jpg"
+  },
+  {
+    "id": "p-014",
+    "nombre": "TCL C735 43\"",
+    "categoria": "Televisores",
+    "descripcion": "Smart TV QLED 4K con Google TV. HDR10+ y Dolby Vision IQ. Modo Gaming 120Hz.",
+    "precio": 680000.00,
+    "stock": 12,
+    "imagen": "/images/products/tcl-c735-43.jpg"
+  },
+  {
+    "id": "p-015",
+    "nombre": "Whirlpool Heladera 540L",
+    "categoria": "Electrodomésticos",
+    "descripcion": "Heladera No Frost con freezer. Tecnología 6º Sentido. Eficiencia energética A+.",
+    "precio": 950000.00,
+    "stock": 8,
+    "imagen": "/images/products/whirlpool-heladera-540l.jpg"
+  },
+  {
+    "id": "p-016",
+    "nombre": "Samsung Lavarropas 9kg",
+    "categoria": "Electrodomésticos",
+    "descripcion": "Lavarropas automático con EcoBubble. 14 programas de lavado. Eficiencia A+++.",
+    "precio": 780000.00,
+    "stock": 6,
+    "imagen": "/images/products/samsung-lavarropas-9kg.jpg"
+  },
+  {
+    "id": "p-017",
+    "nombre": "Bosch Lavavajillas 12 cubiertos",
+    "categoria": "Electrodomésticos",
+    "descripcion": "Lavavajillas integrable con 6 programas. Tecnología AquaStop. Muy silencioso 44dB.",
+    "precio": 1200000.00,
+    "stock": 4,
+    "imagen": "/images/products/bosch-lavavajillas-12.jpg"
+  },
+  {
+    "id": "p-018",
+    "nombre": "Electrolux Microondas 30L",
+    "categoria": "Electrodomésticos",
+    "descripcion": "Microondas con grill y función crisp. 10 niveles de potencia. Panel digital touch.",
+    "precio": 285000.00,
+    "stock": 14,
+    "imagen": "/images/products/electrolux-microondas-30l.jpg"
+  },
+  {
+    "id": "p-019",
+    "nombre": "Drean Aspiradora Robot",
+    "categoria": "Electrodomésticos",
+    "descripcion": "Robot aspiradora con mapeo inteligente. Control por app. Autonomía 120 minutos.",
+    "precio": 450000.00,
+    "stock": 11,
+    "imagen": "/images/products/drean-robot-aspiradora.jpg"
+  },
+  {
+    "id": "p-020",
+    "nombre": "Peabody Aire Acondicionado 3000W",
+    "categoria": "Electrodomésticos",
+    "descripcion": "Aire acondicionado split frío/calor. Inverter A++. Control remoto y WiFi.",
+    "precio": 620000.00,
+    "stock": 7,
+    "imagen": "/images/products/peabody-aire-3000w.jpg"
+  },
+  {
+    "id": "p-021",
+    "nombre": "Oster Freidora de Aire 4L",
+    "categoria": "Freidoras de aire",
+    "descripcion": "Freidora de aire digital con 8 programas preestablecidos. Cesta antiadherente extraíble.",
+    "precio": 89000.00,
+    "stock": 25,
+    "imagen": "/images/products/oster-freidora-4l.jpg"
+  },
+  {
+    "id": "p-022",
+    "nombre": "HP Pavilion Gaming 15",
+    "categoria": "Laptops",
+    "descripcion": "Laptop gaming con AMD Ryzen 5, GTX 1650, 8GB RAM. Pantalla Full HD 15.6 pulgadas.",
+    "precio": 850000.00,
+    "stock": 13,
+    "imagen": "/images/products/hp-pavilion-gaming-15.jpg"
+  },
+  {
+    "id": "p-023",
+    "nombre": "Persol 714 Steve McQueen",
+    "categoria": "Anteojos de sol",
+    "descripcion": "Edición especial plegable. Lentes de cristal con protección UV. Marco de acetato italiano.",
+    "precio": 450000.00,
+    "stock": 3,
+    "imagen": "/images/products/persol-714-mcqueen.jpg"
+  },
+  {
+    "id": "p-024",
+    "nombre": "Philips 65\" 4K Android TV",
+    "categoria": "Televisores",
+    "descripcion": "Smart TV LED 4K con Android TV. HDR10+ y Dolby Atmos. Ambilight en 3 lados.",
+    "precio": 1200000.00,
+    "stock": 0,
+    "imagen": "/images/products/philips-65-android.jpg"
+  },
+  {
+    "id": "p-025",
+    "nombre": "Black+Decker Tostadora 4 Rebanadas",
+    "categoria": "Electrodomésticos",
+    "descripcion": "Tostadora con 7 niveles de tostado. Función descongelar y recalentar. Bandeja recogemigas.",
+    "precio": 45000.00,
+    "stock": 30,
+    "imagen": "/images/products/black-decker-tostadora.jpg"
+  }
+]

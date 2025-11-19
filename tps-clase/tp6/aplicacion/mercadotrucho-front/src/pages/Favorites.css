@@ -1,0 +1,249 @@
+.favorites-page {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding-top: 16px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Header */
+.favorites-header {
+  background: white;
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.header-content h1 {
+  font-size: 28px;
+  font-weight: 400;
+  color: #333;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.favorites-count {
+  font-size: 18px;
+  background: #e3f2fd;
+  color: #3483fa;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.clear-favorites-btn {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 4px;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.clear-favorites-btn:hover {
+  background: #f8f8f8;
+  border-color: #999;
+  color: #333;
+}
+
+/* Content */
+.favorites-content {
+  background: white;
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* Empty state */
+.empty-favorites {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-icon {
+  margin-bottom: 24px;
+  opacity: 0.6;
+}
+
+.empty-favorites h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.empty-favorites p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.continue-shopping {
+  display: inline-block;
+  background: #3483fa;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.continue-shopping:hover {
+  background: #2968c8;
+}
+
+/* Login required state */
+.favorites-login-required {
+  background: white;
+  border-radius: 6px;
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.login-prompt h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.login-prompt p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 32px;
+}
+
+.login-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.login-btn {
+  background: #3483fa;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.login-btn:hover {
+  background: #2968c8;
+}
+
+.register-btn {
+  background: none;
+  color: #3483fa;
+  padding: 12px 24px;
+  border: 1px solid #3483fa;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.register-btn:hover {
+  background: #3483fa;
+  color: white;
+}
+
+/* Favorites grid */
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+/* Tips section */
+.favorites-tips {
+  background: white;
+  border-radius: 6px;
+  padding: 24px;
+  border-left: 4px solid #3483fa;
+}
+
+.favorites-tips h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.favorites-tips ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.favorites-tips li {
+  padding: 8px 0;
+  color: #666;
+  font-size: 14px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.favorites-tips li::before {
+  content: "•";
+  color: #3483fa;
+  position: absolute;
+  left: 0;
+  top: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .favorites-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .header-content {
+    order: 1;
+  }
+  
+  .clear-favorites-btn {
+    order: 2;
+    align-self: flex-end;
+  }
+  
+  .favorites-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  
+  .login-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .login-btn,
+  .register-btn {
+    width: 200px;
+    text-align: center;
+  }
+  
+  .favorites-content {
+    padding: 16px;
+  }
+  
+  .favorites-tips {
+    padding: 16px;
+  }
+}

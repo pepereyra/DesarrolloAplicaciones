@@ -1,0 +1,221 @@
+Clase 05: 
+=========
+
+React:
+======
+
+hooks utilidades
+da funcionalidad al componente en sus diferentes partes
+
+useState
+variable, el setter
+const [count, setCount] = useState(0);
+count:
+Es la variable de estado que almacena el valor actual (en este caso, el valor inicial es 0).
+
+setCount:
+Es la función que actualiza count y dispara un re-renderizado del componente.
+
+estado separado por cada componente, 
+
+es declarativo y imperativo
+decla: quiero ver esto si es true, sino esto, se declara la ui
+Se enfoca en el "qué" en lugar del "cómo
+Oculta los detalles de bajo nivel
+cada cambio de estado, reacciona y lo refleja en la ui
+
+impera:hace esto, lo otro, etc 
+indicar que hacer, que parte del código debo modificar 
+
+dom Virtual: solo modifica en html es el componente, la parte del componente
+comparar html + inspect 
+foto de dom, 
+compara dom y su vdom, solo modifica lo necesario
+si se actuliza el padre se actualizan los hijos
+
+
+-----------
+Los Hooks son funciones especiales que te permiten engancharte a las funcionalidades de React, como el estado y el ciclo de vida, en componentes funcionales. 
+
+ useState: 
+ =========
+ Este es el Hook fundamental. Permite agregar un estado a un componente funcional. Se utiliza para almacenar y actualizar datos que pueden cambiar con el tiempo. 
+ Por ejemplo, si tienes un contador, el valor actual del contador lo guardarías con useState.
+    Es una de las características más importantes de React. Permite que tus componentes recuerden la información.
+    Ejemplo: const [contador, setContador] = useState(0);
+    Manejar el carrito de compras (agregar, eliminar productos).
+    Controlar el valor de un campo de búsqueda en tiempo real.
+    Gestionar los filtros de productos aplicados por el usuario.
+    Guardar los datos de un formulario de checkout o registro.
+    Controlar el estado de los botones (por ejemplo, habilitar o deshabilitar un botón de "Comprar").
+
+
+ useEffect: 
+ ==========
+ Este Hook te permite manejar los efectos secundarios en componentes funcionales. Los efectos secundarios son acciones que se realizan fuera del flujo normal de renderizado de React, como llamadas a una API, manipulación del DOM o suscripciones.
+ Efectos secundarios:
+ Los efectos secundarios en una aplicación de React son acciones que ocurren fuera del flujo normal de renderizado del componente. Es decir, son operaciones que no están directamente relacionadas con la presentación de la interfaz de usuario (UI), pero que son necesarias para que la aplicación funcione correctamente.
+
+    Ejemplos Comunes de Efectos Secundarios
+      Llamadas a la API: Obtener o enviar datos a un servidor externo.
+      Timers: Usar setTimeout o setInterval.
+
+  Ejemplo de efecto secundario: Llamada a una API para obtener datos cuando el componente se monta.
+    1. El Componente se Renderiza Inicialmente
+    El usuario entra a una página y el componente se renderiza por primera vez. Durante este primer renderizado, la pantalla se muestra con un estado inicial, por ejemplo, un "cargando..." o simplemente el diseño vacío.
+
+    2. `useEffect` se Ejecuta 
+    Después de que el componente ya está en la pantalla, el `useEffect` se activa. Si el array de dependencias está vacío (`[]`), el `useEffect` le dice a React que ejecute la función solo una vez después del primer renderizado.
+
+    3. La Llamada a la API Comienza 
+    Dentro del `useEffect`, se realiza la llamada asíncrona a la API. Esta operación tarda un tiempo en completarse y, mientras tanto, el componente sigue siendo funcional.
+
+    4. La Promesa se Resuelve
+    El servidor responde a la llamada. Si todo sale bien, la promesa de la solicitud se resuelve con los datos.
+
+    5. El Estado se Actualiza
+    Una vez que se reciben los datos, se usa una función de actualización de estado, como `setDatos`, para guardar la información.
+
+    6. React Re-renderiza el Componente
+    Al actualizar el estado con los datos de la API, React detecta un cambio y re-renderiza el componente. Esta vez, en lugar de mostrar el "cargando...", el componente utiliza el nuevo estado para mostrar los datos que obtuvo de la API.
+
+    7. El Ciclo se Detiene
+    El `useEffect` no se vuelve a ejecutar, ya que el array de dependencias está vacío (`[]`). Esto evita que se vuelva a hacer la misma llamada a la API y se genere un bucle infinito de re-renderizados. 
+
+
+Json-server: explicación e instalación 
+------------
+permite crear una API RESTful completa a partir de un simple archivo JSON. No requiere escribir código de backend
+
+Instalar json-server: (Sugerido)
+entrar el directorio del proyecto cd hola-react
+npm install json-server
+crear un dir json-server, dentro un archivo db.json
+levantarlo  
+npx json-server db.json
+
+traer datos desde navegador
+http://localhost:3000/products
+
+Un ejemplo muy común de useEffect con un array de dependencias no vacío en un e-commerce es la actualización de productos según los filtros de búsqueda. Cuando el usuario cambia un filtro, se debe volver a llamar a la API para obtener los productos que coinciden con la nueva selección.
+
+
+¿Por qué se usa un array de dependencias?
+Sin el array de dependencias ([]): el useEffect se ejecutaría en cada re-renderizado del componente, lo que causaría un bucle infinito de llamadas a la API cada vez que el estado de carga o de productos cambie.
+Con el array de dependencias vacío ([]): el useEffect se ejecutaría solo una vez, cuando el componente se monte, y no se volvería a ejecutar cuando el usuario cambie de categoría.
+Con la dependencia [categoriaSeleccionada]: el useEffect se comporta de forma inteligente, solo se ejecuta la llamada a la API cuando el filtro de categoría realmente cambia, optimizando así el rendimiento de la aplicación.
+
+
+useContext: 
+===========
+El useContext es un Hook de React que te permite acceder a los datos de un contexto sin tener que pasar props a través de cada componente en el árbol. Es la solución ideal para compartir información "global" en tu aplicación, como el tema (claro/oscuro), la información del usuario autenticado o, en el caso de un e-commerce, el estado del carrito de compras.
+
+¿Por qué es útil?
+Imagina que tienes una aplicación con muchos componentes anidados. Para pasar la información del usuario a un componente muy profundo, tendrías que pasarla como una prop de padre a hijo, una y otra vez. Esto se llama "prop drilling" y puede hacer que tu código sea difícil de mantener y leer. useContext elimina este problema, permitiendo que cualquier componente en la jerarquía acceda directamente a los datos del contexto.
+
+Ejemplo para un E-commerce: El Carrito de Compras 
+Crear un contexto para el carrito de compras es un uso clásico. Así, cualquier componente, ya sea la barra de navegación o un botón en la página de un producto, puede acceder a la información del carrito sin que se la tengas que pasar manualmente.
+     
+En Resumen (El Flujo Exacto):
+Clic en ProductList: Se ejecuta la función addToCart().
+Llamada al Contexto: addToCart() (que vive en CartProvider) actualiza el estado con setCartItems(...).
+React Detecta el Cambio: React ve que el estado dentro de CartProvider ha cambiado.
+React Re-Renderiza: React vuelve a renderizar todos los componentes que consumen ese contexto.
+CartSummary se Actualiza: CartSummary es uno de esos componentes. Se vuelve a renderizar, llama a useCart() de nuevo, obtiene el nuevo array cartItems y muestra cartItems.length actualizado.
+
+Trabajo Laboratorio:
+====================
+Crear un componente que liste los productos, y pueda agregar un item al carrito.
+Utilizar usestate, useeffect para llamadas a apis, usecontext para compartir información entre componentes	 
+
+=========================================
+
+ESLint es una herramienta de linting para JavaScript (y tecnologías relacionadas como TypeScript, JSX y frameworks como React, Vue o Angular). Su función principal es analizar tu código en busca de errores, patrones sospechosos o inconsistencias de estilo, ayudando a mantener un código limpio, legible y libre de errores comunes
+
+package.json es el corazón de la configuración del proyecto, donde se definen todas las dependencias necesarias para el desarrollo y producción
+dependencies
+react	Biblioteca central de React para crear componentes.
+react-dom	Permite renderizar componentes React en el navegador.
+
+devDependencies
+Son herramientas necesarias solo durante el desarrollo (no se incluyen en el build de producción).
+
+Dependencia	Propósito
+vite	El núcleo del servidor de desarrollo y bundler.
+@vitejs/plugin-react	Soporte para React (JSX, Fast Refresh).
+eslint	Linter para detectar errores y mantener estilo de código.
+eslint-plugin-react	Reglas específicas de ESLint para React.
+prettier	Formateador de código (opcional, pero recomendado).
+typescript	Si usas TypeScript (opcional).
+
+
+
+
+
+
+Ejemplo de Manipulación de DOM sin react
+Ejemplo de Manipulación de DOM con react
+
+
+
+JSX: JavaScript XML
+===
+se transpila a js
+extensión de js, escribis un xml 
+
+
+
+
+
+
+
+
+
+
+Ventajas:
+  1. Reutilización de Código componentes
+  2. Encapsulamiento y Mantenibilidad
+    Cada componente maneja su propio estado (valores de variables, cuando cambia el valor de una variable se re-renderiza el componente) y lógica, haciendo el código más fácil de mantener: menos acoplamiento, problemas aislados, cambios localizados
+  3. Rendimiento Optimizado
+    React usa el Virtual DOM para actualizar solo las partes necesarias de la UI, evitando recargas completas de página.
+    Ejemplo: Si un componente hijo cambia, React no re-renderiza toda la aplicación, solo ese componente.
+  4. Desarrollo Multiplataforma
+    Los componentes de React pueden usarse en:
+    Web (React DOM).
+    Móvil (React Native).
+    Escritorio (React Native for Windows).
+  6. Flujo de Datos Predictivo
+  React sigue un flujo unidireccional de datos (de padres a hijos), lo que hace más fácil:
+  Rastrear cambios, evitar efectos secundarios no deseados como Angular
+  7. JSX: HTML + JavaScript
+  Combina lógica y marcado en un mismo lugar de forma declarativa .
+
+
+
+================================
+Ejemplos de React: https://es.react.dev/
+
+dependencias
+react 
+react.dom
+
+HMR (Hot Module Replacement)   
+
+
+
+
+Librería (Library):
+Conjunto de funciones, componentes o código preescrito que llamas y controlas desde tu aplicación.
+Decido cuándo y cómo usarla (ej: llamar una función para validar un formulario).
+No impone una estructura en tu proyecto o metodología de trabajo.
+Ej: Es como usar herramientas sueltas de una caja (ej: un martillo, un destornillador).
+React (UI components). facebook
+
+
+Framework:
+Conjunto de herramientas y reglas que define la estructura y flujo de tu aplicación.
+Él controla el flujo y llama a tu código cuando es necesario (Inversión de Control - IoC).
+Obliga a seguir una arquitectura específica (ej: MVC, componentes).
+Es como usar un molde o esqueleto que ya tiene espacios para tus piezas.
+Ej: sería como comprar un kit completo de mueble prefabricado que ya incluye todas las piezas, instrucciones paso a paso y hasta las herramientas específicas necesarias para ensamblarlo.
+Angular (framework completo). google
