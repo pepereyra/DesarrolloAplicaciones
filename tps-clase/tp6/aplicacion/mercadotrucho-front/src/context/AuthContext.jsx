@@ -33,7 +33,7 @@ const AuthProvider = ({ children }) => {
             if (savedUser && savedUser.id && authToken) {
                 try {
                     // Cargar datos completos del usuario desde la API con autenticación
-                    const response = await fetch(`http://backend:8080/api/usuarios/${savedUser.id}`, {
+                    const response = await fetch(`http://192.168.56.2:8080/api/usuarios/${savedUser.id}`, {
                         headers: {
                             'Authorization': `Bearer ${authToken}`
                         }
@@ -74,7 +74,7 @@ const AuthProvider = ({ children }) => {
     const register = async (userData) => {
         try {
             // Usar el endpoint de registro de Spring Boot
-            const response = await fetch('http://backend:8080/api/auth/register', {
+            const response = await fetch('http://192.168.56.2:8080/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
